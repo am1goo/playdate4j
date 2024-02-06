@@ -1,4 +1,4 @@
-#include "pd4j_host.h"
+#include "pd4j_api.h"
 
 PlaydateAPI* _api;
 
