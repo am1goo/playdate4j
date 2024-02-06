@@ -1,10 +1,10 @@
 package com.am1goo.playdate4j.sdk;
 
-public class DisplayBridge {
+public class GraphicsBridge {
 
     static {
         Sdk.loadRequiredLibraries();
     }
 
-    public native void setRefreshRate(int rate);
+    public native void setDrawMode(int mode);
 }

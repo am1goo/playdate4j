@@ -1,8 +1,8 @@
 package com.am1goo.playdate4j.sdk;
 
-public class Settings {
+public class Sdk {
 
-    public static void loadLibraries() {
+    public static void loadRequiredLibraries() {
         System.loadLibrary("pd4j_bridge");
     }
 }
