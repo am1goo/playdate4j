@@ -6,5 +6,7 @@ public class GraphicsBridge {
         Sdk.loadRequiredLibraries();
     }
 
+    public native void clear(int mode);
     public native void setDrawMode(int mode);
+    public native void drawText(String text, int x, int y);
 }

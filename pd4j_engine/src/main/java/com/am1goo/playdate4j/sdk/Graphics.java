@@ -4,8 +4,33 @@ public class Graphics {
 
     private static final GraphicsBridge bridge = new GraphicsBridge();
 
+    public static void clear(SolidColor color) {
+        bridge.clear(color.getValue());
+    }
+
     public static void setDrawMode(DrawMode mode) {
         bridge.setDrawMode(mode.getValue());
+    }
+
+    public static void drawText(String text, int x, int y) {
+        bridge.drawText(text, x, y);
+    }
+
+    public enum SolidColor {
+        Black(0),
+        White(1),
+        Clear(2),
+        XOR(3);
+
+        final int value;
+
+        SolidColor(int value) {
+            this.value = value;
+        }
+
+        public int getValue() {
+            return value;
+        }
     }
 
     public enum DrawMode {
