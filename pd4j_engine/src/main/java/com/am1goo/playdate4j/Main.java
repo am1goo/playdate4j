@@ -7,6 +7,12 @@ import com.am1goo.playdate4j.sdk.Sys;
 public class Main {
 
     public static void main(String[] args) {
+        Core.init();
+        for (int i = 0; i < 10; ++i) {
+            Core.loop();
+        }
+        Core.shutdown();
+
         Display.setRefreshRate(50);
         Graphics.setDrawMode(Graphics.DrawMode.BlackTransparent);
         Sys.log("test log");
