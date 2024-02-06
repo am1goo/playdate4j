@@ -1,22 +1,18 @@
 package com.am1goo.playdate4j;
 
-import com.am1goo.playdate4j.sdk.Display;
-import com.am1goo.playdate4j.sdk.Graphics;
-import com.am1goo.playdate4j.sdk.Sys;
+import com.am1goo.playdate4j.example.ExampleGameCycle;
+
+import java.lang.reflect.InvocationTargetException;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+        String className = ExampleGameCycle.class.getName();
+        Core.create(className);
         Core.init();
         for (int i = 0; i < 10; ++i) {
             Core.loop();
         }
         Core.shutdown();
-
-        Display.setRefreshRate(50);
-        Graphics.setDrawMode(Graphics.DrawMode.BlackTransparent);
-        Sys.log("test log");
-        Sys.logError("test error");
-        Sys.drawFps(0, 0);
     }
 }

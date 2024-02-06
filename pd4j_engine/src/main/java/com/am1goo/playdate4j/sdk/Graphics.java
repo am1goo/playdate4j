@@ -4,6 +4,28 @@ public class Graphics {
 
     private static final GraphicsBridge bridge = new GraphicsBridge();
 
+    private static int lcdColumns = -1;
+    private static int lcdRows = -1;
+    private static int lcdRowSize = -1;
+
+    public static int getLCDColumns() {
+        if (lcdColumns < 0)
+            lcdColumns = bridge.getLCDColumns();
+        return lcdColumns;
+    }
+
+    public static int getLCDRows() {
+        if (lcdRows < 0)
+            lcdRows = bridge.getLCDRows();
+        return lcdRows;
+    }
+
+    public static int getLCDRowSize() {
+        if (lcdRowSize < 0)
+            lcdRowSize = bridge.getLCDRowSize();
+        return lcdRowSize;
+    }
+
     public static void clear(SolidColor color) {
         bridge.clear(color.getValue());
     }
