@@ -1,5 +1,6 @@
 package com.am1goo.playdate4j;
 
+import com.am1goo.playdate4j.example.ExampleGameCycle;
 import com.am1goo.playdate4j.game.IGameCycle;
 import com.am1goo.playdate4j.sdk.Display;
 import com.am1goo.playdate4j.sdk.Graphics;
@@ -34,16 +35,19 @@ public class Core {
     }
 
     public static void init() {
+        create(new ExampleGameCycle());
+        System.out.println("init: started");
         try {
             cycle.start();
         }
         catch (Exception ex) {
             System.err.println(ex);
         }
-        System.out.println("init");
+        System.out.println("init: finished");
     }
 
     public static void shutdown() {
+        System.out.println("shutdown: started");
         try {
             cycle.stop();
         }
@@ -51,7 +55,7 @@ public class Core {
             System.err.println(ex);
         }
         frameCount = 0;
-        System.out.println("shutdown");
+        System.out.println("shutdown: finished");
     }
 
     public static void loop() {
@@ -64,7 +68,8 @@ public class Core {
         frameCount++;
     }
 
-    public int getFrameCount() {
+    public static boolean isCycling() { return cycle != null; }
+    public static int getFrameCount() {
         return frameCount;
     }
 }

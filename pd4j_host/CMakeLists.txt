@@ -10,7 +10,7 @@ project ("pd4j_host")
 add_executable(pd4j_exec "pd4j_exec.h" "pd4j_exec.cpp")
 
 # Add source to this project's library.
-add_library (pd4j_host STATIC "pd4j_host.h" "pd4j_host.cpp")
+add_library (pd4j_host STATIC "pd4j_host.h" "pd4j_host.cpp" )
 
 include(jdk.cmake)
 target_include_directories(pd4j_host PUBLIC ${JNI_INCLUDE_DIRS})
@@ -18,9 +18,7 @@ target_include_directories(pd4j_host PUBLIC ${JNI_INCLUDE_DIRS})
 include(playdate.cmake)
 target_include_directories(pd4j_host PUBLIC ${PLAYDATE_INCLUDE_DIRS})
 
-target_include_directories(pd4j_host PRIVATE "../pd4j_bridge/include")
-
-set_target_properties(pd4j_host PROPERTIES SUFFIX ".so")
-
-target_link_libraries(pd4j_host ${JNI_LIBRARIES})
-target_link_libraries(pd4j_exec pd4j_host)
+target_include_directories(pd4j_host PUBLIC "../pd4j_bridge/include")
+target_link_libraries(pd4j_host PUBLIC ${JNI_LIBRARIES})
+target_link_libraries(pd4j_host PUBLIC "${PROJECT_SOURCE_DIR}/../pd4j_bridge/out/build/x64-Debug/pd4j_bridge.lib")
+target_link_libraries(pd4j_exec PUBLIC pd4j_host)

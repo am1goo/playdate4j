@@ -1,6 +1,6 @@
 #include "pd4j_api.h"
 
-PlaydateAPI* _api;
+static thread_local PlaydateAPI* _api;
 
 PlaydateAPI* PlaydateHost::getApi()
 {
