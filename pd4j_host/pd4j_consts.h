@@ -1,0 +1,4 @@
+#define PD4J_OK 0
+#define PD4J_FAILED 1
+#define PD4J_NOT_INITIALIZED 2
+#define PD4J_WRONG_JAVA_VERSION 3
