@@ -9,8 +9,8 @@ public class Main {
     public static void main(String[] args) {
         Display.setRefreshRate(50);
         Graphics.setDrawMode(Graphics.DrawMode.BlackTransparent);
-        Sys.logToConsole("test log");
-        Sys.error("test error");
+        Sys.log("test log");
+        Sys.logError("test error");
         Sys.drawFps(0, 0);
     }
 }

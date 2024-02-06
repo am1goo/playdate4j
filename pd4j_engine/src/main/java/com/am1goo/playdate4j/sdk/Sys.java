@@ -4,11 +4,11 @@ public class Sys {
 
     private static final SysBridge bridge = new SysBridge();
 
-    public static void logToConsole(String log) {
+    public static void log(String log) {
         bridge.logToConsole(log);
     }
 
-    public static void error(String error) {
+    public static void logError(String error) {
         bridge.error(error);
     }
 

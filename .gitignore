@@ -1,6 +1,9 @@
 .idea
 *.iml
 
+.vs
+*.log
+
 out
 /buildcache
 /thirdparty
