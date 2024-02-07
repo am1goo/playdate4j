@@ -1,11 +1,15 @@
 package com.am1goo.playdate4j.example;
 
-import com.am1goo.playdate4j.game.IGameCycle;
 import com.am1goo.playdate4j.sdk.Graphics;
+import com.am1goo.playdate4j.sdk.Input;
+import com.am1goo.playdate4j.sdk.Display;
+import com.am1goo.playdate4j.sdk.Game;
+import com.am1goo.playdate4j.sdk.GameCycle;
 import com.am1goo.playdate4j.sdk.Sys;
+import com.am1goo.playdate4j.sdk.Input.Peripherals;
 
 
-public class ExampleGameCycle implements IGameCycle {
+public class ExampleGameCycle implements GameCycle {
 
     private static final int TEXT_WIDTH = 86;
     private static final int TEXT_HEIGHT = 16;
@@ -22,6 +26,7 @@ public class ExampleGameCycle implements IGameCycle {
     public void start() {
         lcd_columns = Graphics.getLCDColumns();
         lcd_rows = Graphics.getLCDRows();
+        Input.setPeripheralsEnabled(Peripherals.None);
     }
 
     @Override
@@ -44,5 +49,7 @@ public class ExampleGameCycle implements IGameCycle {
             dy = -dy;
 
         Sys.drawFps(0, 0);
+        
+      	Display.setInverted(Game.getFrameCount() % 2 == 0);
     }
 }

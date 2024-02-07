@@ -11,6 +11,17 @@ JavaVM* jvm;
 JNIEnv* env;
 bool initialized;
 
++---+---------+
+| Z | boolean |
+| B | byte    |
+| C | char    |
+| S | short   |
+| I | int     |
+| J | long    |
+| F | float   |
+| D | double  |
++-------------+
+
 jclass class_debug;
 jmethodID class_debug_method_is_api_loaded;
 

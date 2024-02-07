@@ -1,17 +1,11 @@
-package com.am1goo.playdate4j;
-
-import com.am1goo.playdate4j.example.ExampleGameCycle;
-import com.am1goo.playdate4j.game.IGameCycle;
-import com.am1goo.playdate4j.sdk.Display;
-import com.am1goo.playdate4j.sdk.Graphics;
-import com.am1goo.playdate4j.sdk.Sys;
+package com.am1goo.playdate4j.sdk;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
-public class Core {
+public class Game {
 
-    private static IGameCycle cycle;
+    private static GameCycle cycle;
     private static int frameCount;
 
     public static void create(String className) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
@@ -23,19 +17,18 @@ public class Core {
             accessibleChanged = true;
         }
 
-        IGameCycle cycle = (IGameCycle) cctr.newInstance();
+        GameCycle cycle = (GameCycle) cctr.newInstance();
         if (accessibleChanged)
             cctr.setAccessible(false);
 
         create(cycle);
     }
 
-    public static void create(IGameCycle cycle) {
-        Core.cycle = cycle;
+    public static void create(GameCycle cycle) {
+    	Game.cycle = cycle;
     }
 
     public static void init() {
-        create(new ExampleGameCycle());
         System.out.println("init: started");
         try {
             cycle.start();
@@ -68,7 +61,10 @@ public class Core {
         frameCount++;
     }
 
-    public static boolean isCycling() { return cycle != null; }
+    public static boolean isCycling() {
+    	return cycle != null;
+    }
+    
     public static int getFrameCount() {
         return frameCount;
     }
