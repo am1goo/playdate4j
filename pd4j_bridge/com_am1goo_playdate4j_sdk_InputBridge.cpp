@@ -24,8 +24,8 @@ JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_InputBridge_getAcceleromet
 	api->system->getAccelerometer(&outx, &outy, &outz);
 	
 	jclass class_acc = env->GetObjectClass(acc);
-	jmethodID class_acc_method_set = env->GetStaticMethodID(class_acc, "set", "(FFF)V");
-	env->CallVoidMethod(class_acc, class_acc_method_set, outx, outy, outz);
+	jmethodID class_acc_method_set = env->GetMethodID(class_acc, "set", "(FFF)V");
+	env->CallVoidMethod(acc, class_acc_method_set, outx, outy, outz);
 }
 
 JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_InputBridge_getButtonState
@@ -40,8 +40,8 @@ JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_InputBridge_getButtonState
 	api->system->getButtonState(&current, &pushed, &released);
 	
 	jclass class_state = env->GetObjectClass(state);
-	jmethodID class_state_method_set = env->GetStaticMethodID(class_state, "set", "(III)V");
-	env->CallVoidMethod(class_state, class_state_method_set, current, pushed, released);
+	jmethodID class_state_method_set = env->GetMethodID(class_state, "set", "(III)V");
+	env->CallVoidMethod(state, class_state_method_set, static_cast<int>(current), static_cast<int>(pushed), static_cast<int>(released));
 }
 
 JNIEXPORT jfloat JNICALL Java_com_am1goo_playdate4j_sdk_InputBridge_getCrankAngle
