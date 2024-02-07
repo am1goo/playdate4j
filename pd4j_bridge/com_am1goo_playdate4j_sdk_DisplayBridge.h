@@ -9,11 +9,67 @@ extern "C" {
 #endif
 /*
  * Class:     com_am1goo_playdate4j_sdk_DisplayBridge
+ * Method:    getHeight
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_DisplayBridge_getHeight
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_DisplayBridge
+ * Method:    getWidth
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_DisplayBridge_getWidth
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_DisplayBridge
+ * Method:    setInverted
+ * Signature: (Z)V
+ */
+JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_DisplayBridge_setInverted
+  (JNIEnv *, jobject, jboolean);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_DisplayBridge
+ * Method:    setMosaic
+ * Signature: (II)V
+ */
+JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_DisplayBridge_setMosaic
+  (JNIEnv *, jobject, jint, jint);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_DisplayBridge
+ * Method:    setFlipped
+ * Signature: (II)V
+ */
+JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_DisplayBridge_setFlipped
+  (JNIEnv *, jobject, jint, jint);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_DisplayBridge
  * Method:    setRefreshRate
  * Signature: (I)V
  */
 JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_DisplayBridge_setRefreshRate
   (JNIEnv *, jobject, jint);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_DisplayBridge
+ * Method:    setScale
+ * Signature: (I)V
+ */
+JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_DisplayBridge_setScale
+  (JNIEnv *, jobject, jint);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_DisplayBridge
+ * Method:    setOffset
+ * Signature: (II)V
+ */
+JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_DisplayBridge_setOffset
+  (JNIEnv *, jobject, jint, jint);
 
 #ifdef __cplusplus
 }
