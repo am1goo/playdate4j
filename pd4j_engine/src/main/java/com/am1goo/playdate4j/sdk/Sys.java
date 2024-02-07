@@ -15,4 +15,12 @@ public class Sys {
     public static void drawFps(int x, int y) {
         bridge.drawFps(x, y);
     }
+    
+    public static void setAutoLockDisabled(boolean disable) {
+    	bridge.setAutoLockDisabled(disable);
+    }
+    
+    public static boolean setCrankSoundsDisabled(boolean disable) {
+    	return bridge.setCrankSoundsDisabled(disable);
+    }
 }

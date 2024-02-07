@@ -32,3 +32,21 @@ JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_drawFps
 
 	api->system->drawFPS(x, y);
 }
+
+JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_setAutoLockDisabled
+  (JNIEnv* env, jobject thisObject, jboolean disabled) {
+	PlaydateAPI* api = PlaydateHost::getApi();
+	if (api == NULL)
+		return;
+	
+	api->system->setAutoLockDisabled(disabled);
+}
+
+JNIEXPORT jboolean JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_setCrankSoundsDisabled
+  (JNIEnv* env, jobject thisObject, jboolean disabled) {
+	PlaydateAPI* api = PlaydateHost::getApi();
+	if (api == NULL)
+		return false;
+	
+	return api->system->setCrankSoundsDisabled(disabled);
+}

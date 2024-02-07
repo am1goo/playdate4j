@@ -31,6 +31,22 @@ JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_error
 JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_drawFps
   (JNIEnv *, jobject, jint, jint);
 
+/*
+ * Class:     com_am1goo_playdate4j_sdk_SysBridge
+ * Method:    setAutoLockDisabled
+ * Signature: (Z)V
+ */
+JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_setAutoLockDisabled
+  (JNIEnv *, jobject, jboolean);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_SysBridge
+ * Method:    setCrankSoundsDisabled
+ * Signature: (Z)Z
+ */
+JNIEXPORT jboolean JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_setCrankSoundsDisabled
+  (JNIEnv *, jobject, jboolean);
+
 #ifdef __cplusplus
 }
 #endif
