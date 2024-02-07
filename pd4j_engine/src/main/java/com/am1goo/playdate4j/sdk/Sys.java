@@ -1,6 +1,6 @@
 package com.am1goo.playdate4j.sdk;
 
-public class Sys extends Api {
+public class Sys {
 
     private static final SysBridge bridge = new SysBridge();
 

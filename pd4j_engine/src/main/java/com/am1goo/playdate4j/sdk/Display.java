@@ -1,8 +1,10 @@
 package com.am1goo.playdate4j.sdk;
 
-public class Display extends Api {
+public class Display {
 
     private static final DisplayBridge bridge = new DisplayBridge();
+
+	private static boolean isInverted = false;
 
     public static int getHeight() {
     	return bridge.getHeight();
@@ -11,9 +13,14 @@ public class Display extends Api {
     public static int getWidth() {
     	return bridge.getWidth();
     }
+
+	public static boolean isInverted() {
+		return isInverted;
+	}
     
     public static void setInverted(boolean value) {
     	bridge.setInverted(value);
+		isInverted = value;
     }
     
     public static void setMosaic(Mosaic x, Mosaic y) {
