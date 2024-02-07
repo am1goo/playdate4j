@@ -1,4 +1,4 @@
-#include "com_am1goo_playdate4j_sdk_SysBridge.h"
+#include "com_am1goo_playdate4j_sdk_InputBridge.h"
 #include "pd4j_api.h"
 #include <pd_api.h>
 
