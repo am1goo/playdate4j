@@ -4,7 +4,7 @@
 
 JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_InputBridge_setPeripheralsEnabled
   (JNIEnv* env, jobject thisObject, jint maskValue) {
-	PlaydateAPI* api = PlaydateHost::getApi();
+	PlaydateAPI* api = pd4j_get_api(env);
 	if (api == NULL)
 		return;
 	
@@ -14,7 +14,7 @@ JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_InputBridge_setPeripherals
   
 JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_InputBridge_getAccelerometer
   (JNIEnv* env, jobject thisObject, jobject acc) {
-	PlaydateAPI* api = PlaydateHost::getApi();
+	PlaydateAPI* api = pd4j_get_api(env);
 	if (api == NULL)
 		return;
 	
@@ -30,7 +30,7 @@ JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_InputBridge_getAcceleromet
 
 JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_InputBridge_getButtonState
   (JNIEnv* env, jobject thisObject, jobject state) {
-	PlaydateAPI* api = PlaydateHost::getApi();
+	PlaydateAPI* api = pd4j_get_api(env);
 	if (api == NULL)
 		return;
 	
@@ -46,7 +46,7 @@ JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_InputBridge_getButtonState
 
 JNIEXPORT jfloat JNICALL Java_com_am1goo_playdate4j_sdk_InputBridge_getCrankAngle
   (JNIEnv* env, jobject thisObject) {
-	PlaydateAPI* api = PlaydateHost::getApi();
+	PlaydateAPI* api = pd4j_get_api(env);
 	if (api == NULL)
 		return 0;
 	
@@ -55,7 +55,7 @@ JNIEXPORT jfloat JNICALL Java_com_am1goo_playdate4j_sdk_InputBridge_getCrankAngl
 
 JNIEXPORT jfloat JNICALL Java_com_am1goo_playdate4j_sdk_InputBridge_getCrankChange
   (JNIEnv* env, jobject thisObject) {
-	PlaydateAPI* api = PlaydateHost::getApi();
+	PlaydateAPI* api = pd4j_get_api(env);
 	if (api == NULL)
 		return 0;
 	
@@ -64,7 +64,7 @@ JNIEXPORT jfloat JNICALL Java_com_am1goo_playdate4j_sdk_InputBridge_getCrankChan
 
 JNIEXPORT jboolean JNICALL Java_com_am1goo_playdate4j_sdk_InputBridge_isCrankDocked
   (JNIEnv* env, jobject thisObject) {
-	PlaydateAPI* api = PlaydateHost::getApi();
+	PlaydateAPI* api = pd4j_get_api(env);
 	if (api == NULL)
 		return 0;
 	

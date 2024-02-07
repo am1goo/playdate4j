@@ -1,6 +1,6 @@
 package com.am1goo.playdate4j.sdk;
 
-public class Display {
+public class Display extends Api {
 
     private static final DisplayBridge bridge = new DisplayBridge();
 

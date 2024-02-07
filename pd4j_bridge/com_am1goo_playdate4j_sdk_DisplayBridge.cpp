@@ -4,7 +4,7 @@
 
 JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_DisplayBridge_getHeight
   (JNIEnv* env, jobject thisObject) {
-	PlaydateAPI* api = PlaydateHost::getApi();
+	PlaydateAPI* api = pd4j_get_api(env);
 	if (api == NULL)
 		return 0;
 	
@@ -13,7 +13,7 @@ JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_DisplayBridge_getHeight
 
 JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_DisplayBridge_getWidth
   (JNIEnv* env, jobject thisObject) {
-	PlaydateAPI* api = PlaydateHost::getApi();
+	PlaydateAPI* api = pd4j_get_api(env);
 	if (api == NULL)
 		return 0;
 	
@@ -22,7 +22,7 @@ JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_DisplayBridge_getWidth
 
 JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_DisplayBridge_setInverted
   (JNIEnv* env, jobject thisObject, jboolean value) {
-	PlaydateAPI* api = PlaydateHost::getApi();
+	PlaydateAPI* api = pd4j_get_api(env);
 	if (api == NULL)
 		return;
 	
@@ -31,7 +31,7 @@ JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_DisplayBridge_setInverted
 
 JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_DisplayBridge_setMosaic
   (JNIEnv* env, jobject thisObject, jint x, jint y) {
-	PlaydateAPI* api = PlaydateHost::getApi();
+	PlaydateAPI* api = pd4j_get_api(env);
 	if (api == NULL)
 		return;
 	
@@ -40,7 +40,7 @@ JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_DisplayBridge_setMosaic
 
 JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_DisplayBridge_setFlipped
   (JNIEnv* env, jobject thisObject, jint x, jint y) {
-	PlaydateAPI* api = PlaydateHost::getApi();
+	PlaydateAPI* api = pd4j_get_api(env);
 	if (api == NULL)
 		return;
 	
@@ -49,7 +49,7 @@ JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_DisplayBridge_setFlipped
 
 JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_DisplayBridge_setRefreshRate
   (JNIEnv* env, jobject thisObject, jint rate) {
-	PlaydateAPI* api = PlaydateHost::getApi();
+	PlaydateAPI* api = pd4j_get_api(env);
 	if (api == NULL)
 		return;
 
@@ -58,7 +58,7 @@ JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_DisplayBridge_setRefreshRa
 
 JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_DisplayBridge_setScale
   (JNIEnv* env, jobject thisObject, jint value) {
-	PlaydateAPI* api = PlaydateHost::getApi();
+	PlaydateAPI* api = pd4j_get_api(env);
 	if (api == NULL)
 		return;
 	
@@ -67,7 +67,7 @@ JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_DisplayBridge_setScale
 
 JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_DisplayBridge_setOffset
   (JNIEnv* env, jobject thisObject, jint x, jint y){
-	PlaydateAPI* api = PlaydateHost::getApi();
+	PlaydateAPI* api = pd4j_get_api(env);
 	if (api == NULL)
 		return;
 	

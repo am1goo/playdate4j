@@ -5,7 +5,7 @@ public class DisplayBridge {
     static {
         Sdk.loadRequiredLibraries();
     }
-    
+
     public native int getHeight();
     public native int getWidth();
     public native void setInverted(boolean value);

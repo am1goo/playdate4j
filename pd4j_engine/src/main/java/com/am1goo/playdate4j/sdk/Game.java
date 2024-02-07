@@ -3,7 +3,7 @@ package com.am1goo.playdate4j.sdk;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
-public class Game {
+public class Game extends Api {
 
     private static GameCycle cycle;
     private static int frameCount;
@@ -40,6 +40,7 @@ public class Game {
     }
 
     public static void shutdown() {
+        Api.setApiAddress(0);
         System.out.println("shutdown: started");
         try {
             cycle.stop();

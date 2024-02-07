@@ -4,7 +4,7 @@
 
 JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_logToConsole
   (JNIEnv* env, jobject thisObject, jstring log) {
-	PlaydateAPI* api = PlaydateHost::getApi();
+	PlaydateAPI* api = pd4j_get_api(env);
 	if (api == NULL)
 		return;
 
@@ -15,7 +15,7 @@ JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_logToConsole
 
 JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_error
   (JNIEnv* env, jobject thisObject, jstring error) {
-	PlaydateAPI* api = PlaydateHost::getApi();
+	PlaydateAPI* api = pd4j_get_api(env);
 	if (api == NULL)
 		return;
 
@@ -26,7 +26,7 @@ JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_error
 
 JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_drawFps
   (JNIEnv* env, jobject thisObject, jint x, jint y) {
-	PlaydateAPI* api = PlaydateHost::getApi();
+	PlaydateAPI* api = pd4j_get_api(env);
 	if (api == NULL)
 		return;
 
@@ -35,7 +35,7 @@ JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_drawFps
 
 JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_setAutoLockDisabled
   (JNIEnv* env, jobject thisObject, jboolean disabled) {
-	PlaydateAPI* api = PlaydateHost::getApi();
+	PlaydateAPI* api = pd4j_get_api(env);
 	if (api == NULL)
 		return;
 	
@@ -44,7 +44,7 @@ JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_setAutoLockDisab
 
 JNIEXPORT jboolean JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_setCrankSoundsDisabled
   (JNIEnv* env, jobject thisObject, jboolean disabled) {
-	PlaydateAPI* api = PlaydateHost::getApi();
+	PlaydateAPI* api = pd4j_get_api(env);
 	if (api == NULL)
 		return false;
 	

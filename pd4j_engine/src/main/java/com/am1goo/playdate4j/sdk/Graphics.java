@@ -1,6 +1,6 @@
 package com.am1goo.playdate4j.sdk;
 
-public class Graphics {
+public class Graphics extends Api {
 
     private static final GraphicsBridge bridge = new GraphicsBridge();
 

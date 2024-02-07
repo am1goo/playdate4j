@@ -1,11 +1,12 @@
 ﻿// pd4j_host.cpp : Defines the entry point for the application.
 //
 
+#include <cstdint>
+#include <jni.h>
+#include <pd_api.h>
 #include "pd4j_consts.h"
 #include "pd4j_host.h"
 #include "pd4j_bridge.h"
-#include <jni.h>
-#include <pd_api.h>
 
 JavaVM* jvm;
 JNIEnv* env;
@@ -24,10 +25,11 @@ bool initialized;
 +-------------+
 */
 
-jclass class_debug;
-jmethodID class_debug_method_is_api_loaded;
+jclass class_api;
+jmethodID class_api_method_is_api_loaded;
 
 jclass class_game;
+jmethodID class_game_method_create;
 jmethodID class_game_method_init;
 jmethodID class_game_method_shutdown;
 jmethodID class_game_method_loop;
@@ -77,17 +79,21 @@ int pd4j_init(PlaydateAPI* api)
     if (envStat == JNI_EVERSION)
         return PD4J_WRONG_JAVA_VERSION;
 
-    PlaydateHost::setApi(api);
+    pd4j_set_api(env, api);
 
-    class_debug = env->FindClass("com/am1goo/playdate4j/sdk/Debug");
-    class_debug_method_is_api_loaded = env->GetStaticMethodID(class_debug, "isApiAvailable", "()Z");
+    class_api = env->FindClass("com/am1goo/playdate4j/sdk/Api");
+    class_api_method_is_api_loaded = env->GetStaticMethodID(class_api, "isApiAvailable", "()Z");
 
     class_game = env->FindClass("com/am1goo/playdate4j/sdk/Game");
+    class_game_method_create = env->GetStaticMethodID(class_game, "create", "(Ljava/lang/String;)V");
     class_game_method_init = env->GetStaticMethodID(class_game, "init", "()V");
     class_game_method_shutdown = env->GetStaticMethodID(class_game, "shutdown", "()V");
     class_game_method_loop = env->GetStaticMethodID(class_game, "loop", "()V");
     class_game_method_get_frame_count = env->GetStaticMethodID(class_game, "getFrameCount", "()I");
     class_game_method_is_cycling = env->GetStaticMethodID(class_game, "isCycling", "()Z");
+
+    jstring cycle_class_name = env->NewStringUTF("com.am1goo.playdate4j.example.ExampleGameCycle");
+    env->CallVoidMethod(class_game, class_game_method_create, cycle_class_name);
 
     env->CallVoidMethod(class_game, class_game_method_init);
     return PD4J_OK;
@@ -104,24 +110,17 @@ int pd4j_shutdown()
         env = NULL;
     }
 
-    PlaydateHost::setApi(NULL);
-
     jvm = NULL;
     return PD4J_OK;
 }
 
-int pd4j_update(PlaydateAPI* api)
+int pd4j_update()
 {
     if (!initialized)
         return PD4J_NOT_INITIALIZED;
 
-    PlaydateHost::setApi(api);
     env->CallVoidMethod(class_game, class_game_method_loop);
-
-    int frame_count = env->CallIntMethod(class_game, class_game_method_get_frame_count);
-    bool is_cycling = env->CallBooleanMethod(class_game, class_game_method_is_cycling);
-    bool is_api_available = env->CallBooleanMethod(class_debug, class_debug_method_is_api_loaded);
-    return is_api_available != NULL ? 3 : -3;
+    return PD4J_OK;
 }
 
 JNIEXPORT jint JNICALL

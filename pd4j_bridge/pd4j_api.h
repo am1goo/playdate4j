@@ -1,13 +1,11 @@
+#include <jni.h>
 #include <pd_api.h>
 
-class PlaydateHost
-{
-	public:
-		static PlaydateAPI* getApi();
-		static void setApi(PlaydateAPI* api);
+#ifdef __cplusplus
+#define EXTERNC extern "C"
+#else
+#define EXTERNC
+#endif
 
-		// Disallow creating an instance of this object
-		// (Making all constructors private also works but is not ideal and does not
-		// convey your intent as well)
-		PlaydateHost() = delete;
-};
+EXTERNC PlaydateAPI* pd4j_get_api(JNIEnv* env);
+EXTERNC void pd4j_set_api(JNIEnv* env, PlaydateAPI* api);

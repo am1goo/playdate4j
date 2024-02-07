@@ -3,7 +3,7 @@ package com.am1goo.playdate4j.sdk;
 import com.am1goo.playdate4j.sdk.InputBridge.AccelerometerBridge;
 import com.am1goo.playdate4j.sdk.InputBridge.ButtonStateBridge;
 
-public class Input {
+public class Input extends Api {
 
     private static final InputBridge bridge = new InputBridge();
 

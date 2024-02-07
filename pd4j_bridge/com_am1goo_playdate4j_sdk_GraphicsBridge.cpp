@@ -19,7 +19,7 @@ JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_getLCDRowSi
 
 JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_clear
   (JNIEnv* env, jobject thisObject, jint colorValue) {
-	PlaydateAPI* api = PlaydateHost::getApi();
+	PlaydateAPI* api = pd4j_get_api(env);
 	if (api == NULL)
 		return;
 	
@@ -29,7 +29,7 @@ JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_clear
 
 JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_setDrawMode
   (JNIEnv* env, jobject thisObject, jint modeValue) {
-	PlaydateAPI* api = PlaydateHost::getApi();
+	PlaydateAPI* api = pd4j_get_api(env);
 	if (api == NULL)
 		return;
 
@@ -39,7 +39,7 @@ JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_setDrawMode
 
 JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_drawText
   (JNIEnv* env, jobject thisObject, jstring text, jint x, jint y) {
-	PlaydateAPI* api = PlaydateHost::getApi();
+	PlaydateAPI* api = pd4j_get_api(env);
 	if (api == NULL)
 		return;
 
