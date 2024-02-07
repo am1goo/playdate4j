@@ -7,7 +7,7 @@ if not exist buildcache\compiled mkdir buildcache\compiled
 if not exist pd4j_engine\lib mkdir pd4j_engine\lib
 
 "%JAVA_HOME%\bin\javac" -h pd4j_bridge pd4j_engine\src\main\java\com\am1goo\playdate4j\sdk\*.java -d buildcache\classes
-SET GCC_INCLUDE=-I "%JAVA_HOME%\include" -I "%JAVA_HOME%\include\win32" -I "%PLAYDATE_SDK_PATH%C_API"
+SET GCC_INCLUDE=-I "%JAVA_HOME%\include" -I "%JAVA_HOME%\include\win32" -I "%PLAYDATE_SDK_PATH%\C_API"
 g++ -c -fPIC -D TARGET_EXTENSION %GCC_INCLUDE% pd4j_bridge\pd4j_api.cpp  -o buildcache\compiled\pd4j_api.o
 g++ -c -fPIC -D TARGET_EXTENSION %GCC_INCLUDE% pd4j_bridge\com_am1goo_playdate4j_sdk_DebugBridge.cpp    -o buildcache\compiled\com_am1goo_playdate4j_sdk_DebugBridge.o
 g++ -c -fPIC -D TARGET_EXTENSION %GCC_INCLUDE% pd4j_bridge\com_am1goo_playdate4j_sdk_DisplayBridge.cpp  -o buildcache\compiled\com_am1goo_playdate4j_sdk_DisplayBridge.o
