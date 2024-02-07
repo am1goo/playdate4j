@@ -12,10 +12,10 @@ add_executable(pd4j_exec "pd4j_exec.h" "pd4j_exec.cpp")
 # Add source to this project's library.
 add_library (pd4j_host STATIC "pd4j_host.h" "pd4j_host.cpp" )
 
-include(jdk.cmake)
+include("../pd4j_buildtools/jdk.cmake")
 target_include_directories(pd4j_host PUBLIC ${JNI_INCLUDE_DIRS})
 
-include(playdate.cmake)
+include("../pd4j_buildtools/playdate.cmake")
 target_include_directories(pd4j_host PUBLIC ${PLAYDATE_INCLUDE_DIRS})
 
 target_include_directories(pd4j_host PUBLIC "../pd4j_bridge/include")

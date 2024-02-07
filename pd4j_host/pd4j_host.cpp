@@ -11,6 +11,7 @@ JavaVM* jvm;
 JNIEnv* env;
 bool initialized;
 
+/*
 +---+---------+
 | Z | boolean |
 | B | byte    |
@@ -21,16 +22,17 @@ bool initialized;
 | F | float   |
 | D | double  |
 +-------------+
+*/
 
 jclass class_debug;
 jmethodID class_debug_method_is_api_loaded;
 
-jclass class_core;
-jmethodID class_core_method_init;
-jmethodID class_core_method_shutdown;
-jmethodID class_core_method_loop;
-jmethodID class_core_method_get_frame_count;
-jmethodID class_core_method_is_cycling;
+jclass class_game;
+jmethodID class_game_method_init;
+jmethodID class_game_method_shutdown;
+jmethodID class_game_method_loop;
+jmethodID class_game_method_get_frame_count;
+jmethodID class_game_method_is_cycling;
 
 JavaVM* create_vm();
 JavaVM* create_vm()
@@ -80,14 +82,14 @@ int pd4j_init(PlaydateAPI* api)
     class_debug = env->FindClass("com/am1goo/playdate4j/sdk/Debug");
     class_debug_method_is_api_loaded = env->GetStaticMethodID(class_debug, "isApiAvailable", "()Z");
 
-    class_core = env->FindClass("com/am1goo/playdate4j/Core");
-    class_core_method_init = env->GetStaticMethodID(class_core, "init", "()V");
-    class_core_method_shutdown = env->GetStaticMethodID(class_core, "shutdown", "()V");
-    class_core_method_loop = env->GetStaticMethodID(class_core, "loop", "()V");
-    class_core_method_get_frame_count = env->GetStaticMethodID(class_core, "getFrameCount", "()I");
-    class_core_method_is_cycling = env->GetStaticMethodID(class_core, "isCycling", "()Z");
+    class_game = env->FindClass("com/am1goo/playdate4j/sdk/Game");
+    class_game_method_init = env->GetStaticMethodID(class_game, "init", "()V");
+    class_game_method_shutdown = env->GetStaticMethodID(class_game, "shutdown", "()V");
+    class_game_method_loop = env->GetStaticMethodID(class_game, "loop", "()V");
+    class_game_method_get_frame_count = env->GetStaticMethodID(class_game, "getFrameCount", "()I");
+    class_game_method_is_cycling = env->GetStaticMethodID(class_game, "isCycling", "()Z");
 
-    env->CallVoidMethod(class_core, class_core_method_init);
+    env->CallVoidMethod(class_game, class_game_method_init);
     return PD4J_OK;
 }
 
@@ -98,7 +100,7 @@ int pd4j_shutdown()
 
     if (env != NULL)
     {
-        env->CallVoidMethod(class_core, class_core_method_shutdown);
+        env->CallVoidMethod(class_game, class_game_method_shutdown);
         env = NULL;
     }
 
@@ -114,10 +116,10 @@ int pd4j_update(PlaydateAPI* api)
         return PD4J_NOT_INITIALIZED;
 
     PlaydateHost::setApi(api);
-    env->CallVoidMethod(class_core, class_core_method_loop);
+    env->CallVoidMethod(class_game, class_game_method_loop);
 
-    int frame_count = env->CallIntMethod(class_core, class_core_method_get_frame_count);
-    bool is_cycling = env->CallBooleanMethod(class_core, class_core_method_is_cycling);
+    int frame_count = env->CallIntMethod(class_game, class_game_method_get_frame_count);
+    bool is_cycling = env->CallBooleanMethod(class_game, class_game_method_is_cycling);
     bool is_api_available = env->CallBooleanMethod(class_debug, class_debug_method_is_api_loaded);
     return is_api_available != NULL ? 3 : -3;
 }
