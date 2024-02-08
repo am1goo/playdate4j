@@ -2,6 +2,8 @@ package com.am1goo.playdate4j.example;
 
 import com.am1goo.playdate4j.sdk.*;
 import com.am1goo.playdate4j.sdk.Input.Peripherals;
+import com.am1goo.playdate4j.engine.objects.JObjectsManager;
+import com.am1goo.playdate4j.engine.objects.impl.JSprite;
 
 public class ExampleGameCycle implements GameCycle {
 
@@ -21,31 +23,33 @@ public class ExampleGameCycle implements GameCycle {
         lcd_columns = Graphics.getLCDColumns();
         lcd_rows = Graphics.getLCDRows();
         Display.setRefreshRate(35);
-        Graphics.setDrawMode(Graphics.DrawMode.Copy);
+        Graphics.setDrawMode(Graphics.LCDDrawMode.Copy);
         Input.setPeripheralsEnabled(Peripherals.None);
         boolean flipped = Sys.getFlipped();
-        Sys.log("start: flipped=" + flipped);
+        Sys.log("start: [Sys] flipped=" + flipped);
         boolean reduceFlashing = Sys.getReduceFlashing();
-        Sys.log("start: reduceFlashing=" + reduceFlashing);
+        Sys.log("start: [Sys] reduceFlashing=" + reduceFlashing);
         float batteryPercentage = Sys.getBatteryPercentage();
-        Sys.log("start: batteryPercentage=" + batteryPercentage);
+        Sys.log("start: [Sys] batteryPercentage=" + batteryPercentage);
         float batteryVoltage = Sys.getBatteryVoltage();
-        Sys.log("start: batteryVoltage=" + batteryVoltage);
+        Sys.log("start: [Sys] batteryVoltage=" + batteryVoltage);
         Sys.clearICache();
         long millis = Sys.getCurrentTimeMilliseconds();
-        Sys.log("start: millis=" + millis);
+        Sys.log("start: [Sys] millis=" + millis);
         long secondsSinceEpoch = Sys.getSecondsSinceEpoch(millis);
-        Sys.log("start: secondsSinceEpoch=" + secondsSinceEpoch);
+        Sys.log("start: [Sys] secondsSinceEpoch=" + secondsSinceEpoch);
         int timezone = Sys.getTimezoneOffset();
-        Sys.log("start: timezone=" + timezone);
+        Sys.log("start: [Sys] timezone=" + timezone);
         float elapsedTime = Sys.getElapsedTime();
-        Sys.log("start: elapsedTime=" + elapsedTime);
+        Sys.log("start: [Sys] elapsedTime=" + elapsedTime);
         Sys.resetElapsedTime();
         boolean shouldDisplay24HourTime = Sys.shouldDisplay24HourTime();
-        Sys.log("start: shouldDisplay24HourTime=" + shouldDisplay24HourTime);
+        Sys.log("start: [Sys] shouldDisplay24HourTime=" + shouldDisplay24HourTime);
 
         Sys.setAutoLockDisabled(false);
         Sys.setCrankSoundsDisabled(false);
+        int currentTime = Sound.getCurrentTime();
+        Sys.log("start: [Sound] currentTime=" + currentTime);
     }
 
     @Override
@@ -55,7 +59,7 @@ public class ExampleGameCycle implements GameCycle {
 
     @Override
     public void loop() {
-        Graphics.clear(Graphics.SolidColor.White);
+        Graphics.clear(Graphics.LCDSolidColor.White);
         Graphics.drawText("Hello Yoba!", x, y);
 
         x += dx;

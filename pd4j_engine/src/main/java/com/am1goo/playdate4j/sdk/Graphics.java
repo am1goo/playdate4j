@@ -26,11 +26,11 @@ public class Graphics {
         return lcdRowSize;
     }
 
-    public static void clear(SolidColor color) {
+    public static void clear(LCDSolidColor color) {
         bridge.clear(color.getValue());
     }
 
-    public static void setDrawMode(DrawMode mode) {
+    public static void setDrawMode(LCDDrawMode mode) {
         bridge.setDrawMode(mode.getValue());
     }
 
@@ -38,7 +38,7 @@ public class Graphics {
         bridge.drawText(text, x, y);
     }
 
-    public enum SolidColor {
+    public enum LCDSolidColor {
         Black(0),
         White(1),
         Clear(2),
@@ -46,7 +46,7 @@ public class Graphics {
 
         final int value;
 
-        SolidColor(int value) {
+        LCDSolidColor (int value) {
             this.value = value;
         }
 
@@ -55,7 +55,7 @@ public class Graphics {
         }
     }
 
-    public enum DrawMode {
+    public enum LCDDrawMode {
         Copy(0),
         WhiteTransparent(1),
         BlackTransparent(2),
@@ -67,7 +67,7 @@ public class Graphics {
 
         final int value;
 
-        DrawMode(int value) {
+        LCDDrawMode(int value) {
             this.value = value;
         }
 
@@ -75,4 +75,53 @@ public class Graphics {
             return value;
         }
     }
+    
+	public enum LCDBitmapFlip {
+		Unflipped(0),
+		FlippedX(1),
+		FlippedY(2),
+		FlippedXY(3);
+		
+		int value;
+		
+		LCDBitmapFlip(int value) {
+			this.value = value;
+		}
+		
+		public int getValue() {
+			return value;
+		}
+		
+		public static LCDBitmapFlip valueOf(int value) {
+			for (LCDBitmapFlip flip : values()) {
+				if (flip.getValue() == value) {
+					return flip;
+				}
+			}
+			return null;
+		}
+	}
+	
+	public class LCDRect {
+		int left;
+		int right;
+		int top;
+		int bottom;
+		
+		public int getLeft() {
+			return left;
+		}
+		
+		public int getRight() {
+			return right;
+		}
+		
+		public int getTop() {
+			return top;
+		}
+		
+		public int getBottom() {
+			return bottom;
+		}
+	}
 }

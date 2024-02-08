@@ -5,23 +5,32 @@ import java.lang.reflect.InvocationTargetException;
 
 public class Game {
 
+	private static GameEngine engine;
     private static GameCycle cycle;
     private static int frameCount;
+    
+    public static void engine(String className) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+    	GameEngine engine = newEngine(className);
+    	engine(engine);
+    }
+    
+    public static <T extends GameEngine> void engine(Class<T> clazz) throws NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+    	GameEngine engine = newEngine(clazz);
+    	engine(engine);
+    }
+    
+    public static void engine(GameEngine cycle) {
+    	Game.engine = cycle;
+    }
 
     public static void create(String className) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
-        Class<?> clazz = Class.forName(className);
-        Constructor<?> cctr = clazz.getDeclaredConstructor();
-        boolean accessibleChanged = false;
-        if (!cctr.isAccessible()) {
-            cctr.setAccessible(true);
-            accessibleChanged = true;
-        }
-
-        GameCycle cycle = (GameCycle) cctr.newInstance();
-        if (accessibleChanged)
-            cctr.setAccessible(false);
-
+        GameCycle cycle = newCycle(className); 
         create(cycle);
+    }
+    
+    public static <T extends GameCycle> void create(Class<T> clazz) throws NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+    	GameCycle cycle = newCycle(clazz);
+    	create(cycle);
     }
 
     public static void create(GameCycle cycle) {
@@ -31,6 +40,7 @@ public class Game {
     public static void init() {
         Sys.log("init: started");
         try {
+        	engine.start();
             cycle.start();
         }
         catch (Exception ex) {
@@ -43,6 +53,7 @@ public class Game {
         Sys.log("shutdown: started");
         try {
             cycle.stop();
+        	engine.stop();
         }
         catch (Exception ex) {
             System.err.println(ex);
@@ -53,7 +64,9 @@ public class Game {
 
     public static void loop() {
         try {
+        	engine.beforeLoop();
             cycle.loop();
+            engine.afterLoop();
         }
         catch (Exception ex) {
             System.err.println(ex);
@@ -67,5 +80,51 @@ public class Game {
     
     public static int getFrameCount() {
         return frameCount;
+    }
+    
+    @SuppressWarnings("unchecked")
+	private static <T extends GameEngine> GameEngine newEngine(String className) throws ClassNotFoundException, NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+    	 Class<T> clazz = (Class<T>) Class.forName(className);
+    	 return newEngine(clazz);
+    }
+    
+    @SuppressWarnings("deprecation")
+	private static <T extends GameEngine> GameEngine newEngine(Class<T> clazz) throws NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+
+        Constructor<T> cctr = clazz.getDeclaredConstructor();
+        boolean accessibleChanged = false;
+        if (!cctr.isAccessible()) {
+            cctr.setAccessible(true);
+            accessibleChanged = true;
+        }
+
+        GameEngine engine = (GameEngine) cctr.newInstance();
+        if (accessibleChanged)
+            cctr.setAccessible(false);
+        
+        return engine;
+    }
+
+    @SuppressWarnings("unchecked")
+    private static <T extends GameCycle> GameCycle newCycle(String className) throws ClassNotFoundException, NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+    	 Class<T> clazz = (Class<T>) Class.forName(className);
+    	 return newCycle(clazz);
+    }
+
+    @SuppressWarnings("deprecation")
+    private static <T extends GameCycle> GameCycle newCycle(Class<T> clazz) throws NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+
+        Constructor<T> cctr = clazz.getDeclaredConstructor();
+        boolean accessibleChanged = false;
+        if (!cctr.isAccessible()) {
+            cctr.setAccessible(true);
+            accessibleChanged = true;
+        }
+
+        GameCycle cycle = (GameCycle) cctr.newInstance();
+        if (accessibleChanged)
+            cctr.setAccessible(false);
+        
+        return cycle;
     }
 }

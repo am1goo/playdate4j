@@ -8,6 +8,10 @@ public class Sys {
         System.out.println(log);
         bridge.logToConsole(log);
     }
+    
+    public static void logError(Exception ex) {
+    	logError(ex.toString());
+    }
 
     public static void logError(String error) {
         System.err.println(error);
