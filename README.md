@@ -13,7 +13,7 @@ Java framework to create games on `Playdate` console. \
 
 ## Requirements
 - installed `Playdate SDK` 2.3.x version or higher from [official site](https://play.date/dev/)
-- installed `g++` compilator, like [mingw64](https://github.com/niXman/mingw-builds-binaries/releases)
+- installed `g++` compiler, like [mingw64](https://github.com/niXman/mingw-builds-binaries/releases)
 - installed `Java Development Kit` 1.6 version or higher
 
 ## Contribute
