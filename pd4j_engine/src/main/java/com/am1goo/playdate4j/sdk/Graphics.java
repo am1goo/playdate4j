@@ -38,6 +38,30 @@ public class Graphics {
         bridge.drawText(text, x, y);
     }
 
+    public static LCDFont loadFont(String path) {
+        long ptr = bridge.loadFont(path);
+        Api.Pointer pointer = new Api.Pointer(ptr);
+        if (pointer.invalid())
+            return null;
+
+        return new LCDFont(pointer, path);
+    }
+
+    public static void setFont(LCDFont font) {
+        if (font == null)
+            return;
+
+        bridge.setFont(font.ptr.getValue());
+    }
+
+    public static void setTextTracking(int tracking) {
+        bridge.setTextTracking(tracking);
+    }
+
+    public static int getTextTracking() {
+        return bridge.getTextTracking();
+    }
+
     public enum LCDSolidColor {
         Black(0),
         White(1),
@@ -101,8 +125,24 @@ public class Graphics {
 			return null;
 		}
 	}
+
+    public static class LCDFont {
+
+        private Api.Pointer ptr;
+        private String path;
+
+        public LCDFont(Api.Pointer ptr, String path) {
+            this.ptr = ptr;
+            this.path = path;
+        }
+
+        public String getPath() {
+            return path;
+        }
+    }
 	
 	public class LCDRect {
+
 		int left;
 		int right;
 		int top;

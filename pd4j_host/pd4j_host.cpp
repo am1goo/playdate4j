@@ -29,6 +29,7 @@ jclass class_api;
 jmethodID class_api_method_is_api_loaded;
 
 jclass class_game;
+jmethodID class_game_method_engine;
 jmethodID class_game_method_create;
 jmethodID class_game_method_init;
 jmethodID class_game_method_shutdown;
@@ -85,12 +86,16 @@ int pd4j_init(PlaydateAPI* api)
     class_api_method_is_api_loaded = env->GetStaticMethodID(class_api, "isApiAvailable", "()Z");
 
     class_game = env->FindClass("com/am1goo/playdate4j/sdk/Game");
+    class_game_method_engine = env->GetStaticMethodID(class_game, "engine", "(Ljava/lang/String;)V");
     class_game_method_create = env->GetStaticMethodID(class_game, "create", "(Ljava/lang/String;)V");
     class_game_method_init = env->GetStaticMethodID(class_game, "init", "()V");
     class_game_method_shutdown = env->GetStaticMethodID(class_game, "shutdown", "()V");
     class_game_method_loop = env->GetStaticMethodID(class_game, "loop", "()V");
     class_game_method_get_frame_count = env->GetStaticMethodID(class_game, "getFrameCount", "()I");
     class_game_method_is_cycling = env->GetStaticMethodID(class_game, "isCycling", "()Z");
+
+    jstring engine_class_name = env->NewStringUTF("com.am1goo.playdate4j.engine.JGameEngine");
+    env->CallVoidMethod(class_game, class_game_method_engine, engine_class_name);
 
     jstring cycle_class_name = env->NewStringUTF("com.am1goo.playdate4j.example.ExampleGameCycle");
     env->CallVoidMethod(class_game, class_game_method_create, cycle_class_name);

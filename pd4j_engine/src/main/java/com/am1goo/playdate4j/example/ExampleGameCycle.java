@@ -2,13 +2,13 @@ package com.am1goo.playdate4j.example;
 
 import com.am1goo.playdate4j.sdk.*;
 import com.am1goo.playdate4j.sdk.Input.Peripherals;
-import com.am1goo.playdate4j.engine.objects.JObjectsManager;
-import com.am1goo.playdate4j.engine.objects.impl.JSprite;
 
 public class ExampleGameCycle implements GameCycle {
 
     private static final int TEXT_WIDTH = 86;
     private static final int TEXT_HEIGHT = 16;
+
+    private Graphics.LCDFont font;
 
     int x = (400 - TEXT_WIDTH) / 2;
     int y = (240 - TEXT_HEIGHT) / 2;
@@ -50,6 +50,15 @@ public class ExampleGameCycle implements GameCycle {
         Sys.setCrankSoundsDisabled(false);
         int currentTime = Sound.getCurrentTime();
         Sys.log("start: [Sound] currentTime=" + currentTime);
+
+        Graphics.setTextTracking(1);
+        int textTracking = Graphics.getTextTracking();
+        Sys.log("start: [Graphics] textTracking=" +textTracking);
+
+        font = Graphics.loadFont("/System/Fonts/Asheville-Sans-14-Bold.pft");
+        if (font != null) {
+            Sys.log("start: font " + font.getPath() + " loaded");
+        }
     }
 
     @Override
@@ -59,6 +68,7 @@ public class ExampleGameCycle implements GameCycle {
 
     @Override
     public void loop() {
+        Graphics.setFont(font);
         Graphics.clear(Graphics.LCDSolidColor.White);
         Graphics.drawText("Hello Yoba!", x, y);
 

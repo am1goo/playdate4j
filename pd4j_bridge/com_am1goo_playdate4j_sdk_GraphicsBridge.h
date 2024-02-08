@@ -55,6 +55,38 @@ JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_setDrawMode
 JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_drawText
   (JNIEnv *, jobject, jstring, jint, jint);
 
+/*
+ * Class:     com_am1goo_playdate4j_sdk_GraphicsBridge
+ * Method:    loadFont
+ * Signature: (Ljava/lang/String;)J
+ */
+JNIEXPORT jlong JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_loadFont
+  (JNIEnv *, jobject, jstring);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_GraphicsBridge
+ * Method:    setFont
+ * Signature: (J)V
+ */
+JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_setFont
+  (JNIEnv *, jobject, jlong);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_GraphicsBridge
+ * Method:    setTextTracking
+ * Signature: (I)V
+ */
+JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_setTextTracking
+  (JNIEnv *, jobject, jint);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_GraphicsBridge
+ * Method:    getTextTracking
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_getTextTracking
+  (JNIEnv *, jobject);
+
 #ifdef __cplusplus
 }
 #endif
