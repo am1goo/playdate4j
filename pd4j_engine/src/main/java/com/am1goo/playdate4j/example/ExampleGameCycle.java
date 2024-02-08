@@ -23,8 +23,28 @@ public class ExampleGameCycle implements GameCycle {
         Display.setRefreshRate(35);
         Graphics.setDrawMode(Graphics.DrawMode.Copy);
         Input.setPeripheralsEnabled(Peripherals.None);
+        boolean flipped = Sys.getFlipped();
+        Sys.log("start: flipped=" + flipped);
+        boolean reduceFlashing = Sys.getReduceFlashing();
+        Sys.log("start: reduceFlashing=" + reduceFlashing);
+        float batteryPercentage = Sys.getBatteryPercentage();
+        Sys.log("start: batteryPercentage=" + batteryPercentage);
+        float batteryVoltage = Sys.getBatteryVoltage();
+        Sys.log("start: batteryVoltage=" + batteryVoltage);
+        Sys.clearICache();
+        long millis = Sys.getCurrentTimeMilliseconds();
+        Sys.log("start: millis=" + millis);
+        long secondsSinceEpoch = Sys.getSecondsSinceEpoch(millis);
+        Sys.log("start: secondsSinceEpoch=" + secondsSinceEpoch);
+        int timezone = Sys.getTimezoneOffset();
+        Sys.log("start: timezone=" + timezone);
+        float elapsedTime = Sys.getElapsedTime();
+        Sys.log("start: elapsedTime=" + elapsedTime);
+        Sys.resetElapsedTime();
+        boolean shouldDisplay24HourTime = Sys.shouldDisplay24HourTime();
+        Sys.log("start: shouldDisplay24HourTime=" + shouldDisplay24HourTime);
+
         Sys.setAutoLockDisabled(false);
-        Sys.setCrankSoundsDisabled(false);
         Sys.setCrankSoundsDisabled(false);
     }
 
@@ -48,5 +68,10 @@ public class ExampleGameCycle implements GameCycle {
             dy = -dy;
 
         Sys.drawFps(20, 0);
+
+        if (Input.isButtonDown(Input.Buttons.A)) {
+            boolean inverted = !Display.isInverted();
+            Display.setInverted(inverted);
+        }
     }
 }
