@@ -65,13 +65,13 @@ public class ExampleGameCycle implements GameCycle {
 - [ ] using `Java-to-C` code conversion instead of JavaVM on device
 
 ## What inside?
-- partially support of `Playdate's API`
-- pretty good works in `Simulator`
+- partially support of `Playdate API`
+- pretty good works in `Playdate Simulator`
 
 ## Requirements
-- installed `Playdate SDK` 2.3.x version or higher from [official site](https://play.date/dev/)
-- installed `g++` compiler, like [mingw64](https://github.com/niXman/mingw-builds-binaries/releases)
-- installed `Java Development Kit` 1.6 version or higher
+- `Playdate SDK` 2.3.x version or higher from [official site](https://play.date/dev/)
+- `g++` compiler, like [mingw64](https://github.com/niXman/mingw-builds-binaries/releases)
+- `Java Development Kit` 1.6 version or higher
 
 ## Contribute
 Contribution in any form is very welcome. Bugs, feature requests or feedback can be reported in form of Issues.
