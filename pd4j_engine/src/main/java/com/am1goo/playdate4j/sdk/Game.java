@@ -29,18 +29,18 @@ public class Game {
     }
 
     public static void init() {
-        System.out.println("init: started");
+        Sys.log("init: started");
         try {
             cycle.start();
         }
         catch (Exception ex) {
             System.err.println(ex);
         }
-        System.out.println("init: finished");
+        Sys.log("init: finished");
     }
 
     public static void shutdown() {
-        System.out.println("shutdown: started");
+        Sys.log("shutdown: started");
         try {
             cycle.stop();
         }
@@ -48,7 +48,7 @@ public class Game {
             System.err.println(ex);
         }
         frameCount = 0;
-        System.out.println("shutdown: finished");
+        Sys.log("shutdown: finished");
     }
 
     public static void loop() {

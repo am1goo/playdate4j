@@ -33,6 +33,94 @@ JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_drawFps
 
 /*
  * Class:     com_am1goo_playdate4j_sdk_SysBridge
+ * Method:    getFlipped
+ * Signature: ()Z
+ */
+JNIEXPORT jboolean JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_getFlipped
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_SysBridge
+ * Method:    getReduceFlashing
+ * Signature: ()Z
+ */
+JNIEXPORT jboolean JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_getReduceFlashing
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_SysBridge
+ * Method:    getBatteryPercentage
+ * Signature: ()F
+ */
+JNIEXPORT jfloat JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_getBatteryPercentage
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_SysBridge
+ * Method:    getBatteryVoltage
+ * Signature: ()F
+ */
+JNIEXPORT jfloat JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_getBatteryVoltage
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_SysBridge
+ * Method:    clearICache
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_clearICache
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_SysBridge
+ * Method:    getCurrentTimeMilliseconds
+ * Signature: ()J
+ */
+JNIEXPORT jlong JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_getCurrentTimeMilliseconds
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_SysBridge
+ * Method:    getSecondsSinceEpoch
+ * Signature: (J)J
+ */
+JNIEXPORT jlong JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_getSecondsSinceEpoch
+  (JNIEnv *, jobject, jlong);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_SysBridge
+ * Method:    resetElapsedTime
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_resetElapsedTime
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_SysBridge
+ * Method:    getElapsedTime
+ * Signature: ()F
+ */
+JNIEXPORT jfloat JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_getElapsedTime
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_SysBridge
+ * Method:    getTimezoneOffset
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_getTimezoneOffset
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_SysBridge
+ * Method:    shouldDisplay24HourTime
+ * Signature: ()Z
+ */
+JNIEXPORT jboolean JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_shouldDisplay24HourTime
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_SysBridge
  * Method:    setAutoLockDisabled
  * Signature: (Z)V
  */
