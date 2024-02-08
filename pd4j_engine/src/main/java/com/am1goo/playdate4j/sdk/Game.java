@@ -40,11 +40,17 @@ public class Game {
     public static void init() {
         Sys.log("init: started");
         try {
-        	engine.start();
+            engine.start();
+        }
+        catch (Exception ex) {
+            Sys.logError(ex);
+        }
+        try {
+
             cycle.start();
         }
         catch (Exception ex) {
-            System.err.println(ex);
+            Sys.logError(ex);
         }
         Sys.log("init: finished");
     }
@@ -53,10 +59,15 @@ public class Game {
         Sys.log("shutdown: started");
         try {
             cycle.stop();
-        	engine.stop();
         }
         catch (Exception ex) {
-            System.err.println(ex);
+            Sys.logError(ex);
+        }
+        try {
+            engine.stop();
+        }
+        catch (Exception ex) {
+            Sys.logError(ex);
         }
         frameCount = 0;
         Sys.log("shutdown: finished");
@@ -64,12 +75,22 @@ public class Game {
 
     public static void loop() {
         try {
-        	engine.beforeLoop();
+            engine.beforeLoop();
+        }
+        catch (Exception ex) {
+            Sys.logError(ex);
+        }
+        try {
             cycle.loop();
+        }
+        catch (Exception ex) {
+            Sys.logError(ex);
+        }
+        try {
             engine.afterLoop();
         }
         catch (Exception ex) {
-            System.err.println(ex);
+            Sys.logError(ex);
         }
         frameCount++;
     }
