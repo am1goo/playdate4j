@@ -23,7 +23,7 @@ public class Api {
     	public static final long invalidAddr = 0;
     	public static final Pointer invalid = new Pointer(invalidAddr);
     	
-    	private final long ptr;
+    	private long ptr;
     	
     	public Pointer(long ptr) {
     		this.ptr = ptr;
@@ -36,6 +36,10 @@ public class Api {
     	public boolean invalid() {
     		return ptr == invalidAddr;
     	}
+
+		public void invalidate() {
+			ptr = invalidAddr;
+		}
     }
 
     public static class UInt8 {

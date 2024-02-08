@@ -94,3 +94,32 @@ JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_getTextTrac
 
 	return api->graphics->getTextTracking();
 }
+
+JNIEXPORT jlong JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_loadBitmap
+(JNIEnv* env, jobject thisObject, jstring bitmap_path) {
+	PlaydateAPI* api = pd4j_get_api(env);
+	if (api == NULL)
+		return 0;
+
+	const char* bitmap_path_str = env->GetStringUTFChars(bitmap_path, 0);
+	const char* err;
+	LCDBitmap* bitmap = api->graphics->loadBitmap(bitmap_path_str, &err);
+	if (bitmap == NULL)
+		api->system->error("%s:%i Couldn't load bitmap %s: %s", __FILE__, __LINE__, bitmap_path_str, err);
+	env->ReleaseStringUTFChars(bitmap_path, bitmap_path_str);
+	if (bitmap == NULL)
+		return 0;
+
+	uintptr_t bitmap_ptr = reinterpret_cast<uintptr_t>(bitmap);
+	return bitmap_ptr;
+}
+
+JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_freeBitmap
+(JNIEnv* env, jobject thisObject, jlong bitmap_ptr) {
+	PlaydateAPI* api = pd4j_get_api(env);
+	if (api == NULL)
+		return;
+
+	LCDBitmap* bitmap = reinterpret_cast<LCDBitmap*>(bitmap_ptr);
+	api->graphics->freeBitmap(bitmap);
+}

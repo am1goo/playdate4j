@@ -87,6 +87,22 @@ JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_setTextTrac
 JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_getTextTracking
   (JNIEnv *, jobject);
 
+/*
+ * Class:     com_am1goo_playdate4j_sdk_GraphicsBridge
+ * Method:    loadBitmap
+ * Signature: (Ljava/lang/String;)J
+ */
+JNIEXPORT jlong JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_loadBitmap
+  (JNIEnv *, jobject, jstring);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_GraphicsBridge
+ * Method:    freeBitmap
+ * Signature: (J)V
+ */
+JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_freeBitmap
+  (JNIEnv *, jobject, jlong);
+
 #ifdef __cplusplus
 }
 #endif

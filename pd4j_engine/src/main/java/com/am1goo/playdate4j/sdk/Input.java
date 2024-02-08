@@ -15,7 +15,7 @@ public class Input {
     private static long buttonStateSyncTime = Long.MIN_VALUE;
     private static int buttonStateSyncFrame = Integer.MIN_VALUE;
     
-    public static void setPeripheralsEnabled(Peripherals mask) {
+    public static void setPeripheralsEnabled(PDPeripherals mask) {
     	setPeripheralsEnabled(mask.getValue());
     }
     
@@ -58,17 +58,17 @@ public class Input {
     	buttonStateSyncTime = currentTimeMillis;
     }
     
-    public static boolean isButtonDown(Buttons button) {
+    public static boolean isButtonDown(PDButtons button) {
     	syncButtonState();
     	return (buttonState.isPushed(button.getValue()));
     }
     
-    public static boolean isButton(Buttons button) {
+    public static boolean isButton(PDButtons button) {
     	syncButtonState();
     	return (buttonState.isCurrent(button.getValue()));
     }
     
-    public static boolean isButtonUp(Buttons button) {
+    public static boolean isButtonUp(PDButtons button) {
     	syncButtonState();
     	return (buttonState.isReleased(button.getValue()));
     }
@@ -85,13 +85,13 @@ public class Input {
     	return bridge.isCrankDocked();
     }
     
-    public enum Peripherals {
+    public enum PDPeripherals {
     	None(0),
     	Accelerometer(1 << 0);
     	
     	final int value;
     	
-    	Peripherals(int value) {
+    	PDPeripherals(int value) {
     		this.value = value;
     	}
     	
@@ -100,7 +100,7 @@ public class Input {
     	}
     }
     
-    public enum Buttons {
+    public enum PDButtons {
     	Left(1<<0),
     	Right(1<<1),
     	Up(1<<2),
@@ -110,7 +110,7 @@ public class Input {
     	
     	final int value;
     	
-    	Buttons(int value) {
+    	PDButtons(int value) {
     		this.value = value;
     	}
     	

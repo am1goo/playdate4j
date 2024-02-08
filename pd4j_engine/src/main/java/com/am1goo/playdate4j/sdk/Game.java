@@ -8,7 +8,8 @@ public class Game {
 	private static GameEngine engine;
     private static GameCycle cycle;
     private static int frameCount;
-    
+    private static long frameTimeMillis;
+
     public static void engine(String className) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
     	GameEngine engine = newEngine(className);
     	engine(engine);
@@ -70,10 +71,13 @@ public class Game {
             Sys.logError(ex);
         }
         frameCount = 0;
+        frameTimeMillis = 0;
         Sys.log("shutdown: finished");
     }
 
     public static void loop() {
+        long millis = System.currentTimeMillis();
+        frameTimeMillis = millis - frameTimeMillis;
         try {
             engine.beforeLoop();
         }
@@ -93,6 +97,7 @@ public class Game {
             Sys.logError(ex);
         }
         frameCount++;
+        frameTimeMillis = millis;
     }
 
     public static boolean isCycling() {
@@ -101,6 +106,10 @@ public class Game {
     
     public static int getFrameCount() {
         return frameCount;
+    }
+
+    public static float getDeltaTime() {
+        return frameTimeMillis * (1f / 1000f);
     }
     
     @SuppressWarnings("unchecked")

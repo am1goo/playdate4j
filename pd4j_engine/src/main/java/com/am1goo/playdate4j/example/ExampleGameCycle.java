@@ -1,7 +1,7 @@
 package com.am1goo.playdate4j.example;
 
 import com.am1goo.playdate4j.sdk.*;
-import com.am1goo.playdate4j.sdk.Input.Peripherals;
+import com.am1goo.playdate4j.sdk.Input.PDPeripherals;
 
 public class ExampleGameCycle implements GameCycle {
 
@@ -9,6 +9,8 @@ public class ExampleGameCycle implements GameCycle {
     private static final int TEXT_HEIGHT = 16;
 
     private Graphics.LCDFont font;
+    private Graphics.LCDBitmap playerBitmap;
+    private Sprite.LCDSprite player;
 
     int x = (400 - TEXT_WIDTH) / 2;
     int y = (240 - TEXT_HEIGHT) / 2;
@@ -24,7 +26,7 @@ public class ExampleGameCycle implements GameCycle {
         lcd_rows = Graphics.getLCDRows();
         Display.setRefreshRate(35);
         Graphics.setDrawMode(Graphics.LCDDrawMode.Copy);
-        Input.setPeripheralsEnabled(Peripherals.None);
+        Input.setPeripheralsEnabled(PDPeripherals.None);
         boolean flipped = Sys.getFlipped();
         Sys.log("start: [Sys] flipped=" + flipped);
         boolean reduceFlashing = Sys.getReduceFlashing();
@@ -59,17 +61,54 @@ public class ExampleGameCycle implements GameCycle {
         if (font != null) {
             Sys.log("start: font " + font.getPath() + " loaded");
         }
+
+        playerBitmap = Graphics.loadBitmap("images/player");
+        player = Sprite.newSprite();
+        player.setPosition(lcd_columns / 2, lcd_rows / 2);
+        player.setImage(playerBitmap, Graphics.LCDBitmapFlip.Unflipped);
+        Sprite.addSprite(player);
     }
 
     @Override
     public void stop() {
-
+        if (player != null) {
+            Sprite.removeSprite(player);
+            Sprite.freeSprite(player);
+            player = null;
+        }
+        if (playerBitmap != null) {
+            Graphics.freeBitmap(playerBitmap);
+            playerBitmap = null;
+        }
     }
 
     @Override
     public void loop() {
-        Graphics.setFont(font);
         Graphics.clear(Graphics.LCDSolidColor.White);
+        int xDir = 0;
+        int yDir = 0;
+        if (Input.isButton(Input.PDButtons.Up)) {
+            yDir--;
+        }
+        if (Input.isButton(Input.PDButtons.Down)) {
+            yDir++;
+        }
+        if (Input.isButton(Input.PDButtons.Left)) {
+            xDir--;
+        }
+        if (Input.isButton(Input.PDButtons.Right)) {
+            xDir++;
+        }
+
+        float deltaTime = Game.getDeltaTime();
+        float deltaX = 100 * xDir * deltaTime;
+        float deltaY = 100 * yDir * deltaTime;
+        player.deltaPosition(deltaX, deltaY);
+
+        Sprite.updateAndDrawSprites();
+
+        Graphics.setFont(font);
+        Graphics.drawText("dt: " + deltaTime, 0, 20);
         Graphics.drawText("Hello Yoba!", x, y);
 
         x += dx;
@@ -81,11 +120,6 @@ public class ExampleGameCycle implements GameCycle {
         if ( y < 0 || y > lcd_rows - TEXT_HEIGHT )
             dy = -dy;
 
-        Sys.drawFps(20, 0);
-
-        if (Input.isButtonDown(Input.Buttons.A)) {
-            boolean inverted = !Display.isInverted();
-            Display.setInverted(inverted);
-        }
+        Sys.drawFps(0, 0);
     }
 }

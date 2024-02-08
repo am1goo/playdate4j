@@ -33,6 +33,38 @@ JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SpriteBridge_freeSprite
 
 /*
  * Class:     com_am1goo_playdate4j_sdk_SpriteBridge
+ * Method:    moveTo
+ * Signature: (JFF)V
+ */
+JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SpriteBridge_moveTo
+  (JNIEnv *, jobject, jlong, jfloat, jfloat);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_SpriteBridge
+ * Method:    moveBy
+ * Signature: (JFF)V
+ */
+JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SpriteBridge_moveBy
+  (JNIEnv *, jobject, jlong, jfloat, jfloat);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_SpriteBridge
+ * Method:    getPosition
+ * Signature: (JLcom/am1goo/playdate4j/sdk/SpriteBridge/PDXY;)V
+ */
+JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SpriteBridge_getPosition
+  (JNIEnv *, jobject, jlong, jobject);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_SpriteBridge
+ * Method:    setImage
+ * Signature: (JJI)V
+ */
+JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SpriteBridge_setImage
+  (JNIEnv *, jobject, jlong, jlong, jint);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_SpriteBridge
  * Method:    setTag
  * Signature: (JI)V
  */
@@ -102,6 +134,54 @@ JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SpriteBridge_setVisible
  */
 JNIEXPORT jboolean JNICALL Java_com_am1goo_playdate4j_sdk_SpriteBridge_isVisible
   (JNIEnv *, jobject, jlong);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_SpriteBridge
+ * Method:    addSprite
+ * Signature: (J)V
+ */
+JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SpriteBridge_addSprite
+  (JNIEnv *, jobject, jlong);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_SpriteBridge
+ * Method:    removeSprite
+ * Signature: (J)V
+ */
+JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SpriteBridge_removeSprite
+  (JNIEnv *, jobject, jlong);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_SpriteBridge
+ * Method:    removeAllSprites
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SpriteBridge_removeAllSprites
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_SpriteBridge
+ * Method:    getSpriteCount
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_SpriteBridge_getSpriteCount
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_SpriteBridge
+ * Method:    drawSprites
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SpriteBridge_drawSprites
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_SpriteBridge
+ * Method:    updateAndDrawSprites
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SpriteBridge_updateAndDrawSprites
+  (JNIEnv *, jobject);
 
 #ifdef __cplusplus
 }

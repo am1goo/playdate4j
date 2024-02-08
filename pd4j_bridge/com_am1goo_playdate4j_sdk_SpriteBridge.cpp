@@ -35,6 +35,54 @@ JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SpriteBridge_freeSprite
 	api->sprite->freeSprite(sprite);
 }
 
+JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SpriteBridge_moveTo
+(JNIEnv* env, jobject thisObject, jlong sprite_ptr, jfloat x, jfloat y) {
+	PlaydateAPI* api = pd4j_get_api(env);
+	if (api == NULL)
+		return;
+
+	LCDSprite* sprite = reinterpret_cast<LCDSprite*>(sprite_ptr);
+	api->sprite->moveTo(sprite, x, y);
+}
+
+JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SpriteBridge_moveBy
+(JNIEnv* env, jobject thisObject, jlong sprite_ptr, jfloat dx, jfloat dy) {
+	PlaydateAPI* api = pd4j_get_api(env);
+	if (api == NULL)
+		return;
+
+	LCDSprite* sprite = reinterpret_cast<LCDSprite*>(sprite_ptr);
+	api->sprite->moveBy(sprite, dx, dy);
+}
+
+JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SpriteBridge_getPosition
+(JNIEnv* env, jobject thisObject, jlong sprite_ptr, jobject pdxy) {
+	PlaydateAPI* api = pd4j_get_api(env);
+	if (api == NULL)
+		return;
+
+	LCDSprite* sprite = reinterpret_cast<LCDSprite*>(sprite_ptr);
+	float x;
+	float y;
+	api->sprite->getPosition(sprite, &x, &y);
+
+	jclass class_pdxy = env->GetObjectClass(pdxy);
+	jmethodID class_pdxy_method_set = env->GetMethodID(class_pdxy, "set", "(FF)V");
+	env->CallVoidMethod(pdxy, class_pdxy_method_set, x, y);
+}
+
+JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SpriteBridge_setImage
+(JNIEnv* env, jobject thisObject, jlong sprite_ptr, jlong bitmap_ptr, jint flip_value) {
+	PlaydateAPI* api = pd4j_get_api(env);
+	if (api == NULL)
+		return;
+
+	LCDSprite* sprite = reinterpret_cast<LCDSprite*>(sprite_ptr);
+	LCDBitmap* bitmap = reinterpret_cast<LCDBitmap*>(bitmap_ptr);
+	LCDBitmapFlip flip = static_cast<LCDBitmapFlip>(flip_value);
+	api->sprite->setImage(sprite, bitmap, flip);
+}
+
 JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SpriteBridge_setTag
   (JNIEnv* env, jobject thisObject, jlong sprite_ptr, jint tag_value) {
 	PlaydateAPI* api = pd4j_get_api(env);
@@ -128,4 +176,60 @@ JNIEXPORT jboolean JNICALL Java_com_am1goo_playdate4j_sdk_SpriteBridge_isVisible
 	
 	LCDSprite* sprite = reinterpret_cast<LCDSprite*>(sprite_ptr);
 	return api->sprite->isVisible(sprite);
+}
+
+JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SpriteBridge_addSprite
+(JNIEnv* env, jobject thisObject, jlong sprite_ptr) {
+	PlaydateAPI* api = pd4j_get_api(env);
+	if (api == NULL)
+		return;
+
+	LCDSprite* sprite = reinterpret_cast<LCDSprite*>(sprite_ptr);
+	api->sprite->addSprite(sprite);
+}
+
+JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SpriteBridge_removeSprite
+(JNIEnv* env, jobject thisObject, jlong sprite_ptr) {
+	PlaydateAPI* api = pd4j_get_api(env);
+	if (api == NULL)
+		return;
+
+	LCDSprite* sprite = reinterpret_cast<LCDSprite*>(sprite_ptr);
+	api->sprite->removeSprite(sprite);
+}
+
+JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SpriteBridge_removeAllSprites
+(JNIEnv* env, jobject thisObject) {
+	PlaydateAPI* api = pd4j_get_api(env);
+	if (api == NULL)
+		return;
+
+	api->sprite->removeAllSprites();
+}
+
+JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_SpriteBridge_getSpriteCount
+(JNIEnv* env, jobject thisObject) {
+	PlaydateAPI* api = pd4j_get_api(env);
+	if (api == NULL)
+		return 0;
+
+	return api->sprite->getSpriteCount();
+}
+
+JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SpriteBridge_drawSprites
+(JNIEnv* env, jobject thisObject) {
+	PlaydateAPI* api = pd4j_get_api(env);
+	if (api == NULL)
+		return;
+
+	api->sprite->drawSprites();
+}
+
+JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SpriteBridge_updateAndDrawSprites
+(JNIEnv* env, jobject thisObject) {
+	PlaydateAPI* api = pd4j_get_api(env);
+	if (api == NULL)
+		return;
+
+	api->sprite->updateAndDrawSprites();
 }

@@ -62,6 +62,21 @@ public class Graphics {
         return bridge.getTextTracking();
     }
 
+    public static LCDBitmap loadBitmap(String path) {
+        long ptr = bridge.loadBitmap(path);
+        Api.Pointer pointer = new Api.Pointer(ptr);
+        if (pointer.invalid())
+            return null;
+
+        return new LCDBitmap(pointer, path);
+    }
+
+    public static LCDBitmap freeBitmap(LCDBitmap bitmap) {
+        bridge.freeBitmap(bitmap.ptr.getValue());
+        bitmap.ptr.invalidate();
+        return null;
+    }
+
     public enum LCDSolidColor {
         Black(0),
         White(1),
@@ -134,6 +149,25 @@ public class Graphics {
         public LCDFont(Api.Pointer ptr, String path) {
             this.ptr = ptr;
             this.path = path;
+        }
+
+        public String getPath() {
+            return path;
+        }
+    }
+
+    public static class LCDBitmap {
+
+        private final Api.Pointer ptr;
+        private final String path;
+
+        public LCDBitmap(Api.Pointer ptr, String path) {
+            this.ptr = ptr;
+            this.path = path;
+        }
+
+        public Api.Pointer getPointer() {
+            return ptr;
         }
 
         public String getPath() {

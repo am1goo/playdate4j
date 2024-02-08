@@ -9,7 +9,13 @@ public class SpriteBridge {
 	public native long newSprite();
 	public native long copy(long ptr);
 	public native void freeSprite(long ptr);
-	
+
+	public native void moveTo(long ptr, float x, float y);
+	public native void moveBy(long ptr, float dx, float dy);
+	public native void getPosition(long ptr, PDXY xy);
+
+	public native void setImage(long spritePtr, long bitmapPtr, int flip);
+
 	public native void setTag(long ptr, int tag);
 	public native int getTag(long ptr);
 	
@@ -23,7 +29,32 @@ public class SpriteBridge {
 	
 	public native void setVisible(long ptr, boolean value);
 	public native boolean isVisible(long ptr);
-	
+
+	public native void addSprite(long ptr);
+	public native void removeSprite(long ptr);
+	public native void removeAllSprites();
+	public native int getSpriteCount();
+	public native void drawSprites();
+	public native void updateAndDrawSprites();
+
+	public static class PDXY {
+		private float x;
+		private float y;
+
+		public float getX() {
+			return x;
+		}
+
+		public float getY() {
+			return y;
+		}
+
+		public void set(float x, float y) {
+			this.x = x;
+			this.y = y;
+		}
+	}
+
 	public class PDRect {
 		private float x;
 		private float y;

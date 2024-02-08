@@ -18,4 +18,7 @@ public class GraphicsBridge {
     public native void setFont(long ptr);
     public native void setTextTracking(int tracking);
     public native int getTextTracking();
+
+    public native long loadBitmap(String path);
+    public native void freeBitmap(long ptr);
 }

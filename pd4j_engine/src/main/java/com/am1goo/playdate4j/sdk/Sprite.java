@@ -21,18 +21,75 @@ public class Sprite {
 	
 	public static LCDSprite freeSprite(LCDSprite sprite) {
 		bridge.freeSprite(sprite.ptr.getValue());
-		sprite.ptr = Pointer.invalid;
+		sprite.ptr.invalidate();
 		return null;
+	}
+
+	public static void addSprite(LCDSprite sprite) {
+		bridge.addSprite(sprite.ptr.getValue());
+	}
+
+	public static void removeSprite(LCDSprite sprite) {
+		bridge.removeSprite(sprite.ptr.getValue());
+	}
+
+	public static void removeAllSprites() {
+		bridge.removeAllSprites();
+	}
+
+	public static int getSpriteCount() {
+		return bridge.getSpriteCount();
+	}
+
+	public static void drawSprites() {
+		bridge.drawSprites();
+	}
+
+	public static void updateAndDrawSprites() {
+		bridge.updateAndDrawSprites();
 	}
 	
 	public static class LCDSprite {
+
+		private static final SpriteBridge.PDXY position = new SpriteBridge.PDXY();
+		private static final SpriteBridge.PDXY center = new SpriteBridge.PDXY();
 		
-		private Pointer ptr;
-		
+		private final Pointer ptr;
+
 		public LCDSprite(Pointer ptr) {
 			this.ptr = ptr;
 		}
-		
+
+		public Api.Pointer getPointer() {
+			return ptr;
+		}
+
+		public void moveTo(float x, float y) {
+			bridge.moveTo(ptr.getValue(), x, y);
+		}
+
+		public void moveBy(float x, float y) {
+			bridge.moveBy(ptr.getValue(), x, y);
+		}
+
+		public void setPosition(float x, float y){
+			moveTo(x, y);
+		}
+
+		public void deltaPosition(float dx, float dy) {
+			moveBy(dx, dy);
+		}
+
+		public float getPositionX() {
+			bridge.getPosition(ptr.getValue(), position);
+			return position.getX();
+		}
+
+		public float getPositionY() {
+			bridge.getPosition(ptr.getValue(), position);
+			return position.getY();
+		}
+
 		public void setTag(byte tag) {
 			int nativeValue = UInt8.getNative(tag);
 			bridge.setTag(ptr.getValue(), nativeValue);
@@ -41,6 +98,13 @@ public class Sprite {
 		public byte getTag() {
 			int nativeValue = bridge.getTag(ptr.getValue());
 			return UInt8.getJava(nativeValue);
+		}
+
+		public void setImage(Graphics.LCDBitmap bitmap, LCDBitmapFlip flip) {
+			if (bitmap == null)
+				return;
+
+			bridge.setImage(ptr.getValue(), bitmap.getPointer().getValue(), flip.getValue());
 		}
 		
 		public void setDrawMode(LCDDrawMode mode) {
@@ -70,24 +134,6 @@ public class Sprite {
 		
 		public boolean isVisible() {
 			return bridge.isVisible(ptr.getValue());
-		}
-	}
-	
-	public class LCDSpriteCoords {
-		private int x;
-		private int y;
-		
-		public int getX() {
-			return x;
-		}
-		
-		public int getY() {
-			return y;
-		}
-		
-		public void set(int x, int y) {
-			this.x = x;
-			this.y = y;
 		}
 	}
 }
