@@ -8,7 +8,7 @@ public class Api {
         return bridge.isApiAvailable();
     }
 
-    private static Pointer apiAddress;
+    private static Pointer apiAddress = Pointer.invalid;
 
     public static long getApiAddress() {
         return apiAddress.getValue();
