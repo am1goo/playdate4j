@@ -1,8 +1,13 @@
 package com.am1goo.playdate4j.sdk;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Graphics {
 
     private static final GraphicsBridge bridge = new GraphicsBridge();
+
+	private static final List<LCDBitmap> bitmaps = new ArrayList<>();
 
     private static int lcdColumns = -1;
     private static int lcdRows = -1;
@@ -114,12 +119,14 @@ public class Graphics {
         if (bitmap == null)
             return null;
 
-        long ptr = bridge.copyBitmap(bitmap.ptr.getValue());
-        Api.Pointer pointer = new Api.Pointer(ptr);
-        if (pointer.invalid())
+        long copyPtr = bridge.copyBitmap(bitmap.ptr.getValue());
+        Api.Pointer copyPointer = new Api.Pointer(copyPtr);
+        if (copyPointer.invalid())
             return null;
 
-        return new LCDBitmap(pointer, bitmap.getPath());
+        LCDBitmap copy = new LCDBitmap(copyPointer, bitmap.getPath());
+        bitmaps.add(copy);
+        return copy;
     }
 
     public static void drawBitmap(LCDBitmap bitmap, int x, int y, LCDBitmapFlip flip) {
@@ -146,6 +153,7 @@ public class Graphics {
     public static LCDBitmap freeBitmap(LCDBitmap bitmap) {
         bridge.freeBitmap(bitmap.ptr.getValue());
         bitmap.ptr.invalidate();
+        bitmaps.remove(bitmap);
         return null;
     }
 
@@ -155,7 +163,22 @@ public class Graphics {
         if (pointer.invalid())
             return null;
 
-        return new LCDBitmap(pointer, path);
+        LCDBitmap bitmap = new LCDBitmap(pointer, path);
+        bitmaps.add(bitmap);
+        return bitmap;
+    }
+        
+    public static LCDBitmap findBitmap(long ptr) {
+    	for (LCDBitmap bitmap : bitmaps) {
+    		if (bitmap.ptr.invalid())
+    			continue;
+    		
+    		if (bitmap.ptr.getValue() != ptr)
+    			continue;
+    		
+    		return bitmap;
+    	}
+    	return null;
     }
 
     public enum LCDSolidColor {
@@ -281,24 +304,24 @@ public class Graphics {
 	
 	public class LCDRect {
 
-		int left;
-		int right;
-		int top;
-		int bottom;
+		private int left;
+		private int right;
+		private int top;
+		private int bottom;
 		
-		public int getLeft() {
+		public int left() {
 			return left;
 		}
 		
-		public int getRight() {
+		public int right() {
 			return right;
 		}
 		
-		public int getTop() {
+		public int top() {
 			return top;
 		}
 		
-		public int getBottom() {
+		public int bottom() {
 			return bottom;
 		}
 	}

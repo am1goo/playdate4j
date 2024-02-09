@@ -19,15 +19,15 @@ public class InputBridge {
     		
     	}
     	
-    	public float getX() {
+    	public float x() {
     		return x;
     	}
     	
-    	public float getY() {
+    	public float y() {
     		return y;
     	}
     	
-    	public float getZ() {
+    	public float z() {
     		return z;
     	}
     	

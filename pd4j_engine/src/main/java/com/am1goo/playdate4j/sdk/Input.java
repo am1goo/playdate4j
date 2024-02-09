@@ -34,17 +34,17 @@ public class Input {
     
     public static float getAccelerometerX() {
     	syncAccelerometer();
-        return accelerometer.getX();
+        return accelerometer.x();
     }
     
     public static float getAccelerometerY() {
     	syncAccelerometer();
-        return accelerometer.getY();
+        return accelerometer.y();
     }
     
     public static float getAccelerometerZ() {
     	syncAccelerometer();
-        return accelerometer.getZ();
+        return accelerometer.z();
     }
     
     private static void syncButtonState() {

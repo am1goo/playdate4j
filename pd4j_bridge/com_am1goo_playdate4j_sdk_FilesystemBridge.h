@@ -15,6 +15,70 @@ extern "C" {
 JNIEXPORT jstring JNICALL Java_com_am1goo_playdate4j_sdk_FilesystemBridge_getError
   (JNIEnv *, jobject);
 
+/*
+ * Class:     com_am1goo_playdate4j_sdk_FilesystemBridge
+ * Method:    unlink
+ * Signature: (Ljava/lang/String;Z)I
+ */
+JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_FilesystemBridge_unlink
+  (JNIEnv *, jobject, jstring, jboolean);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_FilesystemBridge
+ * Method:    mkdir
+ * Signature: (Ljava/lang/String;)I
+ */
+JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_FilesystemBridge_mkdir
+  (JNIEnv *, jobject, jstring);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_FilesystemBridge
+ * Method:    rename
+ * Signature: (Ljava/lang/String;Ljava/lang/String;)I
+ */
+JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_FilesystemBridge_rename
+  (JNIEnv *, jobject, jstring, jstring);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_FilesystemBridge
+ * Method:    stat
+ * Signature: (Ljava/lang/String;Lcom/am1goo/playdate4j/sdk/FilesystemBridge/FileStat;)I
+ */
+JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_FilesystemBridge_stat
+  (JNIEnv *, jobject, jstring, jobject);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_FilesystemBridge
+ * Method:    open
+ * Signature: (Ljava/lang/String;I)J
+ */
+JNIEXPORT jlong JNICALL Java_com_am1goo_playdate4j_sdk_FilesystemBridge_open
+  (JNIEnv *, jobject, jstring, jint);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_FilesystemBridge
+ * Method:    close
+ * Signature: (J)I
+ */
+JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_FilesystemBridge_close
+  (JNIEnv *, jobject, jlong);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_FilesystemBridge
+ * Method:    flush
+ * Signature: (J)I
+ */
+JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_FilesystemBridge_flush
+  (JNIEnv *, jobject, jlong);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_FilesystemBridge
+ * Method:    tell
+ * Signature: (J)I
+ */
+JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_FilesystemBridge_tell
+  (JNIEnv *, jobject, jlong);
+
 #ifdef __cplusplus
 }
 #endif
