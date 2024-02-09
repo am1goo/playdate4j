@@ -1,4 +1,5 @@
-﻿#include "pd_api.h"
+﻿#include "pd4j_consts.h"
+#include "pd_api.h"
 
 #ifdef __cplusplus
 #define EXTERNC extern "C"
@@ -7,7 +8,7 @@
 #endif
 
 EXTERNC int pd4j_init(PlaydateAPI* api);
-EXTERNC int pd4j_update();
+EXTERNC int pd4j_update(int* redraw);
 EXTERNC int pd4j_shutdown();
 
 #undef EXTERNC

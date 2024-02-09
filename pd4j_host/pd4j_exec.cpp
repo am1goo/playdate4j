@@ -6,7 +6,8 @@ int main()
 	pd4j_init(NULL);
 	for (int i = 0; i < 10; ++i)
 	{
-		pd4j_update();
+		int redraw;
+		pd4j_update(&redraw);
 	}
 	pd4j_shutdown();
 	return 0;

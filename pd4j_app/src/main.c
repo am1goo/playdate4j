@@ -38,7 +38,11 @@ int eventHandler(PlaydateAPI* pd, PDSystemEvent event, uint32_t arg)
 
 static int update(void* userdata)
 {
-	pd4j_update();
-	return 1;
+	int redraw = 0;
+	int ret = pd4j_update(&redraw);
+	if (ret != PD4J_OK)
+		return 0;
+
+	return redraw;
 }
 

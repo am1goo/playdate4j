@@ -119,12 +119,15 @@ int pd4j_shutdown()
     return PD4J_OK;
 }
 
-int pd4j_update()
+int pd4j_update(int* redraw)
 {
-    if (!initialized)
+    if (!initialized) {
+        *redraw = 0;
         return PD4J_NOT_INITIALIZED;
+    }
 
     env->CallVoidMethod(class_game, class_game_method_loop);
+    *redraw = 1;
     return PD4J_OK;
 }
 
