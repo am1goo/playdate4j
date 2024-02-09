@@ -7,20 +7,20 @@ Java framework to create games on `Playdate` console. \
 - pretty good works in `Playdate Simulator`
 
 ## C API support
-=============================100%= `Logging API` \
-=0%=============================== `System Menu API` \
-======================80%========= `Time and Date API` \
-===========================90%==== `Miscellaneous API` \
-=0%=============================== `Audio API` \
-=============================100%= `Display API` \
-===========================90%==== `Graphics API` \
-=0%=============================== `Video API` \
-=============================100%= `Input API` \
-=============================100%= `Device Auto Lock API` \
-=============================100%= `System Sounds API` \
-=0%=============================== `JSON API` \
-=============================100%= `Sprites API` \
-=0%=============================== `Sprite Collisions API`
+=100%= `Logging API` \
+=000%= `System Menu API` \
+=080%= `Time and Date API` \
+=090%= `Miscellaneous API` \
+=000%= `Audio API` \
+=100%= `Display API` \
+=090%= `Graphics API` \
+=000%= `Video API` \
+=100%= `Input API` \
+=100%= `Device Auto Lock API` \
+=100%= `System Sounds API` \
+=000%= `JSON API` \
+=100%= `Sprites API` \
+=000%= `Sprite Collisions API`
 
 ## Let me explain how it is like:
 ```java
