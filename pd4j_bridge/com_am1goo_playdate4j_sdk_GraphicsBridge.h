@@ -41,10 +41,74 @@ JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_clear
 
 /*
  * Class:     com_am1goo_playdate4j_sdk_GraphicsBridge
+ * Method:    pushContext
+ * Signature: (J)V
+ */
+JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_pushContext
+  (JNIEnv *, jobject, jlong);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_GraphicsBridge
+ * Method:    popContext
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_popContext
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_GraphicsBridge
+ * Method:    setStencil
+ * Signature: (J)V
+ */
+JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_setStencil
+  (JNIEnv *, jobject, jlong);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_GraphicsBridge
+ * Method:    setStencilImage
+ * Signature: (JI)V
+ */
+JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_setStencilImage
+  (JNIEnv *, jobject, jlong, jint);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_GraphicsBridge
  * Method:    setDrawMode
  * Signature: (I)V
  */
 JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_setDrawMode
+  (JNIEnv *, jobject, jint);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_GraphicsBridge
+ * Method:    setClipRect
+ * Signature: (IIII)V
+ */
+JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_setClipRect
+  (JNIEnv *, jobject, jint, jint, jint, jint);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_GraphicsBridge
+ * Method:    setScreenClipRect
+ * Signature: (IIII)V
+ */
+JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_setScreenClipRect
+  (JNIEnv *, jobject, jint, jint, jint, jint);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_GraphicsBridge
+ * Method:    clearClipRect
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_clearClipRect
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_GraphicsBridge
+ * Method:    setLineCapStyle
+ * Signature: (I)V
+ */
+JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_setLineCapStyle
   (JNIEnv *, jobject, jint);
 
 /*
@@ -89,11 +153,43 @@ JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_getTextTrac
 
 /*
  * Class:     com_am1goo_playdate4j_sdk_GraphicsBridge
- * Method:    loadBitmap
- * Signature: (Ljava/lang/String;)J
+ * Method:    clearBitmap
+ * Signature: (JI)V
  */
-JNIEXPORT jlong JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_loadBitmap
-  (JNIEnv *, jobject, jstring);
+JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_clearBitmap
+  (JNIEnv *, jobject, jlong, jint);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_GraphicsBridge
+ * Method:    copyBitmap
+ * Signature: (J)J
+ */
+JNIEXPORT jlong JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_copyBitmap
+  (JNIEnv *, jobject, jlong);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_GraphicsBridge
+ * Method:    drawBitmap
+ * Signature: (JIII)V
+ */
+JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_drawBitmap
+  (JNIEnv *, jobject, jlong, jint, jint, jint);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_GraphicsBridge
+ * Method:    drawScaledBitmap
+ * Signature: (JIIFF)V
+ */
+JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_drawScaledBitmap
+  (JNIEnv *, jobject, jlong, jint, jint, jfloat, jfloat);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_GraphicsBridge
+ * Method:    drawRotatedBitmap
+ * Signature: (JIIFFFFF)V
+ */
+JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_drawRotatedBitmap
+  (JNIEnv *, jobject, jlong, jint, jint, jfloat, jfloat, jfloat, jfloat, jfloat);
 
 /*
  * Class:     com_am1goo_playdate4j_sdk_GraphicsBridge
@@ -102,6 +198,14 @@ JNIEXPORT jlong JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_loadBitmap
  */
 JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_freeBitmap
   (JNIEnv *, jobject, jlong);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_GraphicsBridge
+ * Method:    loadBitmap
+ * Signature: (Ljava/lang/String;)J
+ */
+JNIEXPORT jlong JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_loadBitmap
+  (JNIEnv *, jobject, jstring);
 
 #ifdef __cplusplus
 }
