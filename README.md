@@ -2,6 +2,26 @@
 Java framework to create games on `Playdate` console. \
 *ATTENTION: it is an experimental version, I don't sure that you should to use it in production purposes right now.*
 
+## What inside?
+- partially support of `Playdate API`
+- pretty good works in `Playdate Simulator`
+
+## C API support
+=============================100%= `Logging API` \
+=0%=============================== `System Menu API` \
+======================80%========= `Time and Date API` \
+===========================90%==== `Miscellaneous API` \
+=0%=============================== `Audio API` \
+=============================100%= `Display API` \
+===========================90%==== `Graphics API` \
+=0%=============================== `Video API` \
+=============================100%= `Input API` \
+=============================100%= `Device Auto Lock API` \
+=============================100%= `System Sounds API` \
+=0%=============================== `JSON API` \
+=============================100%= `Sprites API` \
+=0%=============================== `Sprite Collisions API`
+
 ## Let me explain how it is like:
 ```java
 public class ExampleGameCycle implements GameCycle {
@@ -63,10 +83,6 @@ public class ExampleGameCycle implements GameCycle {
 - [ ] full `C API` coverege
 - [ ] well-automated app creation process
 - [ ] using `Java-to-C` code conversion instead of JavaVM on device
-
-## What inside?
-- partially support of `Playdate API`
-- pretty good works in `Playdate Simulator`
 
 ## Requirements
 - `Playdate SDK` 2.3.x version or higher from [official site](https://play.date/dev/)
