@@ -11,6 +11,7 @@ public class SysBridge {
     public native void drawFps(int x, int y);
     public native boolean getFlipped();
     public native boolean getReduceFlashing();
+    public native void setMenuImage(long bitmapPtr, int xOffset);
     public native float getBatteryPercentage();
     public native float getBatteryVoltage();
     public native void clearICache();

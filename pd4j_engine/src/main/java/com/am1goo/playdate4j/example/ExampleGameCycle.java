@@ -8,6 +8,7 @@ public class ExampleGameCycle implements GameCycle {
     private static final int TEXT_WIDTH = 86;
     private static final int TEXT_HEIGHT = 16;
 
+    private Graphics.LCDBitmap menuBackground;
     private Graphics.LCDFont font;
     private Graphics.LCDBitmap playerBitmap;
     private Sprite.LCDSprite player;
@@ -24,7 +25,7 @@ public class ExampleGameCycle implements GameCycle {
     public void start() {
         lcd_columns = Graphics.getLCDColumns();
         lcd_rows = Graphics.getLCDRows();
-        Display.setRefreshRate(35);
+        Display.setRefreshRate(50);
         Graphics.setDrawMode(Graphics.LCDDrawMode.Copy);
         Input.setPeripheralsEnabled(PDPeripherals.None);
         boolean flipped = Sys.getFlipped();
@@ -62,6 +63,9 @@ public class ExampleGameCycle implements GameCycle {
             Sys.log("start: font " + font.getPath() + " loaded");
         }
 
+        menuBackground = Graphics.loadBitmap("images/background");
+        Sys.setMenuImage(menuBackground, 0);
+
         playerBitmap = Graphics.loadBitmap("images/player");
         player = Sprite.newSprite();
         player.setPosition(lcd_columns / 2, lcd_rows / 2);
@@ -73,12 +77,18 @@ public class ExampleGameCycle implements GameCycle {
     public void stop() {
         if (player != null) {
             Sprite.removeSprite(player);
-            Sprite.freeSprite(player);
+            player.free();
             player = null;
         }
         if (playerBitmap != null) {
-            Graphics.freeBitmap(playerBitmap);
+            playerBitmap.free();
             playerBitmap = null;
+        }
+
+        Sys.setMenuImage(null, 0);
+        if (menuBackground != null) {
+            menuBackground.free();
+            menuBackground = null;
         }
     }
 

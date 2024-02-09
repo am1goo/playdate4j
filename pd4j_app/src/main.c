@@ -45,4 +45,3 @@ static int update(void* userdata)
 
 	return redraw;
 }
-

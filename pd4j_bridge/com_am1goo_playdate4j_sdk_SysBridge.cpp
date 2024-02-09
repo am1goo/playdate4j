@@ -51,6 +51,16 @@ JNIEXPORT jboolean JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_getReduceFla
 	return api->system->getReduceFlashing();
 }
 
+JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_setMenuImage
+(JNIEnv* env, jobject thisObject, jlong bitmap_ptr, jint x_offset) {
+	PlaydateAPI* api = pd4j_get_api(env);
+	if (api == NULL)
+		return;
+
+	LCDBitmap* bitmap = reinterpret_cast<LCDBitmap*>(bitmap_ptr);
+	return api->system->setMenuImage(bitmap, x_offset);
+}
+
 JNIEXPORT jfloat JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_getBatteryPercentage
 (JNIEnv* env, jobject thisObject) {
 	PlaydateAPI* api = pd4j_get_api(env);

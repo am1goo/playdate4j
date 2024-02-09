@@ -173,6 +173,13 @@ public class Graphics {
         public String getPath() {
             return path;
         }
+
+        public void free() {
+            if (ptr.invalid())
+                return;
+
+            Graphics.freeBitmap(this);
+        }
     }
 	
 	public class LCDRect {

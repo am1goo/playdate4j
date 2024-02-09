@@ -64,6 +64,13 @@ public class Sprite {
 			return ptr;
 		}
 
+		public void free() {
+			if (ptr.invalid())
+				return;
+
+			Sprite.freeSprite(this);
+		}
+
 		public void moveTo(float x, float y) {
 			bridge.moveTo(ptr.getValue(), x, y);
 		}

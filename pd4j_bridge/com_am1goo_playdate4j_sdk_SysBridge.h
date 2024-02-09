@@ -49,6 +49,14 @@ JNIEXPORT jboolean JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_getReduceFla
 
 /*
  * Class:     com_am1goo_playdate4j_sdk_SysBridge
+ * Method:    setMenuImage
+ * Signature: (JI)V
+ */
+JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_setMenuImage
+  (JNIEnv *, jobject, jlong, jint);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_SysBridge
  * Method:    getBatteryPercentage
  * Signature: ()F
  */

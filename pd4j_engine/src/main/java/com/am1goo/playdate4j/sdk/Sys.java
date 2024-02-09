@@ -50,6 +50,13 @@ public class Sys {
         return bridge.getReduceFlashing();
     }
 
+    public static void setMenuImage(Graphics.LCDBitmap bitmap, int xOffset) {
+        long ptr = 0;
+        if (bitmap != null)
+            ptr = bitmap.getPointer().getValue();
+        bridge.setMenuImage(ptr, xOffset);
+    }
+
     public static void drawFps(int x, int y) {
         bridge.drawFps(x, y);
     }
