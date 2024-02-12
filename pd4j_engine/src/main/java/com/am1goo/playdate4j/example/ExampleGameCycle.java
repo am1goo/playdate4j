@@ -12,6 +12,9 @@ public class ExampleGameCycle implements GameCycle {
     private Graphics.LCDFont font;
     private Graphics.LCDBitmap playerBitmap;
     private Sprite.LCDSprite player;
+    private Sound.SoundChannel soundChannel;
+    private Sound.FilePlayer soundFilePlayer;
+    private Sound.AudioSample soundAudioSample;
 
     int x = (400 - TEXT_WIDTH) / 2;
     int y = (240 - TEXT_HEIGHT) / 2;
@@ -60,7 +63,7 @@ public class ExampleGameCycle implements GameCycle {
 
         font = Graphics.loadFont("/System/Fonts/Asheville-Sans-14-Bold.pft");
         if (font != null) {
-            Sys.log("start: font " + font.getPath() + " loaded");
+            Sys.log("start: [Graphics] font " + font.getPath() + " loaded");
         }
 
         menuBackground = Graphics.loadBitmap("images/background");
@@ -71,10 +74,52 @@ public class ExampleGameCycle implements GameCycle {
         player.setPosition(lcd_columns / 2, lcd_rows / 2);
         player.setImage(playerBitmap, Graphics.LCDBitmapFlip.Unflipped);
         Sprite.addSprite(player);
+
+        soundChannel = Sound.newChannel();
+        Sound.addChannel(soundChannel);
+        if (soundChannel != null) {
+            float soundChannelVolume = soundChannel.getVolume();
+            Sys.log("start: [Sound.SoundChannel] volume=" + soundChannelVolume);
+            soundChannel.setVolume(soundChannelVolume * 0.5f);
+        }
+
+        soundFilePlayer = Sound.newPlayer();
+        if (soundFilePlayer != null) {
+            soundFilePlayer.play(0);
+            boolean soundFilePlayerIsPlaying = soundFilePlayer.isPlaying();
+            Sys.log("start: [Sound.FilePlayer] isPlaying=" + soundFilePlayerIsPlaying);
+            soundFilePlayer.pause();
+            soundFilePlayerIsPlaying = soundFilePlayer.isPlaying();
+            Sys.log("start: [Sound.FilePlayer] isPlaying=" + soundFilePlayerIsPlaying);
+            float soundFilePlayerLength = soundFilePlayer.getLength();
+            Sys.log("start: [Sound.FilePlayer] length=" + soundFilePlayerLength);
+        }
+
+        soundAudioSample = Sound.newSampleBuffer(10);
+        if (soundAudioSample != null) {
+            float soundAudioSampleLength = soundAudioSample.getLength();
+            Sys.log("start: [Sound.AudioSample] length=" + soundAudioSampleLength);
+        }
     }
 
     @Override
     public void stop() {
+        if (soundChannel != null) {
+            Sound.removeChannel(soundChannel);
+            soundChannel.free();
+            soundChannel = null;
+        }
+
+        if (soundFilePlayer != null) {
+            soundFilePlayer.free();
+            soundFilePlayer = null;
+        }
+
+        if (soundAudioSample != null) {
+            soundAudioSample.free();
+            soundAudioSample = null;
+        }
+
         if (player != null) {
             Sprite.removeSprite(player);
             player.free();
