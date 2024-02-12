@@ -1,5 +1,7 @@
 package com.am1goo.playdate4j.example;
 
+import com.am1goo.playdate4j.example.game.Ship;
+import com.am1goo.playdate4j.example.game.World;
 import com.am1goo.playdate4j.sdk.*;
 import com.am1goo.playdate4j.sdk.Input.PDPeripherals;
 
@@ -8,10 +10,12 @@ public class ExampleGameCycle implements GameCycle {
     private static final int TEXT_WIDTH = 86;
     private static final int TEXT_HEIGHT = 16;
 
+    private World world;
+    private Ship player;
+    private Ship enemy;
+
     private Graphics.LCDBitmap menuBackground;
     private Graphics.LCDFont font;
-    private Graphics.LCDBitmap playerBitmap;
-    private Sprite.LCDSprite player;
     private Sound.SoundChannel soundChannel;
     private Sound.FilePlayer soundFilePlayer;
     private Sound.AudioSample soundAudioSample;
@@ -69,11 +73,17 @@ public class ExampleGameCycle implements GameCycle {
         menuBackground = Graphics.loadBitmap("images/background");
         Sys.setMenuImage(menuBackground, 0);
 
-        playerBitmap = Graphics.loadBitmap("images/player");
-        player = Sprite.newSprite();
-        player.setPosition(lcd_columns / 2, lcd_rows / 2);
-        player.setImage(playerBitmap, Graphics.LCDBitmapFlip.Unflipped);
-        Sprite.addSprite(player);
+        world = new World();
+
+        player = new Ship("us_hurricane");
+        player.load();
+        player.position().set(0, 0);
+
+        enemy = new Ship("us_hurricane");
+        enemy.load();
+        enemy.position().set(70, 80);
+
+        world.setPivot(player);
 
         soundChannel = Sound.newChannel();
         Sound.addChannel(soundChannel);
@@ -121,13 +131,13 @@ public class ExampleGameCycle implements GameCycle {
         }
 
         if (player != null) {
-            Sprite.removeSprite(player);
             player.free();
             player = null;
         }
-        if (playerBitmap != null) {
-            playerBitmap.free();
-            playerBitmap = null;
+
+        if (enemy != null) {
+            enemy.free();
+            enemy = null;
         }
 
         Sys.setMenuImage(null, 0);
@@ -155,15 +165,14 @@ public class ExampleGameCycle implements GameCycle {
             xDir++;
         }
 
-        float deltaTime = Game.getDeltaTime();
-        float deltaX = 100 * xDir * deltaTime;
-        float deltaY = 100 * yDir * deltaTime;
-        player.deltaPosition(deltaX, deltaY);
+        player.addInput(xDir, yDir);
+        world.update(player);
+        world.update(enemy);
 
         Sprite.updateAndDrawSprites();
 
         Graphics.setFont(font);
-        Graphics.drawText("dt: " + deltaTime, 0, 20);
+        Graphics.drawText("dt: " + Game.getDeltaTime(), 0, 20);
         Graphics.drawText("Hello Yoba!", x, y);
 
         x += dx;
