@@ -1,6 +1,37 @@
-#include "com_am1goo_playdate4j_sdk_SoundBridge.h"
+#include "com_am1goo_playdate4j_sdk_SoundBridge_ChannelBridge.h"
 #include "pd4j_api.h"
 #include <pd_api.h>
+
+JNIEXPORT jlong JNICALL Java_com_am1goo_playdate4j_sdk_SoundBridge_00024ChannelBridge_getDefaultChannel
+  (JNIEnv* env, jobject thisObject) {
+	PlaydateAPI* api = pd4j_get_api(env);
+	if (api == NULL)
+		return 0;
+	
+	SoundChannel* channel = api->sound->getDefaultChannel();
+	uintptr_t channel_ptr = reinterpret_cast<uintptr_t>(channel);
+	return channel_ptr;
+}
+
+JNIEXPORT jboolean JNICALL Java_com_am1goo_playdate4j_sdk_SoundBridge_00024ChannelBridge_addChannel
+  (JNIEnv* env, jobject thisObject, jlong channel_ptr) {
+	PlaydateAPI* api = pd4j_get_api(env);
+	if (api == NULL)
+		return 0;
+	
+	SoundChannel* channel = reinterpret_cast<SoundChannel*>(channel_ptr);
+	return api->sound->addChannel(channel);
+}
+
+JNIEXPORT jboolean JNICALL Java_com_am1goo_playdate4j_sdk_SoundBridge_00024ChannelBridge_removeChannel
+  (JNIEnv* env, jobject thisObject, jlong channel_ptr) {
+	PlaydateAPI* api = pd4j_get_api(env);
+	if (api == NULL)
+		return false;
+	
+	SoundChannel* channel = reinterpret_cast<SoundChannel*>(channel_ptr);
+	return api->sound->removeChannel(channel);
+}
 
 JNIEXPORT jlong JNICALL Java_com_am1goo_playdate4j_sdk_SoundBridge_00024ChannelBridge_newChannel
   (JNIEnv* env, jobject thisObject) {

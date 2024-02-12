@@ -17,30 +17,6 @@ JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_SoundBridge_getCurrentTime
 
 /*
  * Class:     com_am1goo_playdate4j_sdk_SoundBridge
- * Method:    getDefaultChannel
- * Signature: ()J
- */
-JNIEXPORT jlong JNICALL Java_com_am1goo_playdate4j_sdk_SoundBridge_getDefaultChannel
-  (JNIEnv *, jobject);
-
-/*
- * Class:     com_am1goo_playdate4j_sdk_SoundBridge
- * Method:    addChannel
- * Signature: (J)Z
- */
-JNIEXPORT jboolean JNICALL Java_com_am1goo_playdate4j_sdk_SoundBridge_addChannel
-  (JNIEnv *, jobject, jlong);
-
-/*
- * Class:     com_am1goo_playdate4j_sdk_SoundBridge
- * Method:    removeChannel
- * Signature: (J)Z
- */
-JNIEXPORT jboolean JNICALL Java_com_am1goo_playdate4j_sdk_SoundBridge_removeChannel
-  (JNIEnv *, jobject, jlong);
-
-/*
- * Class:     com_am1goo_playdate4j_sdk_SoundBridge
  * Method:    setOutputsActive
  * Signature: (II)V
  */

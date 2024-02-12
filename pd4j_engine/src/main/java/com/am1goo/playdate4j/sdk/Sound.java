@@ -23,7 +23,7 @@ public class Sound {
 		if (defaultChannel != null)
 			return defaultChannel;
 		
-		long ptr = bridge.getDefaultChannel();
+		long ptr = bridge.channel().getDefaultChannel();
 		Api.Pointer pointer = new Api.Pointer(ptr);
 		if (pointer.invalid())
 			return null;
@@ -34,14 +34,20 @@ public class Sound {
 	}
 	
 	public static boolean addChannel(SoundChannel channel) {
-		return bridge.addChannel(channel.getPointer().getValue());
+		if (channel == null)
+			return false;
+
+		return bridge.channel().addChannel(channel.getPointer().getValue());
 	}
 	
 	public static boolean removeChannel(SoundChannel channel) {
+		if (channel == null)
+			return false;
+
 		if (channel.ptr.invalid())
 			return false;
 		
-		boolean removed = bridge.removeChannel(channel.ptr.getValue());
+		boolean removed = bridge.channel().removeChannel(channel.ptr.getValue());
 		if (!removed)
 			return false;
 		
@@ -67,6 +73,9 @@ public class Sound {
 	}
 
 	public static SoundChannel freeChannel(SoundChannel channel) {
+		if (channel == null)
+			return null;
+
 		if (channel.ptr.invalid())
 			return null;
 		
@@ -76,7 +85,7 @@ public class Sound {
 		return null;
 	}
 	
-	public static PDSynthSignalValue findModulator(long ptr) {
+	private static PDSynthSignalValue findModulator(long ptr) {
 		for (PDSynthSignalValue mod : modulators) {
 			if (mod.ptr.getValue() == ptr) {
 				return mod;
@@ -116,6 +125,9 @@ public class Sound {
 	}
 	
 	public static AudioSample freeSample(AudioSample sample) {
+		if (sample == null)
+			return null;
+
 		if (sample.ptr.invalid())
 			return null;
 		
@@ -145,6 +157,9 @@ public class Sound {
 	}
 	
 	public static FilePlayer freePlayer(FilePlayer player) {
+		if (player == null)
+			return null;
+
 		if (player.ptr.invalid())
 			return null;
 		
@@ -171,18 +186,30 @@ public class Sound {
 		}
 		
 		public void addSource(SoundSource source) {
+			if (source == null)
+				return;
+
 			bridge.channel().addSource(ptr.getValue(), source.getPointer().getValue());
 		}
 		
 		public boolean removeSource(SoundSource source) {
+			if (source == null)
+				return false;
+
 			return bridge.channel().removeSource(ptr.getValue(), source.getPointer().getValue());
 		}
 		
 		public void addEffect(SoundEffect effect) {
+			if (effect == null)
+				return;
+
 			bridge.channel().addEffect(ptr.getValue(), effect.getPointer().getValue());
 		}
 		
 		public void removeEffect(SoundEffect effect) {
+			if (effect == null)
+				return;
+
 			bridge.channel().removeEffect(ptr.getValue(), effect.getPointer().getValue());
 		}
 		
@@ -195,13 +222,16 @@ public class Sound {
 		}
 		
 		public void setVolumeModulator(PDSynthSignalValue mod) {
+			if (mod == null)
+				return;
+
 			bridge.channel().setVolumeModulator(ptr.getValue(), mod.getPointer().getValue());
 		}
 		
 		public PDSynthSignalValue getVolumeModulator() {
 			long modPtr = bridge.channel().getVolumeModulator(ptr.getValue());
 			PDSynthSignalValue found = findModulator(modPtr);
-			if (found == null)
+			if (found != null)
 				return found;
 			
 			Api.Pointer modPointer = new Api.Pointer(modPtr);
@@ -218,13 +248,16 @@ public class Sound {
 		}
 		
 		public void setPanModulator(PDSynthSignalValue mod) {
+			if (mod == null)
+				return;
+
 			bridge.channel().setPanModulator(ptr.getValue(), mod.getPointer().getValue());
 		}
 		
 		public PDSynthSignalValue getPanModulator() {
 			long modPtr = bridge.channel().getPanModulator(ptr.getValue());
 			PDSynthSignalValue found = findModulator(modPtr);
-			if (found == null)
+			if (found != null)
 				return found;
 			
 			Api.Pointer modPointer = new Api.Pointer(modPtr);
@@ -239,7 +272,7 @@ public class Sound {
 		public PDSynthSignalValue getDryLevelSignal() {
 			long modPtr = bridge.channel().getDryLevelSignal(ptr.getValue());
 			PDSynthSignalValue found = findModulator(modPtr);
-			if (found == null)
+			if (found != null)
 				return found;
 			
 			Api.Pointer modPointer = new Api.Pointer(modPtr);
@@ -254,7 +287,7 @@ public class Sound {
 		public PDSynthSignalValue getWetLevelSignal() {
 			long modPtr = bridge.channel().getWetLevelSignal(ptr.getValue());
 			PDSynthSignalValue found = findModulator(modPtr);
-			if (found == null)
+			if (found != null)
 				return found;
 			
 			Api.Pointer modPointer = new Api.Pointer(modPtr);

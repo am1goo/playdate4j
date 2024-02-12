@@ -1,4 +1,4 @@
-#include "com_am1goo_playdate4j_sdk_SoundBridge.h"
+#include "com_am1goo_playdate4j_sdk_SoundBridge_AudioSampleBridge.h"
 #include "pd4j_api.h"
 #include <pd_api.h>
 

@@ -9,6 +9,30 @@ extern "C" {
 #endif
 /*
  * Class:     com_am1goo_playdate4j_sdk_SoundBridge_ChannelBridge
+ * Method:    getDefaultChannel
+ * Signature: ()J
+ */
+JNIEXPORT jlong JNICALL Java_com_am1goo_playdate4j_sdk_SoundBridge_00024ChannelBridge_getDefaultChannel
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_SoundBridge_ChannelBridge
+ * Method:    addChannel
+ * Signature: (J)Z
+ */
+JNIEXPORT jboolean JNICALL Java_com_am1goo_playdate4j_sdk_SoundBridge_00024ChannelBridge_addChannel
+  (JNIEnv *, jobject, jlong);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_SoundBridge_ChannelBridge
+ * Method:    removeChannel
+ * Signature: (J)Z
+ */
+JNIEXPORT jboolean JNICALL Java_com_am1goo_playdate4j_sdk_SoundBridge_00024ChannelBridge_removeChannel
+  (JNIEnv *, jobject, jlong);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_SoundBridge_ChannelBridge
  * Method:    newChannel
  * Signature: ()J
  */

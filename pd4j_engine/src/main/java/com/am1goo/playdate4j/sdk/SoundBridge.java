@@ -29,14 +29,14 @@ public class SoundBridge {
 
     /* audio */
 	public native int getCurrentTime();
-	public native long getDefaultChannel();
-	public native boolean addChannel(long channelPtr);
-	public native boolean removeChannel(long channelPtr);
 	public native void setOutputsActive(int headphone, int speaker);
 	
 	/* channels */
 	public class ChannelBridge {
-		
+
+		public native long getDefaultChannel();
+		public native boolean addChannel(long channelPtr);
+		public native boolean removeChannel(long channelPtr);
 		public native long newChannel();
 		public native void freeChannel(long channelPtr);
 		public native void addSource(long channelPtr, long sourcePtr);
