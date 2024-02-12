@@ -6,6 +6,7 @@ public class Filesystem {
 
 	private static final FilesystemBridge bridge = new FilesystemBridge();
 	
+    /* filesystem */
 	public static String getError() {
 		return bridge.getError();
 	}
@@ -39,6 +40,7 @@ public class Filesystem {
 		return ret == 0;
 	}
 	
+    /* file handles */
 	public static SDFile open(String path, FileOptions mode) {
 		long ptr = bridge.open(path, mode.getValue());
 		Pointer pointer = new Api.Pointer(ptr);
@@ -81,6 +83,11 @@ public class Filesystem {
 		
 		public boolean flush() {
 			int ret = bridge.flush(ptr.getValue());
+			return ret == 0;
+		}
+		
+		public boolean seek(int pos, int whence) {
+			int ret = bridge.seek(ptr.getValue(), pos, whence);
 			return ret == 0;
 		}
 		

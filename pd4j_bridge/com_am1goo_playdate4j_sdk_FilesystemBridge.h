@@ -73,6 +73,14 @@ JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_FilesystemBridge_flush
 
 /*
  * Class:     com_am1goo_playdate4j_sdk_FilesystemBridge
+ * Method:    seek
+ * Signature: (JII)I
+ */
+JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_FilesystemBridge_seek
+  (JNIEnv *, jobject, jlong, jint, jint);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_FilesystemBridge
  * Method:    tell
  * Signature: (J)I
  */

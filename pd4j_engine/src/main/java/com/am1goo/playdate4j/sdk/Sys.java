@@ -1,9 +1,14 @@
 package com.am1goo.playdate4j.sdk;
 
+import com.am1goo.playdate4j.sdk.SysBridge.PDDateTime;
+
 public class Sys {
 
     private static final SysBridge bridge = new SysBridge();
+    
+    private static final PDDateTime dateTime = new PDDateTime();
 
+    /* logging */
     public static void log(String log) {
         System.out.println(log);
         bridge.logToConsole(log);
@@ -17,7 +22,33 @@ public class Sys {
         System.err.println(error);
         bridge.error(error);
     }
+    
+    /* system menu */
+    public static void removeMenuItem(PDMenuItem menuItem) {
+    	bridge.removeMenuItem(menuItem.getPointer().getValue());
+    }
+    
+    public static void removeAllMenuItems() {
+    	bridge.removeAllMenuItems();
+    }
+    
+    public static String getMenuItemTitle(PDMenuItem menuItem) {
+    	return bridge.getMenuItemTitle(menuItem.getPointer().getValue());
+    }
+    
+    public static void setMenuItemTitle(PDMenuItem menuItem, String title) {
+    	bridge.setMenuItemTitle(menuItem.getPointer().getValue(), title);
+    }
 
+    public static int getMenuItemValue(PDMenuItem menuItem) {
+    	return bridge.getMenuItemValue(menuItem.getPointer().getValue());
+    }
+    
+    public static void setMenuItemValue(PDMenuItem menuItem, int value) {
+    	bridge.setMenuItemValue(menuItem.getPointer().getValue(), value);
+    }
+    
+    /* date and time */
     public static long getCurrentTimeMilliseconds() {
         return bridge.getCurrentTimeMilliseconds();
     }
@@ -37,11 +68,25 @@ public class Sys {
     public static int getTimezoneOffset() {
         return bridge.getTimezoneOffset();
     }
+    
+    public static PDDateTime convertEpochToDateTime(long epoch) {
+    	convertEpochToDateTime(epoch, dateTime);
+    	return dateTime;
+    }
+    
+    public static void convertEpochToDateTime(long epoch, PDDateTime result) {
+    	bridge.convertEpochToDateTime(epoch, dateTime);
+    }
+    
+    public static long convertDateTimeToEpoch(PDDateTime dateTime) {
+    	return bridge.convertDateTimeToEpoch(dateTime.year(), dateTime.month(), dateTime.day(), dateTime.weekday(), dateTime.hour(), dateTime.minute(), dateTime.second());
+    }
 
     public static boolean shouldDisplay24HourTime() {
         return bridge.shouldDisplay24HourTime();
     }
 
+    /* miscellaneous */
     public static boolean getFlipped() {
         return bridge.getFlipped();
     }
@@ -79,5 +124,48 @@ public class Sys {
     
     public static boolean setCrankSoundsDisabled(boolean disable) {
     	return bridge.setCrankSoundsDisabled(disable);
+    }
+    
+    public static PDLanguage getLanguage() {
+    	int language = bridge.getLanguage();
+    	return PDLanguage.valueOf(language);
+    }
+    
+    public enum PDLanguage {
+    	English(0),
+    	Japanese(1),
+    	Unknown(2);
+    	
+    	final int value;
+    	
+    	PDLanguage(int value) {
+    		this.value = value;
+    	}
+    	
+    	public int getValue() {
+    		return value;
+    	}
+    	
+    	public static PDLanguage valueOf(int value) {
+    		for (PDLanguage language : values()) {
+    			if (language.value == value) {
+    				return language;
+    			}
+    		}
+    		return PDLanguage.Unknown;
+    	}
+    }
+
+    public static class PDMenuItem {
+    	
+    	private final Api.Pointer ptr;
+    	
+    	 public PDMenuItem(Api.Pointer ptr) {
+             this.ptr = ptr;
+         }
+         
+         public Api.Pointer getPointer() {
+         	return ptr;
+         }
     }
 }

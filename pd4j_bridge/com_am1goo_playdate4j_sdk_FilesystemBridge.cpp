@@ -23,6 +23,10 @@ JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_FilesystemBridge_unlink
 	const char* path = env->GetStringUTFChars(path_str, 0);
 	int ret = api->file->unlink(path, recursive);
 	env->ReleaseStringUTFChars(path_str, path);
+	if (ret != 0) {
+		const char* err = api->file->geterr();
+		api->system->error(err);
+	}
 	return ret;
 }
 
@@ -35,6 +39,10 @@ JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_FilesystemBridge_mkdir
 	const char* path = env->GetStringUTFChars(path_str, 0);
 	int ret = api->file->mkdir(path);
 	env->ReleaseStringUTFChars(path_str, path);
+	if (ret != 0) {
+		const char* err = api->file->geterr();
+		api->system->error(err);
+	}
 	return ret;
 }
 
@@ -49,6 +57,10 @@ JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_FilesystemBridge_rename
 	int ret = api->file->rename(from, to);
 	env->ReleaseStringUTFChars(from_str, from);
 	env->ReleaseStringUTFChars(to_str, to);
+	if (ret != 0) {
+		const char* err = api->file->geterr();
+		api->system->error(err);
+	}
 	return ret;
 }
 
@@ -62,6 +74,10 @@ JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_FilesystemBridge_stat
 	FileStat stat;
 	int ret = api->file->stat(path, &stat);
 	env->ReleaseStringUTFChars(path_str, path);
+	if (ret != 0) {
+		const char* err = api->file->geterr();
+		api->system->error(err);
+	}
 	
 	jclass class_file_state = env->GetObjectClass(file_stat);
 	jmethodID class_file_state_method_set = env->GetMethodID(class_file_state, "set", "(ZJIIIIII)V");
@@ -94,6 +110,10 @@ JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_FilesystemBridge_close
 	
 	SDFile* file = reinterpret_cast<SDFile*>(file_ptr);
 	int ret = api->file->close(file);
+	if (ret != 0) {
+		const char* err = api->file->geterr();
+		api->system->error(err);
+	}
 	return ret;
 }
 
@@ -105,6 +125,25 @@ JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_FilesystemBridge_flush
 	
 	SDFile* file = reinterpret_cast<SDFile*>(file_ptr);
 	int ret = api->file->flush(file);
+	if (ret != 0) {
+		const char* err = api->file->geterr();
+		api->system->error(err);
+	}
+	return ret;
+}
+
+JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_FilesystemBridge_seek
+  (JNIEnv* env, jobject thisObject, jlong file_ptr, jint pos, jint whence) {
+	PlaydateAPI* api = pd4j_get_api(env);
+	if (api == NULL)
+		return FS_ERR;
+	
+	SDFile* file = reinterpret_cast<SDFile*>(file_ptr);
+	int ret = api->file->seek(file, pos, whence);
+	if (ret != 0) {
+		const char* err = api->file->geterr();
+		api->system->error(err);
+	}
 	return ret;
 }
 
@@ -116,5 +155,9 @@ JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_FilesystemBridge_tell
 	
 	SDFile* file = reinterpret_cast<SDFile*>(file_ptr);
 	int ret = api->file->tell(file);
+	if (ret != 0) {
+		const char* err = api->file->geterr();
+		api->system->error(err);
+	}
 	return ret;
 }

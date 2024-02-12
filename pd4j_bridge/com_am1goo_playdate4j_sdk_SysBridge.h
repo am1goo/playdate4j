@@ -25,6 +25,54 @@ JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_error
 
 /*
  * Class:     com_am1goo_playdate4j_sdk_SysBridge
+ * Method:    removeMenuItem
+ * Signature: (J)V
+ */
+JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_removeMenuItem
+  (JNIEnv *, jobject, jlong);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_SysBridge
+ * Method:    removeAllMenuItems
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_removeAllMenuItems
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_SysBridge
+ * Method:    getMenuItemTitle
+ * Signature: (J)Ljava/lang/String;
+ */
+JNIEXPORT jstring JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_getMenuItemTitle
+  (JNIEnv *, jobject, jlong);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_SysBridge
+ * Method:    setMenuItemTitle
+ * Signature: (JLjava/lang/String;)V
+ */
+JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_setMenuItemTitle
+  (JNIEnv *, jobject, jlong, jstring);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_SysBridge
+ * Method:    getMenuItemValue
+ * Signature: (J)I
+ */
+JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_getMenuItemValue
+  (JNIEnv *, jobject, jlong);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_SysBridge
+ * Method:    setMenuItemValue
+ * Signature: (JI)V
+ */
+JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_setMenuItemValue
+  (JNIEnv *, jobject, jlong, jint);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_SysBridge
  * Method:    drawFps
  * Signature: (II)V
  */
@@ -121,6 +169,22 @@ JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_getTimezoneOffse
 
 /*
  * Class:     com_am1goo_playdate4j_sdk_SysBridge
+ * Method:    convertEpochToDateTime
+ * Signature: (JLcom/am1goo/playdate4j/sdk/SysBridge/PDDateTime;)V
+ */
+JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_convertEpochToDateTime
+  (JNIEnv *, jobject, jlong, jobject);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_SysBridge
+ * Method:    convertDateTimeToEpoch
+ * Signature: (ISSSSSS)J
+ */
+JNIEXPORT jlong JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_convertDateTimeToEpoch
+  (JNIEnv *, jobject, jint, jshort, jshort, jshort, jshort, jshort, jshort);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_SysBridge
  * Method:    shouldDisplay24HourTime
  * Signature: ()Z
  */
@@ -142,6 +206,14 @@ JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_setAutoLockDisab
  */
 JNIEXPORT jboolean JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_setCrankSoundsDisabled
   (JNIEnv *, jobject, jboolean);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_SysBridge
+ * Method:    getLanguage
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_getLanguage
+  (JNIEnv *, jobject);
 
 #ifdef __cplusplus
 }

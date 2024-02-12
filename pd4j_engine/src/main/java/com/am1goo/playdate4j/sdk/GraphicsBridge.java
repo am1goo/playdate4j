@@ -6,11 +6,10 @@ public class GraphicsBridge {
         Sdk.loadRequiredLibraries();
     }
 
+    /* graphics */
     public native int getLCDColumns();
     public native int getLCDRows();
     public native int getLCDRowSize();
-
-    public native void clear(int mode);
 
     public native void pushContext(long bitmapPtr);
     public native void popContext();
@@ -22,15 +21,11 @@ public class GraphicsBridge {
     public native void clearClipRect();
     public native void setLineCapStyle(int endCapStyle);
 
-    public native void drawText(String text, int x, int y);
-
-    public native long loadFont(String path);
-    public native void setFont(long fontPtr);
-    public native void setTextTracking(int tracking);
-    public native int getTextTracking();
-
+    /* bitmaps */
     public native void clearBitmap(long bitmapPtr, int color);
     public native long copyBitmap(long bitmapPtr);
+    
+    public native boolean checkMaskCollision(long bitmapPtr1, int x1, int y1, int flip1, long bitmapPtr2, int x2, int y2, int flip2, int rectLeft, int rectRight, int rectTop, int rectBottom);
 
     public native void drawBitmap(long bitmapPtr, int x, int y, int flip);
     public native void drawScaledBitmap(long bitmapPtr, int x, int y, float xScale, float yScale);
@@ -38,4 +33,39 @@ public class GraphicsBridge {
 
     public native void freeBitmap(long bitmapPtr);
     public native long loadBitmap(String path);
+    public native boolean loadIntoBitmap(String path, long bitmapPtr);
+    public native long newBitmap(int width, int height, int color);
+    public native void tileBitmap(long bitmapPtr, int x, int y, int width, int height, int flip);
+    public native long rotatedBitmap(long bitmapPtr, float rotation, float xScale, float yScale);
+    public native boolean setBitmapMask(long bitmapPtr, long maskPtr);
+    public native long getBitmapMask(long bitmapPtr);
+    
+    /* bitmap tables */
+
+    /* fonts & text */
+    public native void drawText(String text, int x, int y);
+    public native short getFontHeight(long fontPtr);
+    public native long loadFont(String path);
+    public native void setFont(long fontPtr);
+    public native void setTextTracking(int tracking);
+    public native int getTextTracking();
+    public native void setTextLeading(int leading);
+
+    /* geometry */
+    public native void drawEllipse(int x, int y, int width, int height, int lineWidth, float startAngle, float endAngle, int color);
+    public native void fillEllipse(int x, int y, int width, int height, float startAngle, float endAngle, int color);
+    public native void drawLine(int x1, int y1, int x2, int y2, int width, int color);
+    public native void drawRect(int x, int y, int width, int height, int color);
+    public native void fillRect(int x, int y, int width, int height, int color);
+    public native void fillTriangle(int x1, int y1, int x2, int y2, int x3, int y3, int color);
+    
+    /* miscellaneous */
+    public native void clear(int mode);
+    public native void setBackgroundColor(int color);
+    public native void display();
+    public native long getDebugBitmap();
+    public native long getDisplayBufferBitmap();
+    public native long copyFrameBufferBitmap();
+    public native void markUpdatedRows(int start, int end);
+    public native void setDrawOffset(int dx, int dy);
 }

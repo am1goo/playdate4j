@@ -8,9 +8,9 @@ JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_logToConsole
 	if (api == NULL)
 		return;
 
-	const char* str = env->GetStringUTFChars(log, 0);
-	api->system->logToConsole(str);
-	env->ReleaseStringUTFChars(log, str);
+	const char* log_str = env->GetStringUTFChars(log, 0);
+	api->system->logToConsole(log_str);
+	env->ReleaseStringUTFChars(log, log_str);
 }
 
 JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_error
@@ -19,9 +19,71 @@ JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_error
 	if (api == NULL)
 		return;
 
-	const char* str = env->GetStringUTFChars(error, 0);
-	api->system->error(str);
-	env->ReleaseStringUTFChars(error, str);
+	const char* error_str = env->GetStringUTFChars(error, 0);
+	api->system->error(error_str);
+	env->ReleaseStringUTFChars(error, error_str);
+}
+
+JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_removeMenuItem
+  (JNIEnv* env, jobject thisObject, jlong menuItem_ptr) {
+	PlaydateAPI* api = pd4j_get_api(env);
+	if (api == NULL)
+		return;
+	
+	PDMenuItem* menuItem = reinterpret_cast<PDMenuItem*>(menuItem_ptr);
+	api->system->removeMenuItem(menuItem);
+}
+
+JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_removeAllMenuItems
+  (JNIEnv* env, jobject thisObject) {
+	PlaydateAPI* api = pd4j_get_api(env);
+	if (api == NULL)
+		return;
+	
+	api->system->removeAllMenuItems();
+}
+
+JNIEXPORT jstring JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_getMenuItemTitle
+  (JNIEnv* env, jobject thisObject, jlong menuItem_ptr) {
+	PlaydateAPI* api = pd4j_get_api(env);
+	if (api == NULL)
+		return 0;
+	
+	PDMenuItem* menuItem = reinterpret_cast<PDMenuItem*>(menuItem_ptr);
+	const char* title_str = api->system->getMenuItemTitle(menuItem);
+	return env->NewStringUTF(title_str);
+}
+
+JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_setMenuItemTitle
+  (JNIEnv* env, jobject thisObject, jlong menuItem_ptr, jstring title) {
+	PlaydateAPI* api = pd4j_get_api(env);
+	if (api == NULL)
+		return;
+	
+	PDMenuItem* menuItem = reinterpret_cast<PDMenuItem*>(menuItem_ptr);
+	const char* title_str = env->GetStringUTFChars(title, 0);
+	api->system->setMenuItemTitle(menuItem, title_str);
+	env->ReleaseStringUTFChars(title, title_str);
+}
+
+JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_getMenuItemValue
+  (JNIEnv* env, jobject thisObject, jlong menuItem_ptr) {
+	PlaydateAPI* api = pd4j_get_api(env);
+	if (api == NULL)
+		return 0;
+	
+	PDMenuItem* menuItem = reinterpret_cast<PDMenuItem*>(menuItem_ptr);
+	return api->system->getMenuItemValue(menuItem);
+}
+
+JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_setMenuItemValue
+  (JNIEnv* env, jobject thisObject, jlong menuItem_ptr, jint value) {
+	PlaydateAPI* api = pd4j_get_api(env);
+	if (api == NULL)
+		return;
+	
+	PDMenuItem* menuItem = reinterpret_cast<PDMenuItem*>(menuItem_ptr);
+	api->system->setMenuItemValue(menuItem, value);
 }
 
 JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_drawFps
@@ -134,6 +196,39 @@ JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_getTimezoneOffse
 	return api->system->getTimezoneOffset();
 }
 
+JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_convertEpochToDateTime
+  (JNIEnv* env, jobject thisObject, jlong epoch_value, jobject dateTime_object) {
+	PlaydateAPI* api = pd4j_get_api(env);
+	if (api == NULL)
+		return;
+	
+	uint32_t epoch = static_cast<uint32_t>(epoch_value);
+	PDDateTime dateTime;
+	api->system->convertEpochToDateTime(epoch, &dateTime);
+	
+	jclass class_pddatetime = env->GetObjectClass(dateTime_object);
+	jmethodID class_pddatetime_method_set = env->GetMethodID(class_pddatetime, "set", "(ISSSSSS)V");
+	env->CallVoidMethod(dateTime_object, class_pddatetime_method_set, dateTime.year, dateTime.month, dateTime.day, dateTime.weekday, dateTime.hour, dateTime.minute, dateTime.second);
+}
+
+JNIEXPORT jlong JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_convertDateTimeToEpoch
+  (JNIEnv* env, jobject thisObject, jint year, jshort month, jshort day, jshort weekday, jshort hour, jshort minute, jshort second) {
+	PlaydateAPI* api = pd4j_get_api(env);
+	if (api == NULL)
+		return 0;
+	
+	PDDateTime dateTime;
+	dateTime.year = year;
+	dateTime.month = month;
+	dateTime.day = day;
+	dateTime.weekday = weekday;
+	dateTime.hour = hour;
+	dateTime.minute = minute;
+	dateTime.second = second;
+	uint32_t epoch = api->system->convertDateTimeToEpoch(&dateTime);
+	return static_cast<jlong>(epoch);
+}
+
 JNIEXPORT jboolean JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_shouldDisplay24HourTime
 (JNIEnv* env, jobject thisObject) {
 	PlaydateAPI* api = pd4j_get_api(env);
@@ -159,4 +254,18 @@ JNIEXPORT jboolean JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_setCrankSoun
 		return false;
 	
 	return api->system->setCrankSoundsDisabled(disabled);
+}
+
+JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_getLanguage
+  (JNIEnv* env, jobject thisObject) {
+	PlaydateAPI* api = pd4j_get_api(env);
+	if (api == NULL) {
+		PDLanguage language = kPDLanguageUnknown;
+		int language_value = static_cast<int>(language);
+		return language_value;
+	}
+	
+	PDLanguage language = api->system->getLanguage();
+	int language_value = static_cast<int>(language);
+	return language_value;
 }

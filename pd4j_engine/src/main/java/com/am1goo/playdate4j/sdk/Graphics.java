@@ -8,11 +8,13 @@ public class Graphics {
     private static final GraphicsBridge bridge = new GraphicsBridge();
 
 	private static final List<LCDBitmap> bitmaps = new ArrayList<>();
+	private static LCDBitmap displayBuffer = null;
 
     private static int lcdColumns = -1;
     private static int lcdRows = -1;
     private static int lcdRowSize = -1;
 
+    /* graphics */
     public static int getLCDColumns() {
         if (lcdColumns < 0)
             lcdColumns = bridge.getLCDColumns();
@@ -29,10 +31,6 @@ public class Graphics {
         if (lcdRowSize < 0)
             lcdRowSize = bridge.getLCDRowSize();
         return lcdRowSize;
-    }
-
-    public static void clear(LCDSolidColor color) {
-        bridge.clear(color.getValue());
     }
 
     public static void setDrawMode(LCDDrawMode mode) {
@@ -64,10 +62,6 @@ public class Graphics {
         bridge.setStencilImage(bitmap.ptr.getValue(), tile);
     }
 
-    public static void drawText(String text, int x, int y) {
-        bridge.drawText(text, x, y);
-    }
-
     public static void setClipRect(int x, int y, int width, int height) {
         bridge.setClipRect(x, y, width, height);
     }
@@ -84,30 +78,7 @@ public class Graphics {
         bridge.setLineCapStyle(endCapStyle.getValue());
     }
 
-    public static LCDFont loadFont(String path) {
-        long ptr = bridge.loadFont(path);
-        Api.Pointer pointer = new Api.Pointer(ptr);
-        if (pointer.invalid())
-            return null;
-
-        return new LCDFont(pointer, path);
-    }
-
-    public static void setFont(LCDFont font) {
-        if (font == null)
-            return;
-
-        bridge.setFont(font.ptr.getValue());
-    }
-
-    public static void setTextTracking(int tracking) {
-        bridge.setTextTracking(tracking);
-    }
-
-    public static int getTextTracking() {
-        return bridge.getTextTracking();
-    }
-
+    /* bitmaps */
     public static void clearBitmap(LCDBitmap bitmap, LCDSolidColor color) {
         if (bitmap == null)
             return;
@@ -127,6 +98,16 @@ public class Graphics {
         LCDBitmap copy = new LCDBitmap(copyPointer, bitmap.getPath());
         bitmaps.add(copy);
         return copy;
+    }
+    
+    public static boolean checkMaskCollision(LCDBitmap bitmap1, int x1, int y1, LCDBitmapFlip flip1, LCDBitmap bitmap2, int x2, int y2, LCDBitmapFlip flip2, LCDRect rect) {
+    	if (bitmap1 == null)
+    		return false;
+    	
+    	if (bitmap2 == null)
+    		return false;
+    	
+    	return bridge.checkMaskCollision(bitmap1.getPointer().getValue(), x1, y1, flip1.getValue(), bitmap2.getPointer().getValue(), x2, y2, flip2.getValue(), rect.left(), rect.right(), rect.top(), rect.bottom());
     }
 
     public static void drawBitmap(LCDBitmap bitmap, int x, int y, LCDBitmapFlip flip) {
@@ -150,7 +131,10 @@ public class Graphics {
         bridge.drawRotatedBitmap(bitmap.ptr.getValue(), x, y, degrees, xCenter, yCenter, xScale, yScale);
     }
 
-    public static LCDBitmap freeBitmap(LCDBitmap bitmap) {
+	public static LCDBitmap freeBitmap(LCDBitmap bitmap) {
+    	if (bitmap.ptr.invalid())
+    		return null;
+    	
         bridge.freeBitmap(bitmap.ptr.getValue());
         bitmap.ptr.invalidate();
         bitmaps.remove(bitmap);
@@ -167,6 +151,70 @@ public class Graphics {
         bitmaps.add(bitmap);
         return bitmap;
     }
+    
+    public static boolean loadIntoBitmap(String path, LCDBitmap bitmap) {
+    	boolean loaded = bridge.loadIntoBitmap(path, bitmap.getPointer().getValue());
+    	if (loaded) {
+    		bitmap.path = path;
+    	}
+    	return loaded;
+    }
+    
+    public static LCDBitmap newBitmap(int width, int height, LCDSolidColor color) {
+    	long ptr = bridge.newBitmap(width, height, color.getValue());
+    	Api.Pointer pointer = new Api.Pointer(ptr);
+    	if (pointer.invalid())
+    		return null;
+    	
+    	LCDBitmap bitmap = new LCDBitmap(pointer, null);
+    	bitmaps.add(bitmap);
+    	return bitmap;
+    }
+    
+    public static void tileBitmap(LCDBitmap bitmap, int x, int y, int width, int height, LCDBitmapFlip flip) {
+    	if (bitmap == null)
+    		return;
+    	
+    	bridge.tileBitmap(bitmap.getPointer().getValue(), x, y, width, height, flip.getValue());
+    }
+    
+    public static LCDBitmap rotatedBitmap(LCDBitmap bitmap, float rotation, float xScale, float yScale) {
+    	if (bitmap == null)
+    		return null;
+    	
+    	long ptr = bridge.rotatedBitmap(bitmap.getPointer().getValue(), rotation, xScale, yScale);
+    	Api.Pointer pointer = new Api.Pointer(ptr);
+    	if (pointer.invalid())
+    		return null;
+    	
+    	LCDBitmap result = new LCDBitmap(pointer, bitmap.getPath());
+    	bitmaps.add(result);
+    	return result;
+    }
+    
+    public static boolean setBitmapMask(LCDBitmap bitmap, LCDBitmap mask) {
+    	if (bitmap == null)
+    		return false;
+    	
+    	if (mask == null)
+    		return false;
+    	
+    	return bridge.setBitmapMask(bitmap.getPointer().getValue(), mask.getPointer().getValue());
+    }
+    
+    public static LCDBitmap getBitmapMask(LCDBitmap bitmap) {
+    	if (bitmap == null)
+    		return null;
+    	
+    	long ptr = bridge.getBitmapMask(bitmap.getPointer().getValue());
+    	Api.Pointer pointer = new Api.Pointer(ptr);
+    	if (pointer.invalid())
+    		return null;
+    	
+    	LCDBitmap mask = new LCDBitmap(pointer, null);
+    	bitmaps.add(mask);
+    	return mask;
+    }
         
     public static LCDBitmap findBitmap(long ptr) {
     	for (LCDBitmap bitmap : bitmaps) {
@@ -180,7 +228,116 @@ public class Graphics {
     	}
     	return null;
     }
+    
+    /* bitmap tables */
 
+    /* fonts & text */
+    public static void drawText(String text, int x, int y) {
+        bridge.drawText(text, x, y);
+    }
+    
+    public static short getFontHeight(LCDFont font) {
+    	return bridge.getFontHeight(font.getPointer().getValue());
+    }
+    
+    public static LCDFont loadFont(String path) {
+        long ptr = bridge.loadFont(path);
+        Api.Pointer pointer = new Api.Pointer(ptr);
+        if (pointer.invalid())
+            return null;
+
+        return new LCDFont(pointer, path);
+    }
+
+    public static void setFont(LCDFont font) {
+        if (font == null)
+            return;
+
+        bridge.setFont(font.ptr.getValue());
+    }
+
+    public static void setTextTracking(int tracking) {
+        bridge.setTextTracking(tracking);
+    }
+
+    public static int getTextTracking() {
+        return bridge.getTextTracking();
+    }
+    
+    /* geometry */ 
+    public static void drawEllipse(int x, int y, int width, int height, int lineWidth, float startAngle, float endAngle, LCDSolidColor color) {
+    	bridge.drawEllipse(x, y, width, height, lineWidth, startAngle, endAngle, color.getValue());
+    }
+    
+    public static void fillEllipse(int x, int y, int width, int height, float startAngle, float endAngle, LCDSolidColor color) {
+    	bridge.fillEllipse(x, y, width, height, startAngle, endAngle, color.getValue());
+    }
+    
+    public static void drawLine(int x1, int y1, int x2, int y2, int width, LCDSolidColor color) {
+    	bridge.drawLine(x1, y1, x2, y2, width, color.getValue());
+    }
+    
+    public static void drawRect(int x, int y, int width, int height, LCDSolidColor color) {
+    	bridge.drawRect(x, y, width, height, color.getValue());
+    }
+    
+    public static void fillRect(int x, int y, int width, int height, LCDSolidColor color) {
+    	bridge.fillRect(x, y, width, height, color.getValue());
+    }
+    
+    public static void fillTriangle(int x1, int y1, int x2, int y2, int x3, int y3, LCDSolidColor color) {
+    	bridge.fillTriangle(x1, y1, x2, y2, x3, y3, color.getValue());
+    }
+    
+    /* miscellaneous */
+    public static void clear(LCDSolidColor color) {
+        bridge.clear(color.getValue());
+    }
+    
+    public static void setBackgroundColor(LCDSolidColor color) {
+    	bridge.setBackgroundColor(color.getValue());
+    }
+    
+    public static void display() {
+    	bridge.display();
+    }
+    
+    public static LCDBitmap getDebugBitmap() {
+    	long ptr = bridge.getDebugBitmap();
+    	Api.Pointer pointer = new Api.Pointer(ptr);
+    	if (pointer.invalid())
+    		return null;
+    	
+    	LCDBitmap bitmap = new LCDBitmap(pointer, null);
+    	bitmaps.add(bitmap);
+    	return bitmap;
+    }
+    
+    public static LCDBitmap getDisplayBufferBitmap() {
+    	if (displayBuffer != null)
+    		return displayBuffer;
+    		
+    	long ptr = bridge.getDisplayBufferBitmap();
+    	Api.Pointer pointer = new Api.Pointer(ptr);
+    	if (pointer.invalid())
+    		return null;
+    	
+    	displayBuffer = new LCDBitmap(pointer, null);
+    	bitmaps.add(displayBuffer);
+    	return displayBuffer;
+    }
+    
+    public static LCDBitmap copyFrameBufferBitmap() {
+    	long ptr = bridge.copyFrameBufferBitmap();
+    	Api.Pointer pointer = new Api.Pointer(ptr);
+    	if (pointer.invalid())
+    		return null;
+    	
+    	LCDBitmap bitmap = new LCDBitmap(pointer, null);
+    	bitmaps.add(bitmap);
+    	return bitmap;
+    }
+    
     public enum LCDSolidColor {
         Black(0),
         White(1),
@@ -247,12 +404,16 @@ public class Graphics {
 
     public static class LCDFont {
 
-        private Api.Pointer ptr;
+        private final Api.Pointer ptr;
         private String path;
 
         public LCDFont(Api.Pointer ptr, String path) {
             this.ptr = ptr;
             this.path = path;
+        }
+        
+        public Api.Pointer getPointer() {
+        	return ptr;
         }
 
         public String getPath() {
@@ -263,7 +424,7 @@ public class Graphics {
     public static class LCDBitmap {
 
         private final Api.Pointer ptr;
-        private final String path;
+        private String path;
 
         public LCDBitmap(Api.Pointer ptr, String path) {
             this.ptr = ptr;

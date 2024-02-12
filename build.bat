@@ -35,10 +35,22 @@ if %ERRORLEVEL% NEQ 0 EXIT /B 1
 g++ -c -fPIC -D TARGET_EXTENSION %GCC_INCLUDE% pd4j_bridge\com_am1goo_playdate4j_sdk_SoundBridge.cpp -o buildcache\compiled\com_am1goo_playdate4j_sdk_SoundBridge.o
 if %ERRORLEVEL% NEQ 0 EXIT /B 1
 
+g++ -c -fPIC -D TARGET_EXTENSION %GCC_INCLUDE% pd4j_bridge\com_am1goo_playdate4j_sdk_SoundBridge_AudioSampleBridge.cpp -o buildcache\compiled\com_am1goo_playdate4j_sdk_SoundBridge_AudioSampleBridge.o
+if %ERRORLEVEL% NEQ 0 EXIT /B 1
+
+g++ -c -fPIC -D TARGET_EXTENSION %GCC_INCLUDE% pd4j_bridge\com_am1goo_playdate4j_sdk_SoundBridge_ChannelBridge.cpp -o buildcache\compiled\com_am1goo_playdate4j_sdk_SoundBridge_ChannelBridge.o
+if %ERRORLEVEL% NEQ 0 EXIT /B 1
+
+g++ -c -fPIC -D TARGET_EXTENSION %GCC_INCLUDE% pd4j_bridge\com_am1goo_playdate4j_sdk_SoundBridge_FilePlayerBridge.cpp -o buildcache\compiled\com_am1goo_playdate4j_sdk_SoundBridge_FilePlayerBridge.o
+if %ERRORLEVEL% NEQ 0 EXIT /B 1
+
+g++ -c -fPIC -D TARGET_EXTENSION %GCC_INCLUDE% pd4j_bridge\com_am1goo_playdate4j_sdk_SoundBridge_SourceBridge.cpp -o buildcache\compiled\com_am1goo_playdate4j_sdk_SoundBridge_SourceBridge.o
+if %ERRORLEVEL% NEQ 0 EXIT /B 1
+
 g++ -c -fPIC -D TARGET_EXTENSION %GCC_INCLUDE% pd4j_bridge\com_am1goo_playdate4j_sdk_SysBridge.cpp      -o buildcache\compiled\com_am1goo_playdate4j_sdk_SysBridge.o
 if %ERRORLEVEL% NEQ 0 EXIT /B 1
 
-g++ -shared -o pd4j_engine\lib\pd4j_bridge.dll buildcache\compiled\pd4j_api.o buildcache\compiled\com_am1goo_playdate4j_sdk_ApiBridge.o buildcache\compiled\com_am1goo_playdate4j_sdk_FilesystemBridge.o buildcache\compiled\com_am1goo_playdate4j_sdk_DisplayBridge.o buildcache\compiled\com_am1goo_playdate4j_sdk_InputBridge.o buildcache\compiled\com_am1goo_playdate4j_sdk_GraphicsBridge.o buildcache\compiled\com_am1goo_playdate4j_sdk_SpriteBridge.o buildcache\compiled\com_am1goo_playdate4j_sdk_SoundBridge.o buildcache\compiled\com_am1goo_playdate4j_sdk_SysBridge.o -Wl,--add-stdcall-alias
+g++ -shared -o pd4j_engine\lib\pd4j_bridge.dll buildcache\compiled\pd4j_api.o buildcache\compiled\com_am1goo_playdate4j_sdk_ApiBridge.o buildcache\compiled\com_am1goo_playdate4j_sdk_FilesystemBridge.o buildcache\compiled\com_am1goo_playdate4j_sdk_DisplayBridge.o buildcache\compiled\com_am1goo_playdate4j_sdk_InputBridge.o buildcache\compiled\com_am1goo_playdate4j_sdk_GraphicsBridge.o buildcache\compiled\com_am1goo_playdate4j_sdk_SpriteBridge.o buildcache\compiled\com_am1goo_playdate4j_sdk_SoundBridge.o buildcache\compiled\com_am1goo_playdate4j_sdk_SoundBridge_AudioSampleBridge.o buildcache\compiled\com_am1goo_playdate4j_sdk_SoundBridge_ChannelBridge.o buildcache\compiled\com_am1goo_playdate4j_sdk_SoundBridge_FilePlayerBridge.o buildcache\compiled\com_am1goo_playdate4j_sdk_SoundBridge_SourceBridge.o buildcache\compiled\com_am1goo_playdate4j_sdk_SysBridge.o -Wl,--add-stdcall-alias
 if %ERRORLEVEL% NEQ 0 EXIT /B 1
 
 cd %CWD%

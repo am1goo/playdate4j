@@ -18,6 +18,7 @@ public class FilesystemBridge {
 	public native long open(String path, int mode);
 	public native int close(long filePtr);
 	public native int flush(long filePtr);
+	public native int seek(long filePtr, int pos, int whence);
 	public native int tell(long filePtr);
 	
 	public static class FileStat {
