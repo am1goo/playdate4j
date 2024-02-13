@@ -7,12 +7,7 @@ public class JSprite implements IObject {
 
 	private State state;
 	private LCDSprite nativeSprite;
-	
-	@Override
-	public State getState() {
-		return state;
-	}
-	
+
 	@Override
 	public void onCreate() {
 		if (state != State.None)
@@ -35,5 +30,11 @@ public class JSprite implements IObject {
 	public void update() {
 		if (state != State.Created)
 			return;
+	}
+
+	public enum State {
+		None,
+		Created,
+		Destroyed
 	}
 }

@@ -9,6 +9,14 @@ public class Sys {
     private static final PDDateTime dateTime = new PDDateTime();
 
     /* logging */
+    public static void log(Object object) {
+        if (object == null) {
+            log("null");
+            return;
+        }
+        log(object.toString());
+    }
+
     public static void log(String log) {
         System.out.println(log);
         bridge.logToConsole(log);

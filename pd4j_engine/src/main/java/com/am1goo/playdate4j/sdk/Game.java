@@ -91,6 +91,12 @@ public class Game {
             Sys.logError(ex);
         }
         try {
+            cycle.ui();
+        }
+        catch (Exception ex) {
+            Sys.logError(ex);
+        }
+        try {
             engine.afterLoop();
         }
         catch (Exception ex) {
