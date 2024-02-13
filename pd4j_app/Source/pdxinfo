@@ -1,5 +1,0 @@
-name=App Name
-author=Pavel "am1goo" Shestakov
-description=Template for Java-wrapped games
-bundleID=com.am1goo.playdate4j.example
-imagePath=
