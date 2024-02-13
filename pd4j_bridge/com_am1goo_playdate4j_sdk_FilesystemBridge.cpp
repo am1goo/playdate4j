@@ -132,6 +132,20 @@ JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_FilesystemBridge_flush
 	return ret;
 }
 
+JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_FilesystemBridge_read
+  (JNIEnv* env, jobject thisObject, jlong file_ptr, jbyteArray buf_array, jlong len_value) {
+	PlaydateAPI* api = pd4j_get_api(env);
+	if (api == NULL)
+		return FS_ERR;
+	
+	SDFile* file = reinterpret_cast<SDFile*>(file_ptr);
+	jbyte* buf = env->GetByteArrayElements(buf_array, 0);
+	unsigned int len = static_cast<unsigned int>(len_value);
+	int ret = api->file->read(file, buf, len);
+	env->ReleaseByteArrayElements(buf_array, buf, 0);
+	return ret;
+}
+
 JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_FilesystemBridge_seek
   (JNIEnv* env, jobject thisObject, jlong file_ptr, jint pos, jint whence) {
 	PlaydateAPI* api = pd4j_get_api(env);
@@ -159,5 +173,19 @@ JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_FilesystemBridge_tell
 		const char* err = api->file->geterr();
 		api->system->error(err);
 	}
+	return ret;
+}
+
+JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_FilesystemBridge_write
+  (JNIEnv*  env, jobject thisObject, jlong file_ptr, jbyteArray buf_array, jlong len_value) {
+	PlaydateAPI* api = pd4j_get_api(env);
+	if (api == NULL)
+		return FS_ERR;
+	
+	SDFile* file = reinterpret_cast<SDFile*>(file_ptr);
+	jbyte* buf = env->GetByteArrayElements(buf_array, 0);
+	unsigned int len = static_cast<unsigned int>(len_value);
+	int ret = api->file->write(file, buf, len);
+	env->ReleaseByteArrayElements(buf_array, buf, 0);
 	return ret;
 }

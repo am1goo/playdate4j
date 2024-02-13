@@ -1,5 +1,7 @@
 package com.am1goo.playdate4j.sdk;
 
+import com.am1goo.playdate4j.sdk.Graphics.PDStringEncoding;
+
 public class GraphicsBridge {
 
     static {
@@ -43,13 +45,17 @@ public class GraphicsBridge {
     /* bitmap tables */
 
     /* fonts & text */
-    public native void drawText(String text, int x, int y);
-    public native short getFontHeight(long fontPtr);
-    public native long loadFont(String path);
     public native void setFont(long fontPtr);
     public native void setTextTracking(int tracking);
     public native int getTextTracking();
     public native void setTextLeading(int leading);
+    public native void drawText(String text, int len, int encoding, int x, int y);
+    public native short getFontHeight(long fontPtr);
+    public native long getFontPage(long fontPtr, long c);
+    public native long getPageGlyph(long pagePtr, long c);
+    public native int getGlyphKerning(long glyphPtr, long c1, long c2);
+    public native int getTextWidth(long fontPtr, String text, int len, int encoding, int tracking);
+    public native long loadFont(String path);
 
     /* geometry */
     public native void drawEllipse(int x, int y, int width, int height, int lineWidth, float startAngle, float endAngle, int color);
@@ -58,6 +64,7 @@ public class GraphicsBridge {
     public native void drawRect(int x, int y, int width, int height, int color);
     public native void fillRect(int x, int y, int width, int height, int color);
     public native void fillTriangle(int x1, int y1, int x2, int y2, int x3, int y3, int color);
+    public native void fillPolygon(int nPoints, int[] points, int color, int fillrule);
     
     /* miscellaneous */
     public native void clear(int mode);

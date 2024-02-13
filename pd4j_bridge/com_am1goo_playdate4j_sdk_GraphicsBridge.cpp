@@ -280,46 +280,6 @@ JNIEXPORT jlong JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_getBitmapM
 	return rotated_ptr;
 }
 
-JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_drawText
-  (JNIEnv* env, jobject thisObject, jstring text, jint x, jint y) {
-	PlaydateAPI* api = pd4j_get_api(env);
-	if (api == NULL)
-		return;
-
-	const char* str = env->GetStringUTFChars(text, 0);
-	api->graphics->drawText(str, strlen(str), kASCIIEncoding, x, y);
-	env->ReleaseStringUTFChars(text, str);
-}
-
-JNIEXPORT jshort JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_getFontHeight
-  (JNIEnv* env, jobject thisObject, jlong font_ptr) {
-	PlaydateAPI* api = pd4j_get_api(env);
-	if (api == NULL)
-		return 0;
-	
-	LCDFont* font = reinterpret_cast<LCDFont*>(font_ptr);
-	return api->graphics->getFontHeight(font);
-}
-
-JNIEXPORT jlong JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_loadFont
-(JNIEnv* env, jobject thisObject, jstring font_path) {
-	PlaydateAPI* api = pd4j_get_api(env);
-	if (api == NULL)
-		return 0;
-
-	const char* font_path_str = env->GetStringUTFChars(font_path, 0);
-	const char* err;
-	LCDFont* font = api->graphics->loadFont(font_path_str, &err);
-	if (font == NULL)
-		api->system->error("%s:%i Couldn't load font %s: %s", __FILE__, __LINE__, font_path_str, err);
-	env->ReleaseStringUTFChars(font_path, font_path_str);
-	if (font == NULL)
-		return 0;
-
-	uintptr_t font_ptr = reinterpret_cast<uintptr_t>(font);
-	return font_ptr;
-}
-
 JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_setFont
 (JNIEnv* env, jobject thisObject, jlong font_ptr) {
 	PlaydateAPI* api = pd4j_get_api(env);
@@ -355,6 +315,96 @@ JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_setTextLead
 		return;
 	
 	api->graphics->setTextLeading(leading);
+}
+
+JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_drawText
+  (JNIEnv* env, jobject thisObject, jstring text_str, jint len, jint encoding_value, jint x, jint y) {
+	PlaydateAPI* api = pd4j_get_api(env);
+	if (api == NULL)
+		return;
+
+	const char* text = env->GetStringUTFChars(text_str, 0);
+	PDStringEncoding encoding = static_cast<PDStringEncoding>(encoding_value);
+	api->graphics->drawText(text, len, encoding, x, y);
+	env->ReleaseStringUTFChars(text_str, text);
+}
+
+JNIEXPORT jshort JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_getFontHeight
+  (JNIEnv* env, jobject thisObject, jlong font_ptr) {
+	PlaydateAPI* api = pd4j_get_api(env);
+	if (api == NULL)
+		return 0;
+	
+	LCDFont* font = reinterpret_cast<LCDFont*>(font_ptr);
+	return api->graphics->getFontHeight(font);
+}
+
+JNIEXPORT jlong JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_getFontPage
+  (JNIEnv* env, jobject thisObject, jlong font_ptr, jlong c) {
+	PlaydateAPI* api = pd4j_get_api(env);
+	if (api == NULL)
+		return 0;
+	
+	LCDFont* font = reinterpret_cast<LCDFont*>(font_ptr);
+	LCDFontPage* page = api->graphics->getFontPage(font, c);
+	uintptr_t page_ptr = reinterpret_cast<uintptr_t>(page);
+	return page_ptr;
+}
+
+JNIEXPORT jlong JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_getPageGlyph
+  (JNIEnv* env, jobject thisObject, jlong page_ptr, jlong c) {
+	PlaydateAPI* api = pd4j_get_api(env);
+	if (api == NULL)
+		return 0;
+	
+	LCDFontPage* page = reinterpret_cast<LCDFontPage*>(page_ptr);
+	int advance;
+	LCDFontGlyph* glyph = api->graphics->getPageGlyph(page, c, NULL, &advance);
+	uintptr_t glyph_ptr = reinterpret_cast<uintptr_t>(glyph);
+	return glyph_ptr;
+}
+
+JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_getGlyphKerning
+  (JNIEnv* env, jobject thisObject, jlong glyph_ptr, jlong c1, jlong c2) {
+	PlaydateAPI* api = pd4j_get_api(env);
+	if (api == NULL)
+		return 0;
+	
+	LCDFontGlyph* glyph = reinterpret_cast<LCDFontGlyph*>(glyph_ptr);
+	return api->graphics->getGlyphKerning(glyph, c1, c2);
+}
+
+JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_getTextWidth
+  (JNIEnv* env, jobject thisObject, jlong font_ptr, jstring text_str, jint len, jint encoding_value, jint tracking) {
+	PlaydateAPI* api = pd4j_get_api(env);
+	if (api == NULL)
+		return 0;
+	
+	LCDFont* font = reinterpret_cast<LCDFont*>(font_ptr);
+	const char* text = env->GetStringUTFChars(text_str, 0);
+	PDStringEncoding encoding = static_cast<PDStringEncoding>(encoding_value);
+	int width = api->graphics->getTextWidth(font, text, len, encoding, tracking);
+	env->ReleaseStringUTFChars(text_str, text);
+	return width;
+}
+  
+JNIEXPORT jlong JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_loadFont
+(JNIEnv* env, jobject thisObject, jstring font_path) {
+	PlaydateAPI* api = pd4j_get_api(env);
+	if (api == NULL)
+		return 0;
+
+	const char* font_path_str = env->GetStringUTFChars(font_path, 0);
+	const char* err;
+	LCDFont* font = api->graphics->loadFont(font_path_str, &err);
+	if (font == NULL)
+		api->system->error("%s:%i Couldn't load font %s: %s", __FILE__, __LINE__, font_path_str, err);
+	env->ReleaseStringUTFChars(font_path, font_path_str);
+	if (font == NULL)
+		return 0;
+
+	uintptr_t font_ptr = reinterpret_cast<uintptr_t>(font);
+	return font_ptr;
 }
 
 JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_drawEllipse
@@ -415,6 +465,19 @@ JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_fillTriangl
 	
 	LCDColor color = static_cast<LCDColor>(color_value);
 	api->graphics->fillTriangle(x1, y1, x2, y2, x3, y3, color);
+}
+
+JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_fillPolygon
+  (JNIEnv* env, jobject thisObject, jint nPoints, jintArray points_array, jint color_value, jint fillrule_value) {
+	PlaydateAPI* api = pd4j_get_api(env);
+	if (api == NULL)
+		return;
+
+	jint* points = env->GetIntArrayElements(points_array, 0);
+	LCDSolidColor color = static_cast<LCDSolidColor>(color_value);
+	LCDPolygonFillRule fillrule = static_cast<LCDPolygonFillRule>(fillrule_value);
+	api->graphics->fillPolygon(nPoints, (int*)points, color, fillrule);
+	env->ReleaseIntArrayElements(points_array, points, 0);
 }
 
 JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_clear

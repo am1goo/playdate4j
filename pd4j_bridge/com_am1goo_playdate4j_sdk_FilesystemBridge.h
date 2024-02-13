@@ -73,6 +73,14 @@ JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_FilesystemBridge_flush
 
 /*
  * Class:     com_am1goo_playdate4j_sdk_FilesystemBridge
+ * Method:    read
+ * Signature: (J[BJ)I
+ */
+JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_FilesystemBridge_read
+  (JNIEnv *, jobject, jlong, jbyteArray, jlong);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_FilesystemBridge
  * Method:    seek
  * Signature: (JII)I
  */
@@ -86,6 +94,14 @@ JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_FilesystemBridge_seek
  */
 JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_FilesystemBridge_tell
   (JNIEnv *, jobject, jlong);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_FilesystemBridge
+ * Method:    write
+ * Signature: (J[BJ)I
+ */
+JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_FilesystemBridge_write
+  (JNIEnv *, jobject, jlong, jbyteArray, jlong);
 
 #ifdef __cplusplus
 }

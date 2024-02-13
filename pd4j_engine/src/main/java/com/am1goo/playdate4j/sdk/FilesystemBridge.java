@@ -18,8 +18,10 @@ public class FilesystemBridge {
 	public native long open(String path, int mode);
 	public native int close(long filePtr);
 	public native int flush(long filePtr);
+	public native int read(long filePtr, byte[] buf, long len);
 	public native int seek(long filePtr, int pos, int whence);
 	public native int tell(long filePtr);
+	public native int write(long filePtr, byte[] buf, long len);
 	
 	public static class FileStat {
 		private boolean isdir;

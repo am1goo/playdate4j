@@ -3,6 +3,7 @@ package com.am1goo.playdate4j.example;
 import com.am1goo.playdate4j.example.game.Ship;
 import com.am1goo.playdate4j.example.game.World;
 import com.am1goo.playdate4j.sdk.*;
+import com.am1goo.playdate4j.sdk.Graphics.PDStringEncoding;
 import com.am1goo.playdate4j.sdk.Input.PDPeripherals;
 
 public class ExampleGameCycle implements GameCycle {
@@ -93,7 +94,7 @@ public class ExampleGameCycle implements GameCycle {
             soundChannel.setVolume(soundChannelVolume * 0.5f);
         }
 
-        soundFilePlayer = Sound.newPlayer();
+        soundFilePlayer = Sound.newFilePlayer();
         if (soundFilePlayer != null) {
             soundFilePlayer.play(0);
             boolean soundFilePlayerIsPlaying = soundFilePlayer.isPlaying();
@@ -172,8 +173,8 @@ public class ExampleGameCycle implements GameCycle {
         Sprite.updateAndDrawSprites();
 
         Graphics.setFont(font);
-        Graphics.drawText("dt: " + Game.getDeltaTime(), 0, 20);
-        Graphics.drawText("Hello Yoba!", x, y);
+        Graphics.drawText("dt: " + Game.getDeltaTime(), PDStringEncoding.ASCIIEncoding, 0, 20);
+        Graphics.drawText("Hello Yoba!", PDStringEncoding.ASCIIEncoding, x, y);
 
         x += dx;
         y += dy;

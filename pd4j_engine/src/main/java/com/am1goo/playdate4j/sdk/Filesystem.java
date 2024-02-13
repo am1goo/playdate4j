@@ -86,6 +86,14 @@ public class Filesystem {
 			return ret == 0;
 		}
 		
+		public int read(byte[] buf) {
+			return read(buf, buf.length);
+		}
+		
+		public int read(byte[] buf, int len) {
+			return bridge.read(ptr.getValue(), buf, len);
+		}
+		
 		public boolean seek(int pos, int whence) {
 			int ret = bridge.seek(ptr.getValue(), pos, whence);
 			return ret == 0;
@@ -94,6 +102,14 @@ public class Filesystem {
 		public boolean tell() {
 			int ret = bridge.tell(ptr.getValue());
 			return ret == 0;
+		}
+		
+		public int write(byte[] buf) {
+			return write(buf, buf.length);
+		}
+		
+		public int write(byte[] buf, int len) {
+			return bridge.write(ptr.getValue(), buf, len);
 		}
 	}
 	

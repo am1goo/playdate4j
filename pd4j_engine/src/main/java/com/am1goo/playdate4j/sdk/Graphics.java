@@ -2,12 +2,14 @@ package com.am1goo.playdate4j.sdk;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Graphics {
 
     private static final GraphicsBridge bridge = new GraphicsBridge();
 
 	private static final List<LCDBitmap> bitmaps = new ArrayList<>();
+	private static final List<LCDFont> fonts = new ArrayList<>();
 	private static LCDBitmap displayBuffer = null;
 
     private static int lcdColumns = -1;
@@ -215,6 +217,18 @@ public class Graphics {
     	bitmaps.add(mask);
     	return mask;
     }
+    
+    public static boolean addBitmap(LCDBitmap bitmap) {
+    	if (bitmap == null)
+    		return false;
+    	
+    	LCDBitmap found = findBitmap(bitmap.ptr.getValue());
+    	if (found != null)
+    		return false;
+    	
+    	bitmaps.add(bitmap);
+    	return true;
+    }
         
     public static LCDBitmap findBitmap(long ptr) {
     	for (LCDBitmap bitmap : bitmaps) {
@@ -232,23 +246,6 @@ public class Graphics {
     /* bitmap tables */
 
     /* fonts & text */
-    public static void drawText(String text, int x, int y) {
-        bridge.drawText(text, x, y);
-    }
-    
-    public static short getFontHeight(LCDFont font) {
-    	return bridge.getFontHeight(font.getPointer().getValue());
-    }
-    
-    public static LCDFont loadFont(String path) {
-        long ptr = bridge.loadFont(path);
-        Api.Pointer pointer = new Api.Pointer(ptr);
-        if (pointer.invalid())
-            return null;
-
-        return new LCDFont(pointer, path);
-    }
-
     public static void setFont(LCDFont font) {
         if (font == null)
             return;
@@ -262,6 +259,46 @@ public class Graphics {
 
     public static int getTextTracking() {
         return bridge.getTextTracking();
+    }
+    
+    public static void drawText(String text, PDStringEncoding encoding, int x, int y) {
+        bridge.drawText(text, text.length(), encoding.getValue(), x, y);
+    }
+    
+    public static short getFontHeight(LCDFont font) {
+    	return bridge.getFontHeight(font.getPointer().getValue());
+    }
+    
+    public static LCDFont loadFont(String path) {
+    	LCDFont found = findFont(path);
+    	if (found != null)
+    		return null;
+    	
+        long ptr = bridge.loadFont(path);
+        found = findFont(ptr);
+        Api.Pointer pointer = new Api.Pointer(ptr);
+        if (pointer.invalid())
+            return null;
+
+        LCDFont font = new LCDFont(pointer, path);
+        fonts.add(font);
+        return font;
+    }
+    
+    private static LCDFont findFont(String path) {
+    	for (LCDFont font : fonts) {
+    		if (Objects.equals(font.getPath(), path))
+    			return font;
+    	}
+    	return null;
+    }
+    
+    private static LCDFont findFont(long ptr) {
+    	for (LCDFont font : fonts) {
+    		if (font.ptr.getValue() == ptr)
+    			return font;
+    	}
+    	return null;
     }
     
     /* geometry */ 
@@ -287,6 +324,10 @@ public class Graphics {
     
     public static void fillTriangle(int x1, int y1, int x2, int y2, int x3, int y3, LCDSolidColor color) {
     	bridge.fillTriangle(x1, y1, x2, y2, x3, y3, color.getValue());
+    }
+    
+    public void fillPolygon(int nPoints, int[] points, LCDSolidColor color, LCDPolygonFillRule fillrule) {
+    	bridge.fillPolygon(nPoints, points, color.getValue(), fillrule.getValue());
     }
     
     /* miscellaneous */
@@ -354,6 +395,21 @@ public class Graphics {
             return value;
         }
     }
+    
+    public enum LCDPolygonFillRule {
+    	FillNonZero(0),
+    	FillEvenOdd(1);
+
+        final int value;
+
+        LCDPolygonFillRule (int value) {
+            this.value = value;
+        }
+
+        public int getValue() {
+            return value;
+        }
+    }
 
     public enum LCDDrawMode {
         Copy(0),
@@ -405,7 +461,9 @@ public class Graphics {
     public static class LCDFont {
 
         private final Api.Pointer ptr;
-        private String path;
+        private final String path;
+        
+        private final List<LCDFontPage> pages = new ArrayList<LCDFontPage>();
 
         public LCDFont(Api.Pointer ptr, String path) {
             this.ptr = ptr;
@@ -418,6 +476,88 @@ public class Graphics {
 
         public String getPath() {
             return path;
+        }
+        
+        public LCDFontPage getFontPage(long c) {
+        	long pagePtr = bridge.getFontPage(ptr.getValue(), c);
+        	LCDFontPage found = findPage(pagePtr);
+        	if (found != null)
+        		return found;
+        	
+        	Api.Pointer pagePointer = new Api.Pointer(pagePtr);
+        	if (pagePointer.invalid())
+        		return null;
+        	
+        	LCDFontPage page = new LCDFontPage(pagePointer);
+        	pages.add(page);
+        	return page;
+        }
+        
+        public int getTextWidth(String text, PDStringEncoding encoding, int tracking) {
+        	return bridge.getTextWidth(ptr.getValue(), text, text.length(), encoding.getValue(), tracking);
+        }
+        
+        private LCDFontPage findPage(long ptr) {
+        	for (LCDFontPage page : pages) {
+        		if (page.ptr.getValue() == ptr)
+        			return page;
+        	}
+        	return null;
+        }
+    }
+    
+    public static class LCDFontPage {
+    	
+    	private final Api.Pointer ptr;
+    	
+    	private final List<LCDFontGlyph> glyphs = new ArrayList<LCDFontGlyph>();
+    	
+    	public LCDFontPage(Api.Pointer ptr) {
+            this.ptr = ptr;
+        }
+         
+        public Api.Pointer getPointer() {
+        	return ptr;
+        }
+        
+        public LCDFontGlyph getPageGlyph(long c) {
+        	long glyphPtr = bridge.getPageGlyph(ptr.getValue(), c);
+        	LCDFontGlyph found = findGlyph(glyphPtr);
+        	if (found != null)
+        		return found;
+        	
+        	Api.Pointer glyphPointer = new Api.Pointer(glyphPtr);
+        	if (glyphPointer.invalid())
+        		return null;
+        	
+        	LCDFontGlyph glyph = new LCDFontGlyph(glyphPointer);
+        	glyphs.add(glyph);
+        	return glyph;
+        }
+        
+        private LCDFontGlyph findGlyph(long ptr) {
+        	for (LCDFontGlyph glyph : glyphs) {
+        		if (glyph.ptr.getValue() == ptr)
+        			return glyph;
+        	}
+        	return null;
+        }
+    }
+    
+    public static class LCDFontGlyph {
+    	
+    	private final Api.Pointer ptr;
+    	
+    	public LCDFontGlyph(Api.Pointer ptr) {
+            this.ptr = ptr;
+        }
+         
+        public Api.Pointer getPointer() {
+        	return ptr;
+        }
+        
+        public int getGlyphKerning(long c1, long c2) {
+        	return bridge.getGlyphKerning(ptr.getValue(), c1, c2);
         }
     }
 
@@ -485,5 +625,21 @@ public class Graphics {
 		public int bottom() {
 			return bottom;
 		}
+	}
+	
+	public enum PDStringEncoding {
+		ASCIIEncoding(0),
+		UTF8Encoding(1),
+		Bit16LEEncoding(2);
+		
+		final int value;
+
+		PDStringEncoding(int value) {
+            this.value = value;
+        }
+
+        public int getValue() {
+            return value;
+        }
 	}
 }

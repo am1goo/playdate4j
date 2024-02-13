@@ -217,30 +217,6 @@ JNIEXPORT jlong JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_getBitmapM
 
 /*
  * Class:     com_am1goo_playdate4j_sdk_GraphicsBridge
- * Method:    drawText
- * Signature: (Ljava/lang/String;II)V
- */
-JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_drawText
-  (JNIEnv *, jobject, jstring, jint, jint);
-
-/*
- * Class:     com_am1goo_playdate4j_sdk_GraphicsBridge
- * Method:    getFontHeight
- * Signature: (J)S
- */
-JNIEXPORT jshort JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_getFontHeight
-  (JNIEnv *, jobject, jlong);
-
-/*
- * Class:     com_am1goo_playdate4j_sdk_GraphicsBridge
- * Method:    loadFont
- * Signature: (Ljava/lang/String;)J
- */
-JNIEXPORT jlong JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_loadFont
-  (JNIEnv *, jobject, jstring);
-
-/*
- * Class:     com_am1goo_playdate4j_sdk_GraphicsBridge
  * Method:    setFont
  * Signature: (J)V
  */
@@ -270,6 +246,62 @@ JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_getTextTrac
  */
 JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_setTextLeading
   (JNIEnv *, jobject, jint);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_GraphicsBridge
+ * Method:    drawText
+ * Signature: (Ljava/lang/String;IIII)V
+ */
+JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_drawText
+  (JNIEnv *, jobject, jstring, jint, jint, jint, jint);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_GraphicsBridge
+ * Method:    getFontHeight
+ * Signature: (J)S
+ */
+JNIEXPORT jshort JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_getFontHeight
+  (JNIEnv *, jobject, jlong);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_GraphicsBridge
+ * Method:    getFontPage
+ * Signature: (JJ)J
+ */
+JNIEXPORT jlong JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_getFontPage
+  (JNIEnv *, jobject, jlong, jlong);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_GraphicsBridge
+ * Method:    getPageGlyph
+ * Signature: (JJ)J
+ */
+JNIEXPORT jlong JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_getPageGlyph
+  (JNIEnv *, jobject, jlong, jlong);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_GraphicsBridge
+ * Method:    getGlyphKerning
+ * Signature: (JJJ)I
+ */
+JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_getGlyphKerning
+  (JNIEnv *, jobject, jlong, jlong, jlong);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_GraphicsBridge
+ * Method:    getTextWidth
+ * Signature: (JLjava/lang/String;III)I
+ */
+JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_getTextWidth
+  (JNIEnv *, jobject, jlong, jstring, jint, jint, jint);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_GraphicsBridge
+ * Method:    loadFont
+ * Signature: (Ljava/lang/String;)J
+ */
+JNIEXPORT jlong JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_loadFont
+  (JNIEnv *, jobject, jstring);
 
 /*
  * Class:     com_am1goo_playdate4j_sdk_GraphicsBridge
@@ -318,6 +350,14 @@ JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_fillRect
  */
 JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_fillTriangle
   (JNIEnv *, jobject, jint, jint, jint, jint, jint, jint, jint);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_GraphicsBridge
+ * Method:    fillPolygon
+ * Signature: (I[III)V
+ */
+JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_fillPolygon
+  (JNIEnv *, jobject, jint, jintArray, jint, jint);
 
 /*
  * Class:     com_am1goo_playdate4j_sdk_GraphicsBridge
