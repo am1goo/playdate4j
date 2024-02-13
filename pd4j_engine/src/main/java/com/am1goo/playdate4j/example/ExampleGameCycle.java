@@ -17,9 +17,6 @@ public class ExampleGameCycle implements GameCycle {
 
     private Graphics.LCDBitmap menuBackground;
     private Graphics.LCDFont font;
-    private Sound.SoundChannel soundChannel;
-    private Sound.FilePlayer soundFilePlayer;
-    private Sound.AudioSample soundAudioSample;
 
     int x = (400 - TEXT_WIDTH) / 2;
     int y = (240 - TEXT_HEIGHT) / 2;
@@ -86,51 +83,82 @@ public class ExampleGameCycle implements GameCycle {
 
         world.setPivot(player);
 
-        soundChannel = Sound.newChannel();
-        Sound.addChannel(soundChannel);
-        if (soundChannel != null) {
-            float soundChannelVolume = soundChannel.getVolume();
-            Sys.log("start: [Sound.SoundChannel] volume=" + soundChannelVolume);
-            soundChannel.setVolume(soundChannelVolume * 0.5f);
+        Sound.SoundChannel channel = Sound.newChannel();
+        if (channel != null) {
+            Sound.addChannel(channel);
+            float volume = channel.getVolume();
+            Sys.log("start: [Sound.SoundChannel] volume=" + volume);
+            channel.setVolume(volume * 0.5f);
+            Sound.removeChannel(channel);
+            channel.free();
+            channel = null;
         }
 
-        soundFilePlayer = Sound.newFilePlayer();
-        if (soundFilePlayer != null) {
-            soundFilePlayer.play(0);
-            boolean soundFilePlayerIsPlaying = soundFilePlayer.isPlaying();
-            Sys.log("start: [Sound.FilePlayer] isPlaying=" + soundFilePlayerIsPlaying);
-            soundFilePlayer.pause();
-            soundFilePlayerIsPlaying = soundFilePlayer.isPlaying();
-            Sys.log("start: [Sound.FilePlayer] isPlaying=" + soundFilePlayerIsPlaying);
-            float soundFilePlayerLength = soundFilePlayer.getLength();
-            Sys.log("start: [Sound.FilePlayer] length=" + soundFilePlayerLength);
+        Sound.FilePlayer filePlayer = Sound.newFilePlayer();
+        if (filePlayer != null) {
+            filePlayer.play(0);
+            boolean isPlaying = filePlayer.isPlaying();
+            Sys.log("start: [Sound.FilePlayer] isPlaying=" + isPlaying);
+            filePlayer.pause();
+            isPlaying = filePlayer.isPlaying();
+            Sys.log("start: [Sound.FilePlayer] isPlaying=" + isPlaying);
+            float length = filePlayer.getLength();
+            Sys.log("start: [Sound.FilePlayer] length=" + length);
+            filePlayer.free();
+            filePlayer = null;
         }
 
-        soundAudioSample = Sound.newSampleBuffer(10);
-        if (soundAudioSample != null) {
-            float soundAudioSampleLength = soundAudioSample.getLength();
-            Sys.log("start: [Sound.AudioSample] length=" + soundAudioSampleLength);
+        Sound.AudioSample audioSample = Sound.newSampleBuffer(10);
+        if (audioSample != null) {
+            float length = audioSample.getLength();
+            Sys.log("start: [Sound.AudioSample] length=" + length);
+            audioSample.free();
+            audioSample = null;
+        }
+
+        Sound.SamplePlayer samplePlayer = Sound.newSamplePlayer();
+        if (samplePlayer != null) {
+            float length = samplePlayer.getLength();
+            Sys.log("start: [Sound.SamplePlayer] length=" + length);
+            samplePlayer.free();
+            samplePlayer = null;
+        }
+
+        Sound.PDSynthEnvelope envelope = Sound.newEnvelope(0, 0, 0, 0);
+        if (envelope != null) {
+            float value = envelope.getValue();
+            Sys.log("start: [Sound.PDSynthEnvelop] value=" + value);
+            envelope.free();
+            envelope = null;
+        }
+
+        Sound.PDSynthLFO lfo = Sound.newLFO(Sound.LFOType.Square);
+        if (lfo != null) {
+            float value = lfo.getValue();
+            Sys.log("start: [Sound.PDSynthLFO] value=" + value);
+            lfo.free();
+            lfo = null;
+        }
+
+        Sound.PDSynth synth = Sound.newSynth();
+        if (synth != null) {
+            int parameterCount = synth.getParameterCount();
+            Sys.log("start: [Sound.PDSynth] parameterCount=" + parameterCount);
+            synth.free();
+            synth = null;
+        }
+
+        Video.LCDVideoPlayer video = Video.loadVideo("test_path");
+        if (video != null) {
+            VideoBridge.PDVideoInfo info = video.getInfo();
+            Sys.log("start: [Video.LCDVideoPlayer] width=" + info.width() + ", height=" + info.height());
+            video.free();
+            video = null;
         }
     }
 
     @Override
     public void stop() {
-        if (soundChannel != null) {
-            Sound.removeChannel(soundChannel);
-            soundChannel.free();
-            soundChannel = null;
-        }
-
-        if (soundFilePlayer != null) {
-            soundFilePlayer.free();
-            soundFilePlayer = null;
-        }
-
-        if (soundAudioSample != null) {
-            soundAudioSample.free();
-            soundAudioSample = null;
-        }
-
         if (player != null) {
             player.free();
             player = null;
