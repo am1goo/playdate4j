@@ -8,13 +8,13 @@ Java framework to create games on `Playdate` console. \
 
 ## C API support
 =100%= `Logging API` \
-=000%= `System Menu API` \
-=080%= `Time and Date API` \
-=090%= `Miscellaneous API` \
-=000%= `Audio API` \
+=040%= `System Menu API` \
+=100%= `Time and Date API` \
+=099%= `Miscellaneous API` \
+=070%= `Audio API` \
 =100%= `Display API` \
 =090%= `Graphics API` \
-=000%= `Video API` \
+=100%= `Video API` \
 =100%= `Input API` \
 =100%= `Device Auto Lock API` \
 =100%= `System Sounds API` \
