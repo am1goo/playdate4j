@@ -2,7 +2,7 @@
 #include "pd4j_api.h"
 #include <pd_api.h>
 
-JNIEXPORT jlong JNICALL Java_com_am1goo_playdate4j_sdk_SoundBridge_00024LFOBridge_newLFO
+JNIEXPORT jlong JNICALL Java_com_am1goo_playdate4j_sdk_SoundBridge_00024PDSynthLFOBridge_newLFO
   (JNIEnv* env, jobject thisObject, jint type_value) {
 	PlaydateAPI* api = pd4j_get_api(env);
 	if (api == NULL)
@@ -14,7 +14,7 @@ JNIEXPORT jlong JNICALL Java_com_am1goo_playdate4j_sdk_SoundBridge_00024LFOBridg
 	return lfo_ptr;
 }
 
-JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SoundBridge_00024LFOBridge_freeLFO
+JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SoundBridge_00024PDSynthLFOBridge_freeLFO
   (JNIEnv* env, jobject thisObject, jlong lfo_ptr) {
 	PlaydateAPI* api = pd4j_get_api(env);
 	if (api == NULL)
