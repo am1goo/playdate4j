@@ -37,17 +37,27 @@ jmethodID class_game_method_loop;
 jmethodID class_game_method_get_frame_count;
 jmethodID class_game_method_is_cycling;
 
-JavaVM* create_vm();
-JavaVM* create_vm()
+JavaVM* create_vm(const char* path_to_jar, const char* path_to_libs);
+JavaVM* create_vm(const char* path_to_jar, const char* path_to_libs)
 {
     JavaVM* jvm;
     JNIEnv* env;
 
     JavaVMInitArgs vm_args;
 
+    char* java_class_path_prefix = (char*)"-Djava.class.path=";
+    char* java_class_path = (char*)malloc(strlen(java_class_path_prefix) + strlen(path_to_jar));
+    strcpy(java_class_path, java_class_path_prefix);
+    strcat(java_class_path, path_to_jar);
+
+    char* java_library_path_prefix = (char*)"-Djava.library.path=";
+    char* java_library_path = (char*)malloc(strlen(java_library_path_prefix) + strlen(path_to_libs));
+    strcpy(java_library_path, java_library_path_prefix);
+    strcat(java_library_path, path_to_libs);
+
     JavaVMOption* options = new JavaVMOption[2];
-    options[0].optionString = (char*)"-Djava.class.path=D:\\Projects\\pd4j\\pd4j_engine\\out\\artifacts\\pd4j_engine_jar\\pd4j_engine.jar";
-    options[1].optionString = (char*)"-Djava.library.path=D:\\Projects\\pd4j\\pd4j_engine\\lib";
+    options[0].optionString = java_class_path;
+    options[1].optionString = java_library_path;
     vm_args.version = JNI_VERSION_1_6;
     vm_args.nOptions = 2;
     vm_args.options = options;
@@ -66,9 +76,9 @@ JavaVM* create_vm()
     return jvm;
 }
 
-int pd4j_init(PlaydateAPI* api)
+int pd4j_init(PlaydateAPI* api, Options* options)
 {
-    jvm = create_vm();
+    jvm = create_vm(options->pathToJar, options->pathToLibs);
     initialized = jvm != NULL;
     if (!initialized)
         return PD4J_FAILED;
@@ -94,10 +104,12 @@ int pd4j_init(PlaydateAPI* api)
     class_game_method_get_frame_count = env->GetStaticMethodID(class_game, "getFrameCount", "()I");
     class_game_method_is_cycling = env->GetStaticMethodID(class_game, "isCycling", "()Z");
 
-    jstring engine_class_name = env->NewStringUTF("com.am1goo.playdate4j.engine.JGameEngine");
+    const char* engine_class_name_str = "com.am1goo.playdate4j.engine.JGameEngine";
+    jstring engine_class_name = env->NewStringUTF(engine_class_name_str);
     env->CallVoidMethod(class_game, class_game_method_engine, engine_class_name);
 
-    jstring cycle_class_name = env->NewStringUTF("com.am1goo.playdate4j.example.ExampleGameCycle");
+    const char* cycle_class_name_str = options->gameCycleClass;
+    jstring cycle_class_name = env->NewStringUTF(cycle_class_name_str);
     env->CallVoidMethod(class_game, class_game_method_create, cycle_class_name);
 
     env->CallVoidMethod(class_game, class_game_method_init);

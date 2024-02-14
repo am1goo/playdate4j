@@ -7,7 +7,16 @@
 #define EXTERNC
 #endif
 
-EXTERNC int pd4j_init(PlaydateAPI* api);
+typedef struct Options Options;
+
+struct Options
+{
+	const char* pathToJar;
+	const char* pathToLibs;
+	const char* gameCycleClass;
+};
+
+EXTERNC int pd4j_init(PlaydateAPI* api, Options* options);
 EXTERNC int pd4j_update(int* redraw);
 EXTERNC int pd4j_shutdown();
 
