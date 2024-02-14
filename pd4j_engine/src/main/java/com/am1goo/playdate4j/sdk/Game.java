@@ -29,7 +29,7 @@ public class Game {
         create(cycle);
     }
     
-    public static <T extends GameCycle> void create(Class<T> clazz) throws NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+    public static <T extends GameCycle> void create(Class<T> clazz) {
     	GameCycle cycle = newCycle(clazz);
     	create(cycle);
     }
@@ -47,7 +47,6 @@ public class Game {
             Sys.logError(ex);
         }
         try {
-
             cycle.start();
         }
         catch (Exception ex) {
@@ -119,48 +118,92 @@ public class Game {
     }
     
     @SuppressWarnings("unchecked")
-	private static <T extends GameEngine> GameEngine newEngine(String className) throws ClassNotFoundException, NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-    	 Class<T> clazz = (Class<T>) Class.forName(className);
-    	 return newEngine(clazz);
+	private static <T extends GameEngine> GameEngine newEngine(String className) {
+        try {
+            Class<T> clazz = (Class<T>) Class.forName(className);
+            return newEngine(clazz);
+        }
+        catch (Error err) {
+            Sys.logError(err);
+            return null;
+        }
+        catch (Exception ex) {
+            Sys.logError(ex);
+            return null;
+        }
     }
     
     @SuppressWarnings("deprecation")
-	private static <T extends GameEngine> GameEngine newEngine(Class<T> clazz) throws NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+	private static <T extends GameEngine> GameEngine newEngine(Class<T> clazz) {
+        if (clazz == null)
+            return null;
 
-        Constructor<T> cctr = clazz.getDeclaredConstructor();
-        boolean accessibleChanged = false;
-        if (!cctr.isAccessible()) {
-            cctr.setAccessible(true);
-            accessibleChanged = true;
+        try {
+            Constructor<T> cctr = clazz.getDeclaredConstructor();
+            boolean accessibleChanged = false;
+            if (!cctr.isAccessible()) {
+                cctr.setAccessible(true);
+                accessibleChanged = true;
+            }
+
+            GameEngine engine = (GameEngine) cctr.newInstance();
+            if (accessibleChanged)
+                cctr.setAccessible(false);
+
+            return engine;
         }
-
-        GameEngine engine = (GameEngine) cctr.newInstance();
-        if (accessibleChanged)
-            cctr.setAccessible(false);
-        
-        return engine;
+        catch (Error err) {
+            Sys.logError(err);
+            return null;
+        }
+        catch (Exception ex) {
+            Sys.logError(ex);
+            return null;
+        }
     }
 
     @SuppressWarnings("unchecked")
-    private static <T extends GameCycle> GameCycle newCycle(String className) throws ClassNotFoundException, NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-    	 Class<T> clazz = (Class<T>) Class.forName(className);
-    	 return newCycle(clazz);
+    private static <T extends GameCycle> GameCycle newCycle(String className) {
+        try {
+            Class<T> clazz = (Class<T>) Class.forName(className);
+            return newCycle(clazz);
+        }
+        catch (Error err) {
+            Sys.logError(err);
+            return null;
+        }
+        catch (Exception ex) {
+            Sys.logError(ex);
+            return null;
+        }
     }
 
     @SuppressWarnings("deprecation")
-    private static <T extends GameCycle> GameCycle newCycle(Class<T> clazz) throws NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+    private static <T extends GameCycle> GameCycle newCycle(Class<T> clazz) {
+        if (clazz == null)
+            return null;
 
-        Constructor<T> cctr = clazz.getDeclaredConstructor();
-        boolean accessibleChanged = false;
-        if (!cctr.isAccessible()) {
-            cctr.setAccessible(true);
-            accessibleChanged = true;
+        try {
+            Constructor<T> cctr = clazz.getDeclaredConstructor();
+            boolean accessibleChanged = false;
+            if (!cctr.isAccessible()) {
+                cctr.setAccessible(true);
+                accessibleChanged = true;
+            }
+
+            GameCycle cycle = cctr.newInstance();
+            if (accessibleChanged)
+                cctr.setAccessible(false);
+
+            return cycle;
         }
-
-        GameCycle cycle = (GameCycle) cctr.newInstance();
-        if (accessibleChanged)
-            cctr.setAccessible(false);
-        
-        return cycle;
+        catch (Error err) {
+            Sys.logError(err);
+            return null;
+        }
+        catch (Exception ex) {
+            Sys.logError(ex);
+            return null;
+        }
     }
 }
