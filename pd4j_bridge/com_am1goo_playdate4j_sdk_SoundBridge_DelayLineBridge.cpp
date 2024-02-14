@@ -3,7 +3,7 @@
 #include <pd_api.h>
 
 JNIEXPORT jlong JNICALL Java_com_am1goo_playdate4j_sdk_SoundBridge_00024DelayLineBridge_newDelayLine
-  (JNIEnv* env, jobject thisObject, jint length, jint stereo) {
+  (JNIEnv* env, jobject thisObject, jint length, jboolean stereo) {
 	PlaydateAPI* api = pd4j_get_api(env);
 	if (api == NULL)
 		return 0;

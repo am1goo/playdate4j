@@ -466,7 +466,7 @@ public class Sound {
 		return null;
 	}
 	
-	public static DelayLine newDelayLine(int length, int stereo) {
+	public static DelayLine newDelayLine(int length, boolean stereo) {
 		long ptr = bridge.delayLine().newDelayLine(length, stereo);
 		Api.Pointer pointer = new Api.Pointer(ptr);
 		if (pointer.invalid())
@@ -497,7 +497,7 @@ public class Sound {
 		if (tap.ptr.invalid())
 			return null;
 		
-		bridge.delayLine().freeDelayLine(tap.ptr.getValue());
+		bridge.delayLineTap().freeTap(tap.ptr.getValue());
 		tap.ptr.invalidate();
 		delayLineTaps.remove(tap);
 		return null;

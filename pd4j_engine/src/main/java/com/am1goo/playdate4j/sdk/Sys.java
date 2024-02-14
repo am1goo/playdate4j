@@ -22,12 +22,8 @@ public class Sys {
         bridge.logToConsole(log);
     }
     
-    public static void logError(Error err) {
-        logError(err.toString());
-    }
-
-    public static void logError(Exception ex) {
-    	logError(ex.toString());
+    public static void logError(Throwable throwable) {
+        logError(throwable.toString());
     }
 
     public static void logError(String error) {

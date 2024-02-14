@@ -43,13 +43,13 @@ public class Game {
         try {
             engine.start();
         }
-        catch (Exception ex) {
+        catch (Throwable ex) {
             Sys.logError(ex);
         }
         try {
             cycle.start();
         }
-        catch (Exception ex) {
+        catch (Throwable ex) {
             Sys.logError(ex);
         }
         Sys.log("init: finished");
@@ -60,13 +60,13 @@ public class Game {
         try {
             cycle.stop();
         }
-        catch (Exception ex) {
+        catch (Throwable ex) {
             Sys.logError(ex);
         }
         try {
             engine.stop();
         }
-        catch (Exception ex) {
+        catch (Throwable ex) {
             Sys.logError(ex);
         }
         frameCount = 0;
@@ -80,25 +80,25 @@ public class Game {
         try {
             engine.beforeLoop();
         }
-        catch (Exception ex) {
+        catch (Throwable ex) {
             Sys.logError(ex);
         }
         try {
             cycle.loop();
         }
-        catch (Exception ex) {
+        catch (Throwable ex) {
             Sys.logError(ex);
         }
         try {
             cycle.ui();
         }
-        catch (Exception ex) {
+        catch (Throwable ex) {
             Sys.logError(ex);
         }
         try {
             engine.afterLoop();
         }
-        catch (Exception ex) {
+        catch (Throwable ex) {
             Sys.logError(ex);
         }
         frameCount++;
@@ -123,11 +123,7 @@ public class Game {
             Class<T> clazz = (Class<T>) Class.forName(className);
             return newEngine(clazz);
         }
-        catch (Error err) {
-            Sys.logError(err);
-            return null;
-        }
-        catch (Exception ex) {
+        catch (Throwable ex) {
             Sys.logError(ex);
             return null;
         }
@@ -152,11 +148,7 @@ public class Game {
 
             return engine;
         }
-        catch (Error err) {
-            Sys.logError(err);
-            return null;
-        }
-        catch (Exception ex) {
+        catch (Throwable ex) {
             Sys.logError(ex);
             return null;
         }
@@ -168,11 +160,7 @@ public class Game {
             Class<T> clazz = (Class<T>) Class.forName(className);
             return newCycle(clazz);
         }
-        catch (Error err) {
-            Sys.logError(err);
-            return null;
-        }
-        catch (Exception ex) {
+        catch (Throwable ex) {
             Sys.logError(ex);
             return null;
         }
@@ -197,11 +185,7 @@ public class Game {
 
             return cycle;
         }
-        catch (Error err) {
-            Sys.logError(err);
-            return null;
-        }
-        catch (Exception ex) {
+        catch (Throwable ex) {
             Sys.logError(ex);
             return null;
         }

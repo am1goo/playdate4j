@@ -10,10 +10,10 @@ extern "C" {
 /*
  * Class:     com_am1goo_playdate4j_sdk_SoundBridge_DelayLineBridge
  * Method:    newDelayLine
- * Signature: (II)J
+ * Signature: (IZ)J
  */
 JNIEXPORT jlong JNICALL Java_com_am1goo_playdate4j_sdk_SoundBridge_00024DelayLineBridge_newDelayLine
-  (JNIEnv *, jobject, jint, jint);
+  (JNIEnv *, jobject, jint, jboolean);
 
 /*
  * Class:     com_am1goo_playdate4j_sdk_SoundBridge_DelayLineBridge

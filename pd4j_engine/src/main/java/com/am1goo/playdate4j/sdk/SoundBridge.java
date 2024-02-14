@@ -343,7 +343,7 @@ public class SoundBridge {
 	/* DelayLine */
 	public class DelayLineBridge {
 		
-		public native long newDelayLine(int length, int stereo);
+		public native long newDelayLine(int length, boolean stereo);
 		public native void freeDelayLine(long linePtr);
 		public native void setLength(long linePtr, int frames);
 		public native void setFeedback(long linePtr, float fb);
