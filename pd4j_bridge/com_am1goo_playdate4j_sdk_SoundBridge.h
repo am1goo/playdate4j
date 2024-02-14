@@ -9,6 +9,14 @@ extern "C" {
 #endif
 /*
  * Class:     com_am1goo_playdate4j_sdk_SoundBridge
+ * Method:    getError
+ * Signature: ()Ljava/lang/String;
+ */
+JNIEXPORT jstring JNICALL Java_com_am1goo_playdate4j_sdk_SoundBridge_getError
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_SoundBridge
  * Method:    getCurrentTime
  * Signature: ()I
  */

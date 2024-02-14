@@ -2,6 +2,16 @@
 #include "pd4j_api.h"
 #include <pd_api.h>
 
+JNIEXPORT jstring JNICALL Java_com_am1goo_playdate4j_sdk_SoundBridge_getError
+  (JNIEnv* env, jobject thisObject) {
+	PlaydateAPI* api = pd4j_get_api(env);
+	if (api == NULL)
+		return NULL;
+	
+	const char* err = api->sound->getError();
+	return env->NewStringUTF(err);
+}
+
 JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_SoundBridge_getCurrentTime
   (JNIEnv* env, jobject thisObject) {
 	PlaydateAPI* api = pd4j_get_api(env);

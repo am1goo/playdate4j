@@ -3,6 +3,7 @@ package com.am1goo.playdate4j.sdk;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.am1goo.playdate4j.sdk.SoundBridge.Note;
 import com.am1goo.playdate4j.sdk.SoundBridge.StereoVolume;
 
 public class Sound {
@@ -14,17 +15,28 @@ public class Sound {
 	private static final List<AudioSample> audioSamples = new ArrayList<AudioSample>();
 	private static final List<FilePlayer> filePlayers = new ArrayList<FilePlayer>();
 	private static final List<SamplePlayer> samplePlayers = new ArrayList<SamplePlayer>();
-	private static final List<PDSynth> pdsynths = new ArrayList<PDSynth>();
+	private static final List<PDSynth> synths = new ArrayList<PDSynth>();
+	private static final List<PDSynthInstrument> instruments = new ArrayList<PDSynthInstrument>();
 	private static final List<PDSynthLFO> lfos = new ArrayList<PDSynthLFO>();
 	private static final List<PDSynthEnvelope> envelopes = new ArrayList<PDSynthEnvelope>();
 	private static final List<OnePoleFilter> onePoleFilters = new ArrayList<OnePoleFilter>();
 	private static final List<TwoPoleFilter> twoPoleFilters = new ArrayList<TwoPoleFilter>();
 	private static final List<BitCrusher> bitCrushers = new ArrayList<BitCrusher>();
 	private static final List<RingModulator> ringModulators = new ArrayList<RingModulator>();
+	private static final List<Overdrive> overdrives = new ArrayList<Overdrive>(); 
+	private static final List<DelayLine> delayLines = new ArrayList<DelayLine>();
+	private static final List<DelayLineTap> delayLineTaps = new ArrayList<DelayLineTap>();
+	private static final List<SoundSequence> soundSequences = new ArrayList<SoundSequence>();
+	private static final List<ControlSignal> controlSignals = new ArrayList<ControlSignal>();
+	private static final List<SequenceTrack> sequenceTracks = new ArrayList<SequenceTrack>();
 	
 	private static SoundChannel defaultChannel = null;
 	
 	/* audio */
+	public static String getError() {
+		return bridge.getError();
+	}
+	
 	public static int getCurrentTime() {
 		return bridge.getCurrentTime();
 	}
@@ -210,7 +222,7 @@ public class Sound {
 			return null;
 		
 		PDSynth synth = new PDSynth(pointer);
-		pdsynths.add(synth);
+		synths.add(synth);
 		return synth;
 	}
 	
@@ -223,15 +235,47 @@ public class Sound {
 		
 		bridge.synth().freeSynth(synth.ptr.getValue());
 		synth.ptr.invalidate();
-		pdsynths.remove(synth);
+		synths.remove(synth);
 		return null;
 	}
 	
 	private static PDSynth findSynth(long ptr) {
-		for (PDSynth synth : pdsynths) {
+		for (PDSynth synth : synths) {
 			if (synth.ptr.getValue() == ptr) {
 				return synth;
 			}
+		}
+		return null;
+	}
+	
+	public static PDSynthInstrument newInstrument() {
+		long ptr = bridge.instrument().newInstrument();
+		Api.Pointer pointer = new Api.Pointer(ptr);
+		if (pointer.invalid())
+			return null;
+		
+		PDSynthInstrument instrument = new PDSynthInstrument(pointer);
+		instruments.add(instrument);
+		return instrument;
+	}
+	
+	public static PDSynthInstrument freeInstrument(PDSynthInstrument instrument) {
+		if (instrument == null)
+			return null;
+		
+		if (instrument.ptr.invalid())
+			return null;
+		
+		bridge.instrument().freeInstrument(instrument.ptr.getValue());
+		instrument.ptr.invalidate();
+		instruments.remove(instrument);
+		return null;
+	}
+	
+	private static PDSynthInstrument findInstrument(long ptr) {
+		for (PDSynthInstrument instrument : instruments) {
+			if (instrument.ptr.getValue() == ptr)
+				return instrument;
 		}
 		return null;
 	}
@@ -395,6 +439,163 @@ public class Sound {
 		bridge.ringModulator().freeRingMod(filter.ptr.getValue());
 		filter.ptr.invalidate();
 		ringModulators.remove(filter);
+		return null;
+	}
+	
+	public static Overdrive newOverdrive() {
+		long ptr = bridge.overdrive().newOverdrive();
+		Api.Pointer pointer = new Api.Pointer(ptr);
+		if (pointer.invalid())
+			return null;
+		
+		Overdrive overdrive = new Overdrive(pointer);
+		overdrives.add(overdrive);
+		return overdrive;
+	}
+	
+	public static Overdrive freeOverdrive(Overdrive overdrive) {
+		if (overdrive == null)
+			return null;
+		
+		if (overdrive.ptr.invalid())
+			return null;
+		
+		bridge.overdrive().freeOverdrive(overdrive.ptr.getValue());
+		overdrive.ptr.invalidate();
+		overdrives.remove(overdrive);
+		return null;
+	}
+	
+	public static DelayLine newDelayLine(int length, int stereo) {
+		long ptr = bridge.delayLine().newDelayLine(length, stereo);
+		Api.Pointer pointer = new Api.Pointer(ptr);
+		if (pointer.invalid())
+			return null;
+		
+		DelayLine delayLine = new DelayLine(pointer);
+		delayLines.add(delayLine);
+		return delayLine;
+	}
+	
+	public static DelayLine freeDelayLine(DelayLine delayLine) {
+		if (delayLine == null)
+			return null;
+		
+		if (delayLine.ptr.invalid())
+			return null;
+		
+		bridge.delayLine().freeDelayLine(delayLine.ptr.getValue());
+		delayLine.ptr.invalidate();
+		delayLines.remove(delayLine);
+		return null;
+	}
+	
+	public static DelayLineTap freeTap(DelayLineTap tap) {
+		if (tap == null)
+			return null;
+		
+		if (tap.ptr.invalid())
+			return null;
+		
+		bridge.delayLine().freeDelayLine(tap.ptr.getValue());
+		tap.ptr.invalidate();
+		delayLineTaps.remove(tap);
+		return null;
+	}
+	
+	private static DelayLineTap findDelayLineTap(long ptr) {
+		for (DelayLineTap tap : delayLineTaps) {
+			if (tap.ptr.getValue() == ptr)
+				return tap;
+		}
+		return null;
+	}
+	
+	public static SoundSequence newSequence() {
+		long ptr = bridge.soundSequence().newSequence();
+		Api.Pointer pointer = new Api.Pointer(ptr);
+		if (pointer.invalid())
+			return null;
+		
+		SoundSequence seq = new SoundSequence(pointer);
+		soundSequences.add(seq);
+		return seq;
+	}
+	
+	public static SoundSequence freeSequence(SoundSequence seq) {
+		if (seq == null)
+			return null;
+		
+		if (seq.ptr.invalid())
+			return null;
+		
+		bridge.soundSequence().freeSequence(seq.ptr.getValue());
+		seq.ptr.invalidate();
+		soundSequences.remove(seq);
+		return null;
+	}
+	
+	private static SequenceTrack findSequenceTrack(long ptr) {
+		for (SequenceTrack seq : sequenceTracks) {
+			if (seq.ptr.getValue() == ptr)
+				return seq;
+		}
+		return null;
+	}
+	
+	public static ControlSignal newSignal() {
+		long ptr = bridge.controlSignal().newSignal();
+		Api.Pointer pointer = new Api.Pointer(ptr);
+		if (pointer.invalid())
+			return null;
+		
+		ControlSignal signal = new ControlSignal(pointer);
+		controlSignals.add(signal);
+		return signal;
+	}
+	
+	public static ControlSignal freeSignal(ControlSignal signal) {
+		if (signal == null)
+			return null;
+		
+		if (signal.ptr.invalid())
+			return null;
+		
+		bridge.controlSignal().freeSignal(signal.ptr.getValue());
+		signal.ptr.invalidate();
+		controlSignals.remove(signal);
+		return null;
+	}
+	
+	private static ControlSignal findControlSignal(long ptr) {
+		for (ControlSignal signal : controlSignals) {
+			if (signal.ptr.getValue() == ptr)
+				return signal;
+		}
+		return null;
+	}
+	
+	public static SequenceTrack newTrack() {
+		long ptr = bridge.controlSignal().newSignal();
+		Api.Pointer pointer = new Api.Pointer(ptr);
+		if (pointer.invalid())
+			return null;
+		
+		SequenceTrack track = new SequenceTrack(pointer);
+		sequenceTracks.add(track);
+		return track;
+	}
+	
+	public static SequenceTrack freeTrack(SequenceTrack track) {
+		if (track == null)
+			return null;
+		
+		if (track.ptr.invalid())
+			return null;
+		
+		bridge.sequenceTrack().freeTrack(track.ptr.getValue());
+		track.ptr.invalidate();
+		sequenceTracks.remove(track);
 		return null;
 	}
 	
@@ -618,6 +819,8 @@ public class Sound {
 		private final Api.Pointer ptr;
 		private String path;
 		
+		private static final StereoVolume volume = new StereoVolume();
+		
 		public FilePlayer(Api.Pointer ptr, String path) {
 			this.ptr = ptr;
 		}
@@ -686,8 +889,12 @@ public class Sound {
 			bridge.filePlayer().setVolume(ptr.getValue(), lvol, rvol);
 		}
 		
-		public void getVolume(StereoVolume volume) {
+		public float getVolume(boolean left) {
 			bridge.filePlayer().getVolume(ptr.getValue(), volume);
+			if (left)
+				return volume.lvol();
+			else
+				return volume.rvol();
 		}
 		
 		public void stop() {
@@ -702,6 +909,8 @@ public class Sound {
 	public static class SamplePlayer {
 		
 		private final Api.Pointer ptr;
+		
+		private static final StereoVolume volume = new StereoVolume();
 	
 		public SamplePlayer(Api.Pointer ptr) {
 			this.ptr = ptr;
@@ -766,14 +975,20 @@ public class Sound {
 			bridge.samplePlayer().setVolume(ptr.getValue(), lvol, rvol);
 		}
 		
-		public void getVolume(StereoVolume volume) {
+		public float getVolume(boolean left) {
 			bridge.samplePlayer().getVolume(ptr.getValue(), volume);
+			if (left)
+				return volume.lvol();
+			else
+				return volume.rvol();
 		}
 	}
 	
 	public static class PDSynth {
 		
 		private final Api.Pointer ptr;
+		
+		private static final StereoVolume volume = new StereoVolume();
 		
 		public PDSynth(Api.Pointer ptr) {
 			this.ptr = ptr;
@@ -901,8 +1116,12 @@ public class Sound {
 			bridge.synth().setVolume(ptr.getValue(), lvol, rvol);
 		}
 		
-		public void getVolume(StereoVolume volume) {
+		public float getVolume(boolean left) {
 			bridge.synth().getVolume(ptr.getValue(), volume);
+			if (left)
+				return volume.lvol();
+			else
+				return volume.rvol();
 		}
 		
 		public boolean isPlaying() {
@@ -938,6 +1157,101 @@ public class Sound {
 			PDSynthSignalValue mod = new PDSynthSignalValue(modPointer);
 			modulators.add(mod);
 			return mod;
+		}
+	}
+	
+	public static class PDSynthInstrument {
+		
+		private final Api.Pointer ptr;
+		
+		private static final StereoVolume volume = new StereoVolume();
+		
+		public PDSynthInstrument(Api.Pointer ptr) {
+			this.ptr = ptr;
+		}
+		
+		public Api.Pointer getPointer() {
+			return ptr;
+		}
+		
+		public void free() {
+			Sound.freeInstrument(this);
+		}
+		
+		public boolean addVoice(PDSynth synth, MIDINote rangeStart, MIDINote rangeEnd, float transpose) {
+			if (synth == null)
+				return false;
+			
+			if (synth.ptr.invalid())
+				return false;
+			
+			return bridge.instrument().addVoice(ptr.getValue(), synth.ptr.getValue(), rangeStart.getValue(), rangeEnd.getValue(), transpose);
+		}
+		
+		public PDSynth playNote(float frequency, float vel, float len, long when) {
+			long synthPtr = bridge.instrument().playNote(ptr.getValue(), frequency, vel, len, when);
+			PDSynth found = findSynth(synthPtr);
+			if (found != null)
+				return found;
+			
+			Api.Pointer synthPointer = new Api.Pointer(synthPtr);
+			if (synthPointer.invalid())
+				return null;
+			
+			PDSynth synth = new PDSynth(synthPointer);
+			synths.add(synth);
+			return synth;
+		}
+		
+		public PDSynth playMIDINote(MIDINote note, float vel, float len, long when) {
+			long synthPtr = bridge.instrument().playMIDINote(ptr.getValue(), note.getValue(), vel, len, when);
+			PDSynth found = findSynth(synthPtr);
+			if (found != null)
+				return found;
+			
+			Api.Pointer synthPointer = new Api.Pointer(synthPtr);
+			if (synthPointer.invalid())
+				return null;
+			
+			PDSynth synth = new PDSynth(synthPointer);
+			synths.add(synth);
+			return synth;
+		}
+		
+		public void noteOff(float note, long when) {
+			bridge.instrument().noteOff(ptr.getValue(), note, when);
+		}
+		
+		public void setPitchBend(float bend) {
+			bridge.instrument().setPitchBend(ptr.getValue(), bend);
+		}
+		
+		public void setPitchBendRange(float halfSteps) {
+			bridge.instrument().setPitchBendRange(ptr.getValue(), halfSteps);
+		}
+		
+		public void setTranspose(float halfSteps) {
+			bridge.instrument().setTranspose(ptr.getValue(), halfSteps);
+		}
+		
+		public void allNotesOff(long when) {
+			bridge.instrument().allNotesOff(ptr.getValue(), when);
+		}
+		
+		public void setVolume(float lvol, float rvol) {
+			bridge.instrument().setVolume(ptr.getValue(), lvol, rvol);
+		}
+		
+		public float getVolume(boolean left) {
+			bridge.instrument().getVolume(ptr.getValue(), volume);
+			if (left)
+				return volume.lvol();
+			else
+				return volume.rvol();
+		}
+		
+		public int activeVoiceCount() {
+			return bridge.instrument().activeVoiceCount(ptr.getValue());
 		}
 	}
 	
@@ -1288,6 +1602,433 @@ public class Sound {
 			PDSynthSignalValue mod = new PDSynthSignalValue(modPointer);
 			modulators.add(mod);
 			return mod;
+		}
+	}
+	
+	public static class Overdrive {
+		
+		private final Api.Pointer ptr;
+		
+		public Overdrive(Api.Pointer ptr) {
+			this.ptr = ptr;
+		}
+		
+		public Api.Pointer getPointer() {
+			return ptr;
+		}
+		
+		public void free() {
+			Sound.freeOverdrive(this);
+		}
+		
+		public void setGain(float gain) {
+			bridge.overdrive().setGain(ptr.getValue(), gain);
+		}
+		
+		public void setLimit(float limit) {
+			bridge.overdrive().setLimit(ptr.getValue(), limit);
+		}
+		
+		public void setLimitModulator(PDSynthSignalValue mod) {
+			if (mod == null)
+				return;
+			
+			if (mod.ptr.invalid())
+				return;
+			
+			bridge.overdrive().setLimitModulator(ptr.getValue(), mod.ptr.getValue());
+		}
+		
+		public PDSynthSignalValue getLimitModulator() {
+			long modPtr = bridge.overdrive().getLimitModulator(ptr.getValue());
+			PDSynthSignalValue found = findModulator(modPtr);
+			if (found != null)
+				return found;
+			
+			Api.Pointer modPointer = new Api.Pointer(modPtr);
+			if (modPointer.invalid())
+				return null;
+			
+			PDSynthSignalValue mod = new PDSynthSignalValue(modPointer);
+			modulators.add(mod);
+			return mod;
+		}
+		
+		public void setOffset(float offset) {
+			bridge.overdrive().setOffset(ptr.getValue(), offset);
+		}
+		
+		public void setOffsetModulator(PDSynthSignalValue mod) {
+			if (mod == null)
+				return;
+			
+			if (mod.ptr.invalid())
+				return;
+			
+			bridge.overdrive().setOffsetModulator(ptr.getValue(), mod.ptr.getValue());
+		}
+		
+		public PDSynthSignalValue getOffsetModulator() {
+			long modPtr = bridge.overdrive().getOffsetModulator(ptr.getValue());
+			PDSynthSignalValue found = findModulator(modPtr);
+			if (found != null)
+				return found;
+			
+			Api.Pointer modPointer = new Api.Pointer(modPtr);
+			if (modPointer.invalid())
+				return null;
+			
+			PDSynthSignalValue mod = new PDSynthSignalValue(modPointer);
+			modulators.add(mod);
+			return mod;
+		}
+	}
+	
+	public static class DelayLine {
+		
+		private final Api.Pointer ptr;
+		
+		public DelayLine(Api.Pointer ptr) {
+			this.ptr = ptr;
+		}
+		
+		public Api.Pointer getPointer() {
+			return ptr;
+		}
+		
+		public void free() {
+			Sound.freeDelayLine(this);
+		}
+		
+		public void setLength(int frames) {
+			bridge.delayLine().setLength(ptr.getValue(), frames);
+		}
+		
+		public void setFeedback(float fb) {
+			bridge.delayLine().setFeedback(ptr.getValue(), fb);
+		}
+		
+		public DelayLineTap addTap(int delay) {
+			long tapPtr = bridge.delayLine().addTap(ptr.getValue(), delay);
+			DelayLineTap found = findDelayLineTap(tapPtr);
+			if (found != null)
+				return found;
+			
+			Api.Pointer tapPointer = new Api.Pointer(tapPtr);
+			if (tapPointer.invalid())
+				return null;
+			
+			DelayLineTap tap = new DelayLineTap(tapPointer);
+			delayLineTaps.add(tap);
+			return tap;
+		}
+	}
+	
+	public static class DelayLineTap {
+		
+		private final Api.Pointer ptr;
+		
+		public DelayLineTap(Api.Pointer ptr) {
+			this.ptr = ptr;
+		}
+		
+		public Api.Pointer getPointer() {
+			return ptr;
+		}
+		
+		public void free() {
+			Sound.freeTap(this);
+		}
+		
+		public void setTapDelay(int frames) {
+			bridge.delayLineTap().setTapDelay(ptr.getValue(), frames);
+		}
+		
+		public void setTapDelayModulator(PDSynthSignalValue mod) {
+			if (mod == null)
+				return;
+			
+			if (mod.ptr.invalid())
+				return;
+			
+			bridge.delayLineTap().setTapDelayModulator(ptr.getValue(), mod.ptr.getValue());
+		}
+		
+		public PDSynthSignalValue getTapDelayModulator() {
+			long modPtr = bridge.delayLineTap().getTapDelayModulator(ptr.getValue());
+			PDSynthSignalValue found = findModulator(modPtr);
+			if (found != null)
+				return found;
+			
+			Api.Pointer modPointer = new Api.Pointer(modPtr);
+			if (modPointer.invalid())
+				return null;
+			
+			PDSynthSignalValue mod = new PDSynthSignalValue(modPointer);
+			modulators.add(mod);
+			return mod;
+		}
+		
+		public void setTapChannelsFlipped(boolean flip) {
+			bridge.delayLineTap().setTapChannelsFlipped(ptr.getValue(), flip);
+		}
+	}
+
+	public static class SoundSequence {
+		
+		private final Api.Pointer ptr;
+		
+		public SoundSequence(Api.Pointer ptr) {
+			this.ptr = ptr;
+		}
+		
+		public Api.Pointer getPointer() {
+			return ptr;
+		}
+		
+		public void free() {
+			Sound.freeSequence(this);
+		}
+		
+		public boolean loadMIDIFile(String path) {
+			return bridge.soundSequence().loadMIDIFile(ptr.getValue(), path);
+		}
+		
+		public void play() {
+			bridge.soundSequence().play(ptr.getValue());
+		}
+		
+		public void stop() {
+			bridge.soundSequence().stop(ptr.getValue());
+		}
+		
+		public boolean isPlaying() {
+			return bridge.soundSequence().isPlaying(ptr.getValue());
+		}
+		
+		public long getTime() {
+			return bridge.soundSequence().getTime(ptr.getValue());
+		}
+		
+		public void setTime(long time) {
+			bridge.soundSequence().setTempo(ptr.getValue(), time);
+		}
+		
+		public void setLoops(int startStep, int endStep, int loops) {
+			bridge.soundSequence().setLoops(ptr.getValue(), startStep, endStep, loops);
+		}
+		
+		public int getTempo() {
+			return bridge.soundSequence().getTempo(ptr.getValue());
+		}
+		
+		public void setTempo(float stepsPerSecond) {
+			bridge.soundSequence().setTempo(ptr.getValue(), stepsPerSecond);
+		}
+		
+		public int getLength() {
+			return bridge.soundSequence().getLength(ptr.getValue());
+		}
+		
+		public int getTrackCount() {
+			return bridge.soundSequence().getTrackCount(ptr.getValue());
+		}
+		
+		public SequenceTrack addTrack() {
+			long trackPtr = bridge.soundSequence().addTrack(ptr.getValue());
+			Api.Pointer trackPointer = new Api.Pointer(trackPtr);
+			if (trackPointer.invalid())
+				return null;
+			
+			SequenceTrack track = new SequenceTrack(trackPointer);
+			sequenceTracks.add(track);
+			return track;
+		}
+		
+		public SequenceTrack getTrackAtIndex(int index) {
+			long trackPtr = bridge.soundSequence().getTrackAtIndex(ptr.getValue(), index);
+			SequenceTrack found = findSequenceTrack(trackPtr);
+			if (found != null)
+				return found;
+			
+			Api.Pointer trackPointer = new Api.Pointer(trackPtr);
+			if (trackPointer.invalid())
+				return null;
+			
+			SequenceTrack track = new SequenceTrack(trackPointer);
+			sequenceTracks.add(track);
+			return track;
+		}
+		
+		public void setTrackAtIndex(SequenceTrack track, int index) {
+			if (track == null)
+				return;
+			
+			if (track.ptr.invalid())
+				return;
+			
+			bridge.soundSequence().setTrackAtIndex(ptr.getValue(), track.ptr.getValue(), index);
+		}
+		
+		public void allNotesOff() {
+			bridge.soundSequence().allNotesOff(ptr.getValue());
+		}
+		
+		public int getCurrentStep() {
+			return bridge.soundSequence().getCurrentStep(ptr.getValue());
+		}
+		
+		public void setCurrentStep(int step, int timeOffset, int playNotes) {
+			bridge.soundSequence().setCurrentStep(ptr.getValue(), step, timeOffset, playNotes);
+		}
+	}
+
+	public static class ControlSignal {
+		
+		private final Api.Pointer ptr;
+		
+		public ControlSignal(Api.Pointer ptr) {
+			this.ptr = ptr;
+		}
+		
+		public Api.Pointer getPointer() {
+			return ptr;
+		}
+		
+		public void free() {
+			Sound.freeSignal(this);
+		}
+		
+		public void clearEvents() {
+			bridge.controlSignal().clearEvents(ptr.getValue());
+		}
+		
+		public void addEvent(int step, float value, int interpolate) {
+			bridge.controlSignal().addEvent(ptr.getValue(), step, value, interpolate);
+		}
+		
+		public void removeEvent(int step) {
+			bridge.controlSignal().removeEvent(ptr.getValue(), step);
+		}
+		
+		public int getMIDIControllerNumber() {
+			return bridge.controlSignal().getMIDIControllerNumber(ptr.getValue());
+		}
+	}
+
+	public static class SequenceTrack {
+		
+		private final Api.Pointer ptr;
+		
+		public SequenceTrack(Api.Pointer ptr) {
+			this.ptr = ptr;
+		}
+		
+		public Api.Pointer getPointer() {
+			return ptr;
+		}
+		
+		public void free() {
+			Sound.freeTrack(this);
+		}
+		
+		public void setInstrument(PDSynthInstrument instrument) {
+			if (instrument == null)
+				return;
+			
+			if (instrument.ptr.invalid())
+				return;
+			
+			bridge.sequenceTrack().setInstrument(ptr.getValue(),instrument.ptr.getValue());
+		}
+		
+		public PDSynthInstrument getInstrument() {
+			long instrumentPtr = bridge.sequenceTrack().getInstrument(ptr.getValue());
+			PDSynthInstrument found = findInstrument(instrumentPtr);
+			if (found != null)
+				return found;
+			
+			Api.Pointer instrumentPointer = new Api.Pointer(instrumentPtr);
+			if (instrumentPointer.invalid())
+				return null;
+			
+			PDSynthInstrument instrument = new PDSynthInstrument(instrumentPointer);
+			instruments.add(instrument);
+			return instrument;
+		}
+		
+		public void addNoteEvent(long step, long length, MIDINote note, float vel) {
+			bridge.sequenceTrack().addNoteEvent(ptr.getValue(), step, length, note.getValue(), vel);
+		}
+		
+		public void removeNoteEvent(long step, MIDINote note) {
+			bridge.sequenceTrack().removeNoteEvent(ptr.getValue(), step, note.getValue());
+		}
+		
+		public void clearNotes() {
+			bridge.sequenceTrack().clearNotes(ptr.getValue());
+		}
+		
+		public int getLength() {
+			return bridge.sequenceTrack().getLength(ptr.getValue());
+		}
+		
+		public int getIndexForStep(long step) {
+			return bridge.sequenceTrack().getIndexForStep(ptr.getValue(), step);
+		}
+		
+		public boolean getNoteAtIndex(int index, Note note) {
+			return bridge.sequenceTrack().getNoteAtIndex(ptr.getValue(), index, note);
+		}
+		
+		public int getControlSignalCount() {
+			return bridge.sequenceTrack().getControlSignalCount(ptr.getValue());
+		}
+		
+		public ControlSignal getControlSignal(int idx) {
+			long signalPtr = bridge.sequenceTrack().getControlSignal(ptr.getValue(), idx);
+			ControlSignal found = findControlSignal(signalPtr);
+			if (found != null)
+				return found;
+
+			Api.Pointer signalPointer = new Api.Pointer(signalPtr);
+			if (signalPointer.invalid())
+				return null;
+			
+			ControlSignal signal = new ControlSignal(signalPointer);
+			controlSignals.add(signal);
+			return signal;
+		}
+		
+		public ControlSignal getSignalForController(int controller, boolean create) {
+			long signalPtr = bridge.sequenceTrack().getSignalForController(ptr.getValue(), controller, create);
+			ControlSignal found = findControlSignal(signalPtr);
+			if (found != null)
+				return found;
+			
+			Api.Pointer signalPointer = new Api.Pointer(signalPtr);
+			if (signalPointer.invalid())
+				return null;
+			
+			ControlSignal signal = new ControlSignal(signalPointer);
+			controlSignals.add(signal);
+			return signal;
+		}
+		
+		public void clearControlEvents() {
+			bridge.sequenceTrack().clearControlEvents(ptr.getValue());
+		}
+		
+		public int activeVoiceCount() {
+			return bridge.sequenceTrack().activeVoiceCount(ptr.getValue());
+		}
+		
+		public int getPolyphony() {
+			return bridge.sequenceTrack().getPolyphony(ptr.getValue());
+		}
+		
+		public void setMuted(boolean mute) {
+			bridge.sequenceTrack().setMuted(ptr.getValue(), mute);
 		}
 	}
 	

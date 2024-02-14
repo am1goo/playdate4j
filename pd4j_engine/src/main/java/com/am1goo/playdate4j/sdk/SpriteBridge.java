@@ -72,7 +72,7 @@ public class SpriteBridge {
 	public native void setCollideRect(long spritePtr, float x, float y, float width, float height);
 	public native void getCollideRect(long spritePtr, PDRect collideRect);
 	public native void clearCollideRect(long spritePtr);
-
+	
 	public static class PDXY {
 		private float x;
 		private float y;
@@ -118,6 +118,139 @@ public class SpriteBridge {
 			this.y = y;
 			this.width = width;
 			this.height = height;
+		}
+	}
+	
+	public static class SpriteCollisionInfo {
+		
+		private long spritePtr;
+		private long otherPtr;
+		private int responseType;
+		private short overlaps;
+		private float ti;
+		private CollisionPoint move;
+		private CollisionVector normal;
+		private CollisionPoint touch;
+		private PDRect spriteRect;
+		private PDRect otherRect;
+		
+		public SpriteCollisionInfo() {
+			move = new CollisionPoint();
+			normal = new CollisionVector();
+			touch = new CollisionPoint();
+			spriteRect = new PDRect();
+			otherRect = new PDRect();
+		}
+		
+		public long spritePtr() {
+			return spritePtr;
+		}
+		
+		public long otherPtr() {
+			return otherPtr;
+		}
+		
+		public int responseType() {
+			return responseType;
+		}
+		
+		public short overlaps() {
+			return overlaps;
+		}
+		
+		public float ti() {
+			return ti;
+		}
+		
+		public CollisionPoint move() {
+			return move;
+		}
+		
+		public CollisionVector normal() {
+			return normal;
+		}
+		
+		public CollisionPoint touch() {
+			return touch;
+		}
+		
+		public PDRect spriteRect() {
+			return spriteRect;
+		}
+		
+		public PDRect otherRect() {
+			return otherRect; 
+		}
+		
+		public void set(long spritePtr, long otherPtr, int responseType, short overlaps, float ti) {
+			this.spritePtr = spritePtr;
+			this.otherPtr = otherPtr;
+			this.responseType = responseType;
+			this.overlaps = overlaps;
+			this.ti = ti;
+		}
+	}
+	
+	public static class CollisionPoint {
+		
+		private float x;
+		private float y;
+		
+		public float x() {
+			return x;
+		}
+		
+		public float y() {
+			return y;
+		}
+		
+		public void set(float x, float y) {
+			this.x = x;
+			this.y = y;
+		}
+	}
+	
+	public static class CollisionVector {
+		
+		private int x;
+		private int y;
+		
+		public int x() {
+			return x;
+		}
+		
+		public int y() {
+			return y;
+		}
+		
+		public void set(int x, int y) {
+			this.x = x;
+			this.y = y;
+		}
+	}
+	
+	public static class SpriteActualInfo {
+		
+		private float actualX;
+		private float actualY;
+		private int len;
+		
+		public float actualX() {
+			return actualX;
+		}
+		
+		public float actualY() {
+			return actualY;
+		}
+		
+		public int len() {
+			return len;
+		}
+		
+		public void set(float actualX, float actualY, int len) {
+			this.actualX = actualX;
+			this.actualY = actualY;
+			this.len = len;
 		}
 	}
 }

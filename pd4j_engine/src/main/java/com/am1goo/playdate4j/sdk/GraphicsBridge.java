@@ -43,6 +43,11 @@ public class GraphicsBridge {
     public native long getBitmapMask(long bitmapPtr);
     
     /* bitmap tables */
+    public native long newBitmapTable(int count, int width, int height);
+    public native void freeBitmapTable(long tablePtr);
+    public native long getTableBitmap(long tablePtr, int idx);
+    public native long loadBitmapTable(String path);
+    public native void loadIntoBitmapTable(String path, long tablePtr);
 
     /* fonts & text */
     public native void setFont(long fontPtr);

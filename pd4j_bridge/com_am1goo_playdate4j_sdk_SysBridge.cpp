@@ -3,25 +3,73 @@
 #include <pd_api.h>
 
 JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_logToConsole
-  (JNIEnv* env, jobject thisObject, jstring log) {
+  (JNIEnv* env, jobject thisObject, jstring log_str) {
 	PlaydateAPI* api = pd4j_get_api(env);
 	if (api == NULL)
 		return;
 
-	const char* log_str = env->GetStringUTFChars(log, 0);
-	api->system->logToConsole(log_str);
-	env->ReleaseStringUTFChars(log, log_str);
+	const char* log = env->GetStringUTFChars(log_str, 0);
+	api->system->logToConsole(log);
+	env->ReleaseStringUTFChars(log_str, log);
 }
 
 JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_error
-  (JNIEnv* env, jobject thisObject, jstring error) {
+  (JNIEnv* env, jobject thisObject, jstring error_str) {
 	PlaydateAPI* api = pd4j_get_api(env);
 	if (api == NULL)
 		return;
 
-	const char* error_str = env->GetStringUTFChars(error, 0);
-	api->system->error(error_str);
-	env->ReleaseStringUTFChars(error, error_str);
+	const char* error = env->GetStringUTFChars(error_str, 0);
+	api->system->error(error);
+	env->ReleaseStringUTFChars(error_str, error);
+}
+
+JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_addMenuItem
+  (JNIEnv* env, jobject thisObject, jstring title_str) {
+	PlaydateAPI* api = pd4j_get_api(env);
+	if (api == NULL)
+		return;
+	
+	const char* title = env->GetStringUTFChars(title_str, 0);
+	api->system->addMenuItem(title, NULL, NULL);
+	env->ReleaseStringUTFChars(title_str, title);
+}
+
+JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_addCheckmarkMenuItem
+  (JNIEnv* env, jobject thisObject, jstring title_str, jboolean value) {
+	PlaydateAPI* api = pd4j_get_api(env);
+	if (api == NULL)
+		return;
+	
+	const char* title = env->GetStringUTFChars(title_str, 0);
+	api->system->addCheckmarkMenuItem(title, value, NULL, NULL);
+	env->ReleaseStringUTFChars(title_str, title);
+}
+
+JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_addOptionsMenuItem
+  (JNIEnv* env, jobject thisObject, jstring title_str, jobjectArray options_array, jint optionsCount) {
+	PlaydateAPI* api = pd4j_get_api(env);
+	if (api == NULL)
+		return;
+	
+	const char* title = env->GetStringUTFChars(title_str, 0);
+	int options_length = env->GetArrayLength(options_array);
+	
+	const char** options = new const char*[options_length];
+	for (int i = 0; i< options_length; i++) {
+        jstring text_str = (jstring) (env->GetObjectArrayElement(options_array, i));
+        const char* text = env->GetStringUTFChars(text_str, 0);
+		options[i] = text;
+    }
+	
+	api->system->addOptionsMenuItem(title, options, optionsCount, NULL, NULL);
+	
+	env->ReleaseStringUTFChars(title_str, title);
+	for (int i = 0; i < options_length; i++) {
+		jstring text_str = (jstring) (env->GetObjectArrayElement(options_array, i));
+		const char* text = options[i];
+		env->ReleaseStringUTFChars(text_str, text);
+	}
 }
 
 JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_removeMenuItem

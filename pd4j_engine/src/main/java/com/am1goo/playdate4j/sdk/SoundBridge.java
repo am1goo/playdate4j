@@ -8,12 +8,19 @@ public class SoundBridge {
 	private final FilePlayerBridge filePlayer = new FilePlayerBridge();
 	private final SamplePlayerBridge samplePlayer = new SamplePlayerBridge();
 	private final PDSynthBridge synth = new PDSynthBridge();
+	private final PDSynthInstrumentBridge instrument = new PDSynthInstrumentBridge();
 	private final PDSynthLFOBridge lfo = new PDSynthLFOBridge();
 	private final PDSynthEnvelopeBridge envelope = new PDSynthEnvelopeBridge();
 	private final OnePoleFilterBridge onePoleFilter = new OnePoleFilterBridge();
 	private final TwoPoleFilterBridge twoPoleFilter = new TwoPoleFilterBridge();
 	private final BitCrusherBridge bitCrusher = new BitCrusherBridge();
 	private final RingModulatorBridge ringModulator = new RingModulatorBridge();
+	private final OverdriveBridge overdrive = new OverdriveBridge();
+	private final DelayLineBridge delayLine = new DelayLineBridge();
+	private final DelayLineTapBridge delayLineTap = new DelayLineTapBridge();
+	private final SoundSequenceBridge soundSequence = new SoundSequenceBridge();
+	private final ControlSignalBridge controlSignal = new ControlSignalBridge();
+	private final SequenceTrackBridge sequenceTrack = new SequenceTrackBridge();
 	
 	public ChannelBridge channel() {
 		return channel;
@@ -37,6 +44,10 @@ public class SoundBridge {
 	
 	public PDSynthBridge synth() {
 		return synth;
+	}
+	
+	public PDSynthInstrumentBridge instrument() {
+		return instrument;
 	}
 	
 	public PDSynthLFOBridge lfo() {
@@ -63,11 +74,36 @@ public class SoundBridge {
 		return ringModulator;
 	}
 	
+	public OverdriveBridge overdrive() {
+		return overdrive;
+	}
+	
+	public DelayLineBridge delayLine() {
+		return delayLine;
+	}
+	
+	public DelayLineTapBridge delayLineTap() {
+		return delayLineTap;
+	}
+	
+	public SoundSequenceBridge soundSequence() {
+		return soundSequence;
+	}
+	
+	public ControlSignalBridge controlSignal() {
+		return controlSignal;
+	}
+	
+	public SequenceTrackBridge sequenceTrack() {
+		return sequenceTrack;
+	}
+	
     static {
         Sdk.loadRequiredLibraries();
     }
 
     /* audio */
+    public native String getError();
 	public native int getCurrentTime();
 	public native void setOutputsActive(int headphone, int speaker);
 	
@@ -189,6 +225,24 @@ public class SoundBridge {
 		public native long getParameterModulator(long synthPtr, int num);
 	}
 	
+	/* PDSynthInstrument */
+	public class PDSynthInstrumentBridge {
+		
+		public native long newInstrument();
+		public native void freeInstrument(long instrumentPtr);
+		public native boolean addVoice(long instrumentPtr, long synthPtr, float rangeStart, float rangeEnd, float transpose);
+		public native long playNote(long instrumentPtr, float frequency, float vel, float len, long when);
+		public native long playMIDINote(long instrumentPtr, float note, float vel, float len, long when);
+		public native void noteOff(long instrumentPtr, float note, long when);
+		public native void setPitchBend(long instrumentPtr, float bend);
+		public native void setPitchBendRange(long instrumentPtr, float halfSteps);
+		public native void setTranspose(long instrumentPtr, float halfSteps);
+		public native void allNotesOff(long instrumentPtr, long when);
+		public native void setVolume(long instrumentPtr, float lvol, float rvol);
+		public native void getVolume(long instrumentPtr, StereoVolume volume);
+		public native int activeVoiceCount(long instrumentPtr);
+	}
+	
 	/* LFO */
 	public class PDSynthLFOBridge {
 		
@@ -272,6 +326,97 @@ public class SoundBridge {
 		public native long getFrequencyModulator(long filterPtr);
 	}
 	
+	/* Overdrive */
+	public class OverdriveBridge {
+		
+		public native long newOverdrive();
+		public native void freeOverdrive(long overdrivePtr);
+		public native void setGain(long overdrivePtr, float gain);
+		public native void setLimit(long overdrivePtr, float limit);
+		public native void setLimitModulator(long overdrivePtr, long modPtr);
+		public native long getLimitModulator(long overdrivePtr);
+		public native void setOffset(long overdrivePtr, float offset);
+		public native void setOffsetModulator(long overdrivePtr, long modPtr);
+		public native long getOffsetModulator(long overdrivePtr);
+	}
+	
+	/* DelayLine */
+	public class DelayLineBridge {
+		
+		public native long newDelayLine(int length, int stereo);
+		public native void freeDelayLine(long linePtr);
+		public native void setLength(long linePtr, int frames);
+		public native void setFeedback(long linePtr, float fb);
+		public native long addTap(long linePtr, int delay);
+	}
+	
+	/* DelayLineTap */
+	public class DelayLineTapBridge {
+		
+		public native void freeTap(long tapPtr);
+		public native void setTapDelay(long tapPtr, int frames);
+		public native void setTapDelayModulator(long tapPtr, long modPtr);
+		public native long getTapDelayModulator(long tapPtr);
+		public native void setTapChannelsFlipped(long tapPtr, boolean flip);
+	}
+	
+	/* SoundSequence */
+	public class SoundSequenceBridge {
+		
+		public native long newSequence();
+		public native void freeSequence(long seqPtr);
+		public native boolean loadMIDIFile(long seqPtr, String path);
+		public native void play(long seqPtr);
+		public native void stop(long seqPtr);
+		public native boolean isPlaying(long seqPtr);
+		public native long getTime(long seqPtr);
+		public native void setTime(long seqPtr, long time);
+		public native void setLoops(long seqPtr, int startStep, int endStep, int loops);
+		public native int getTempo(long seqPtr);
+		public native void setTempo(long seqPtr, float stepsPerSecond);
+		public native int getLength(long seqPtr);
+		public native int getTrackCount(long seqPtr);
+		public native long addTrack(long seqPtr);
+		public native long getTrackAtIndex(long seqPtr, int index);
+		public native void setTrackAtIndex(long seqPtr, long trackPtr, int index);
+		public native void allNotesOff(long seqPtr);
+		public native int getCurrentStep(long seqPtr);
+		public native void setCurrentStep(long seqPtr, int step, int timeOffset, int playNotes);
+	}
+	
+	/* ControlSignal */
+	public class ControlSignalBridge {
+		
+		public native long newSignal();
+		public native void freeSignal(long signalPtr);
+		public native void clearEvents(long signalPtr);
+		public native void addEvent(long signalPtr, int step, float value, int interpolate);
+		public native void removeEvent(long signalPtr, int step);
+		public native int getMIDIControllerNumber(long signalPtr);
+	}
+	
+	/* SequenceTrack */
+	public class SequenceTrackBridge {
+		
+		public native long newTrack();
+		public native void freeTrack(long trackPtr);
+		public native void setInstrument(long trackPtr, long instrumentPtr);
+		public native long getInstrument(long trackPtr);
+		public native void addNoteEvent(long trackPtr, long step, long length, float note, float vel);
+		public native void removeNoteEvent(long trackPtr, long step, float note);
+		public native void clearNotes(long trackPtr);
+		public native int getLength(long trackPtr);
+		public native int getIndexForStep(long trackPtr, long step);
+		public native boolean getNoteAtIndex(long trackPtr, int index, Note note);
+		public native int getControlSignalCount(long trackPtr);
+		public native long getControlSignal(long trackPtr, int idx);
+		public native long getSignalForController(long trackPtr, int controller, boolean create);
+		public native void clearControlEvents(long trackPtr);
+		public native int activeVoiceCount(long trackPtr);
+		public native int getPolyphony(long trackPtr);
+		public native void setMuted(long trackPtr, boolean mute);
+	}
+	
 	public static class StereoVolume {
 		
 		private float lvol;
@@ -288,6 +433,37 @@ public class SoundBridge {
 		public void set(float lvol, float rvol) {
 			this.lvol = lvol;
 			this.rvol = rvol; 
+		}
+	}
+	
+	public static class Note {
+		
+		private long outStep;
+		private long outLen;
+		private float outNote;
+		private float outVelocity;
+		
+		public long step() {
+			return outStep;
+		}
+		
+		public long len() {
+			return outLen;
+		}
+		
+		public float note() {
+			return outNote;
+		}
+		
+		public float velocity() {
+			return outVelocity;
+		}
+		
+		public void set(long outStep, long outLen, float outNote, float outVelocity) {
+			this.outStep = outStep;
+			this.outLen = outLen;
+			this.outNote = outNote;
+			this.outVelocity = outVelocity;
 		}
 	}
 }

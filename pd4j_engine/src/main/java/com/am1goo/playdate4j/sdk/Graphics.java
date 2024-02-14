@@ -9,6 +9,7 @@ public class Graphics {
     private static final GraphicsBridge bridge = new GraphicsBridge();
 
 	private static final List<LCDBitmap> bitmaps = new ArrayList<>();
+	private static final List<LCDBitmapTable> bitmapTables = new ArrayList<>();
 	private static final List<LCDFont> fonts = new ArrayList<>();
 	private static LCDBitmap displayBuffer = null;
 
@@ -134,6 +135,9 @@ public class Graphics {
     }
 
 	public static LCDBitmap freeBitmap(LCDBitmap bitmap) {
+		if (bitmap == null)
+			return null;
+		
     	if (bitmap.ptr.invalid())
     		return null;
     	
@@ -144,6 +148,10 @@ public class Graphics {
     }
 
     public static LCDBitmap loadBitmap(String path) {
+    	LCDBitmap found = findBitmap(path);
+    	if (found != null)
+    		return found;
+    	
         long ptr = bridge.loadBitmap(path);
         Api.Pointer pointer = new Api.Pointer(ptr);
         if (pointer.invalid())
@@ -164,6 +172,10 @@ public class Graphics {
     
     public static LCDBitmap newBitmap(int width, int height, LCDSolidColor color) {
     	long ptr = bridge.newBitmap(width, height, color.getValue());
+    	LCDBitmap found = findBitmap(ptr);
+    	if (found != null)
+    		return found;
+    	
     	Api.Pointer pointer = new Api.Pointer(ptr);
     	if (pointer.invalid())
     		return null;
@@ -184,7 +196,10 @@ public class Graphics {
     	if (bitmap == null)
     		return null;
     	
-    	long ptr = bridge.rotatedBitmap(bitmap.getPointer().getValue(), rotation, xScale, yScale);
+    	if (bitmap.ptr.invalid())
+    		return null;
+    	
+    	long ptr = bridge.rotatedBitmap(bitmap.ptr.getValue(), rotation, xScale, yScale);
     	Api.Pointer pointer = new Api.Pointer(ptr);
     	if (pointer.invalid())
     		return null;
@@ -208,7 +223,10 @@ public class Graphics {
     	if (bitmap == null)
     		return null;
     	
-    	long ptr = bridge.getBitmapMask(bitmap.getPointer().getValue());
+    	if (bitmap.ptr.invalid())
+    		return null;
+    	
+    	long ptr = bridge.getBitmapMask(bitmap.ptr.getValue());
     	Api.Pointer pointer = new Api.Pointer(ptr);
     	if (pointer.invalid())
     		return null;
@@ -232,19 +250,82 @@ public class Graphics {
         
     public static LCDBitmap findBitmap(long ptr) {
     	for (LCDBitmap bitmap : bitmaps) {
-    		if (bitmap.ptr.invalid())
-    			continue;
-    		
-    		if (bitmap.ptr.getValue() != ptr)
-    			continue;
-    		
-    		return bitmap;
+    		if (bitmap.ptr.getValue() == ptr)
+    			return bitmap;
+    	}
+    	return null;
+    }
+    
+    private static LCDBitmap findBitmap(String path) {
+    	for (LCDBitmap bitmap : bitmaps) {
+    		if (Objects.equals(bitmap.path, path))
+    			return bitmap;
     	}
     	return null;
     }
     
     /* bitmap tables */
+    public static LCDBitmapTable newBitmapTable(int count, int width, int height) {
+    	long ptr = bridge.newBitmapTable(count, width, height);
+    	LCDBitmapTable found = findBitmapTable(ptr);
+    	if (found != null)
+    		return found;
+    	
+    	Api.Pointer pointer = new Api.Pointer(ptr);
+    	if (pointer.invalid())
+    		return null;
+    	
+    	LCDBitmapTable table = new LCDBitmapTable(pointer);
+    	bitmapTables.add(table);
+    	return table;
+    }
 
+    public static LCDBitmapTable freeBitmapTable(LCDBitmapTable table) {
+    	if (table == null)
+    		return null;
+    	
+    	if (table.ptr.invalid())
+    		return null;
+    	
+    	bridge.freeBitmapTable(table.ptr.getValue());
+    	table.ptr.invalidate();
+    	bitmapTables.remove(table);
+    	return null;
+    }
+    
+    public static LCDBitmapTable loadBitmapTable(String path) {
+    	long ptr = bridge.loadBitmapTable(path);
+    	LCDBitmapTable found = findBitmapTable(ptr);
+    	if (found != null)
+    		return found;
+    	
+    	Api.Pointer pointer = new Api.Pointer(ptr);
+    	if (pointer.invalid())
+    		return null;
+    	
+    	LCDBitmapTable table = new LCDBitmapTable(pointer);
+    	bitmapTables.add(table);
+    	return table;
+    }
+    
+    public static void loadIntoBitmapTable(String path, LCDBitmapTable table) {
+    	if (table == null)
+    		return;
+    	
+    	if (table.ptr.invalid())
+    		return;
+    	
+    	bridge.loadIntoBitmapTable(path, table.ptr.getValue());
+    }
+    
+    private static LCDBitmapTable findBitmapTable(long ptr) {
+    	for (LCDBitmapTable table : bitmapTables) {
+    		if (table.ptr.getValue() == ptr)
+    			return table;
+    	}
+    	return null;
+    }
+    
     /* fonts & text */
     public static void setFont(LCDFont font) {
         if (font == null)
@@ -345,6 +426,10 @@ public class Graphics {
     
     public static LCDBitmap getDebugBitmap() {
     	long ptr = bridge.getDebugBitmap();
+    	LCDBitmap found = findBitmap(ptr);
+    	if (found != null)
+    		return found;
+    	
     	Api.Pointer pointer = new Api.Pointer(ptr);
     	if (pointer.invalid())
     		return null;
@@ -580,10 +665,43 @@ public class Graphics {
         }
 
         public void free() {
-            if (ptr.invalid())
-                return;
-
             Graphics.freeBitmap(this);
+        }
+
+        public void clearBitmap(LCDSolidColor color) {
+            Graphics.clearBitmap(this, color);
+        }
+    }
+    
+    public static class LCDBitmapTable {
+    	
+    	private final Api.Pointer ptr;
+    	
+    	public LCDBitmapTable(Api.Pointer ptr) {
+            this.ptr = ptr;
+        }
+
+        public Api.Pointer getPointer() {
+            return ptr;
+        }
+
+        public void free() {
+        	Graphics.freeBitmapTable(this);
+        }
+        
+        public LCDBitmap getTableBitmap(int idx) {
+        	long bitmapPtr = bridge.getTableBitmap(ptr.getValue(), idx);
+        	LCDBitmap found = findBitmap(bitmapPtr);
+        	if (found != null)
+        		return found;
+        	
+        	Api.Pointer bitmapPointer = new Api.Pointer(bitmapPtr);
+        	if (bitmapPointer.invalid())
+        		return null;
+        	
+        	LCDBitmap bitmap = new LCDBitmap(bitmapPointer, null);
+        	bitmaps.add(bitmap);
+        	return bitmap;
         }
     }
 

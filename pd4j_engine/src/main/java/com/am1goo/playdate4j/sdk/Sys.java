@@ -36,6 +36,18 @@ public class Sys {
     }
     
     /* system menu */
+    public static void addMenuItem(String title) {
+    	bridge.addMenuItem(title);
+    }
+    
+    public static void addCheckmarkMenuItem(String title, boolean value) {
+    	bridge.addCheckmarkMenuItem(title, value);
+    }
+    
+    public static void addOptionsMenuItem(String title, String[] options) {
+    	bridge.addOptionsMenuItem(title, options, options.length);
+    }
+    
     public static void removeMenuItem(PDMenuItem menuItem) {
     	bridge.removeMenuItem(menuItem.getPointer().getValue());
     }

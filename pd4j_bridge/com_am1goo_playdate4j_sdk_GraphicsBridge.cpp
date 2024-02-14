@@ -280,6 +280,75 @@ JNIEXPORT jlong JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_getBitmapM
 	return rotated_ptr;
 }
 
+JNIEXPORT jlong JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_newBitmapTable
+  (JNIEnv* env, jobject thisObject, jint count, jint width, jint height) {
+	PlaydateAPI* api = pd4j_get_api(env);
+	if (api == NULL)
+		return 0;
+	
+	LCDBitmapTable* table = api->graphics->newBitmapTable(count, width, height);
+	uintptr_t table_ptr = reinterpret_cast<uintptr_t>(table);
+	return table_ptr;
+}
+
+JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_freeBitmapTable
+  (JNIEnv* env, jobject thisObject, jlong table_ptr) {
+	PlaydateAPI* api = pd4j_get_api(env);
+	if (api == NULL)
+		return;
+	
+	LCDBitmapTable* table = reinterpret_cast<LCDBitmapTable*>(table_ptr);
+	api->graphics->freeBitmapTable(table);
+}
+
+JNIEXPORT jlong JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_getTableBitmap
+  (JNIEnv* env, jobject thisObject, jlong table_ptr, jint idx) {
+	PlaydateAPI* api = pd4j_get_api(env);
+	if (api == NULL)
+		return 0;
+	
+	LCDBitmapTable* table = reinterpret_cast<LCDBitmapTable*>(table_ptr);
+	LCDBitmap* bitmap = api->graphics->getTableBitmap(table, idx);
+	uintptr_t bitmap_ptr = reinterpret_cast<uintptr_t>(bitmap);
+	return bitmap_ptr;
+}
+
+JNIEXPORT jlong JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_loadBitmapTable
+  (JNIEnv* env, jobject thisObject, jstring path_str) {
+	PlaydateAPI* api = pd4j_get_api(env);
+	if (api == NULL)
+		return 0;
+	
+	const char* path = env->GetStringUTFChars(path_str, 0);
+	const char* outerr;
+	LCDBitmapTable* table = api->graphics->loadBitmapTable(path, &outerr);
+	env->ReleaseStringUTFChars(path_str, path);
+	if (table == NULL) {
+		api->system->error(outerr);
+		return 0;
+	}
+	
+	uintptr_t table_ptr = reinterpret_cast<uintptr_t>(table);
+	return table_ptr;
+}
+
+JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_loadIntoBitmapTable
+  (JNIEnv* env, jobject thisObject, jstring path_str, jlong table_ptr) {
+	PlaydateAPI* api = pd4j_get_api(env);
+	if (api == NULL)
+		return;
+	
+	const char* path = env->GetStringUTFChars(path_str, 0);
+	LCDBitmapTable* table = reinterpret_cast<LCDBitmapTable*>(table_ptr);
+	const char* outerr;
+	api->graphics->loadIntoBitmapTable(path, table, &outerr);
+	env->ReleaseStringUTFChars(path_str, path);
+	if (outerr != NULL) {
+		api->system->error(outerr);
+		return;
+	}
+}
+
 JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_setFont
 (JNIEnv* env, jobject thisObject, jlong font_ptr) {
 	PlaydateAPI* api = pd4j_get_api(env);

@@ -264,4 +264,21 @@ public class Sprite {
 			bridge.clearCollideRect(ptr.getValue());
 		}
 	}
+	
+	public enum SpriteCollisionResponseType {
+		Slide(0),
+		Freeze(1),
+		Overlap(2),
+		Bounce(3);
+		
+		final int value;
+		
+		SpriteCollisionResponseType(int value) {
+			this.value = value;
+		}
+		
+		public int getValue() {
+			return value;
+		}
+	}
 }

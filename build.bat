@@ -44,16 +44,31 @@ if %ERRORLEVEL% NEQ 0 EXIT /B 1
 g++ -c -fPIC -D TARGET_EXTENSION %GCC_INCLUDE% pd4j_bridge\com_am1goo_playdate4j_sdk_SoundBridge_ChannelBridge.cpp -o buildcache\compiled\com_am1goo_playdate4j_sdk_SoundBridge_ChannelBridge.o
 if %ERRORLEVEL% NEQ 0 EXIT /B 1
 
+g++ -c -fPIC -D TARGET_EXTENSION %GCC_INCLUDE% pd4j_bridge\com_am1goo_playdate4j_sdk_SoundBridge_ControlSignalBridge.cpp -o buildcache\compiled\com_am1goo_playdate4j_sdk_SoundBridge_ControlSignalBridge.o
+if %ERRORLEVEL% NEQ 0 EXIT /B 1
+
+g++ -c -fPIC -D TARGET_EXTENSION %GCC_INCLUDE% pd4j_bridge\com_am1goo_playdate4j_sdk_SoundBridge_DelayLineBridge.cpp -o buildcache\compiled\com_am1goo_playdate4j_sdk_SoundBridge_DelayLineBridge.o
+if %ERRORLEVEL% NEQ 0 EXIT /B 1
+
+g++ -c -fPIC -D TARGET_EXTENSION %GCC_INCLUDE% pd4j_bridge\com_am1goo_playdate4j_sdk_SoundBridge_DelayLineTapBridge.cpp -o buildcache\compiled\com_am1goo_playdate4j_sdk_SoundBridge_DelayLineTapBridge.o
+if %ERRORLEVEL% NEQ 0 EXIT /B 1
+
 g++ -c -fPIC -D TARGET_EXTENSION %GCC_INCLUDE% pd4j_bridge\com_am1goo_playdate4j_sdk_SoundBridge_FilePlayerBridge.cpp -o buildcache\compiled\com_am1goo_playdate4j_sdk_SoundBridge_FilePlayerBridge.o
 if %ERRORLEVEL% NEQ 0 EXIT /B 1
 
 g++ -c -fPIC -D TARGET_EXTENSION %GCC_INCLUDE% pd4j_bridge\com_am1goo_playdate4j_sdk_SoundBridge_OnePoleFilterBridge.cpp -o buildcache\compiled\com_am1goo_playdate4j_sdk_SoundBridge_OnePoleFilterBridge.o
 if %ERRORLEVEL% NEQ 0 EXIT /B 1
 
+g++ -c -fPIC -D TARGET_EXTENSION %GCC_INCLUDE% pd4j_bridge\com_am1goo_playdate4j_sdk_SoundBridge_OverdriveBridge.cpp -o buildcache\compiled\com_am1goo_playdate4j_sdk_SoundBridge_OverdriveBridge.o
+if %ERRORLEVEL% NEQ 0 EXIT /B 1
+
 g++ -c -fPIC -D TARGET_EXTENSION %GCC_INCLUDE% pd4j_bridge\com_am1goo_playdate4j_sdk_SoundBridge_PDSynthBridge.cpp -o buildcache\compiled\com_am1goo_playdate4j_sdk_SoundBridge_PDSynthBridge.o
 if %ERRORLEVEL% NEQ 0 EXIT /B 1
 
 g++ -c -fPIC -D TARGET_EXTENSION %GCC_INCLUDE% pd4j_bridge\com_am1goo_playdate4j_sdk_SoundBridge_PDSynthEnvelopeBridge.cpp -o buildcache\compiled\com_am1goo_playdate4j_sdk_SoundBridge_PDSynthEnvelopeBridge.o
+if %ERRORLEVEL% NEQ 0 EXIT /B 1
+
+g++ -c -fPIC -D TARGET_EXTENSION %GCC_INCLUDE% pd4j_bridge\com_am1goo_playdate4j_sdk_SoundBridge_PDSynthInstrumentBridge.cpp -o buildcache\compiled\com_am1goo_playdate4j_sdk_SoundBridge_PDSynthInstrumentBridge.o
 if %ERRORLEVEL% NEQ 0 EXIT /B 1
 
 g++ -c -fPIC -D TARGET_EXTENSION %GCC_INCLUDE% pd4j_bridge\com_am1goo_playdate4j_sdk_SoundBridge_PDSynthLFOBridge.cpp -o buildcache\compiled\com_am1goo_playdate4j_sdk_SoundBridge_PDSynthLFOBridge.o
@@ -63,6 +78,12 @@ g++ -c -fPIC -D TARGET_EXTENSION %GCC_INCLUDE% pd4j_bridge\com_am1goo_playdate4j
 if %ERRORLEVEL% NEQ 0 EXIT /B 1
 
 g++ -c -fPIC -D TARGET_EXTENSION %GCC_INCLUDE% pd4j_bridge\com_am1goo_playdate4j_sdk_SoundBridge_SamplePlayerBridge.cpp -o buildcache\compiled\com_am1goo_playdate4j_sdk_SoundBridge_SamplePlayerBridge.o
+if %ERRORLEVEL% NEQ 0 EXIT /B 1
+
+g++ -c -fPIC -D TARGET_EXTENSION %GCC_INCLUDE% pd4j_bridge\com_am1goo_playdate4j_sdk_SoundBridge_SequenceTrackBridge.cpp -o buildcache\compiled\com_am1goo_playdate4j_sdk_SoundBridge_SequenceTrackBridge.o
+if %ERRORLEVEL% NEQ 0 EXIT /B 1
+
+g++ -c -fPIC -D TARGET_EXTENSION %GCC_INCLUDE% pd4j_bridge\com_am1goo_playdate4j_sdk_SoundBridge_SoundSequenceBridge.cpp -o buildcache\compiled\com_am1goo_playdate4j_sdk_SoundBridge_SoundSequenceBridge.o
 if %ERRORLEVEL% NEQ 0 EXIT /B 1
 
 g++ -c -fPIC -D TARGET_EXTENSION %GCC_INCLUDE% pd4j_bridge\com_am1goo_playdate4j_sdk_SoundBridge_SourceBridge.cpp -o buildcache\compiled\com_am1goo_playdate4j_sdk_SoundBridge_SourceBridge.o
@@ -88,13 +109,20 @@ g++ -shared -o pd4j_engine\lib\pd4j_bridge.dll buildcache\compiled\pd4j_api.o^
  buildcache\compiled\com_am1goo_playdate4j_sdk_SoundBridge_AudioSampleBridge.o^
  buildcache\compiled\com_am1goo_playdate4j_sdk_SoundBridge_BitCrusherBridge.o^
  buildcache\compiled\com_am1goo_playdate4j_sdk_SoundBridge_ChannelBridge.o^
+ buildcache\compiled\com_am1goo_playdate4j_sdk_SoundBridge_ControlSignalBridge.o^
+ buildcache\compiled\com_am1goo_playdate4j_sdk_SoundBridge_DelayLineBridge.o^
+ buildcache\compiled\com_am1goo_playdate4j_sdk_SoundBridge_DelayLineTapBridge.o^
  buildcache\compiled\com_am1goo_playdate4j_sdk_SoundBridge_FilePlayerBridge.o^
  buildcache\compiled\com_am1goo_playdate4j_sdk_SoundBridge_OnePoleFilterBridge.o^
+ buildcache\compiled\com_am1goo_playdate4j_sdk_SoundBridge_OverdriveBridge.o^
  buildcache\compiled\com_am1goo_playdate4j_sdk_SoundBridge_PDSynthBridge.o^
  buildcache\compiled\com_am1goo_playdate4j_sdk_SoundBridge_PDSynthEnvelopeBridge.o^
+ buildcache\compiled\com_am1goo_playdate4j_sdk_SoundBridge_PDSynthInstrumentBridge.o^
  buildcache\compiled\com_am1goo_playdate4j_sdk_SoundBridge_PDSynthLFOBridge.o^
  buildcache\compiled\com_am1goo_playdate4j_sdk_SoundBridge_RingModulatorBridge.o^
  buildcache\compiled\com_am1goo_playdate4j_sdk_SoundBridge_SamplePlayerBridge.o^
+ buildcache\compiled\com_am1goo_playdate4j_sdk_SoundBridge_SequenceTrackBridge.o^
+ buildcache\compiled\com_am1goo_playdate4j_sdk_SoundBridge_SoundSequenceBridge.o^
  buildcache\compiled\com_am1goo_playdate4j_sdk_SoundBridge_SourceBridge.o^
  buildcache\compiled\com_am1goo_playdate4j_sdk_SoundBridge_TwoPoleFilterBridge.o^
  buildcache\compiled\com_am1goo_playdate4j_sdk_SysBridge.o^

@@ -217,6 +217,46 @@ JNIEXPORT jlong JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_getBitmapM
 
 /*
  * Class:     com_am1goo_playdate4j_sdk_GraphicsBridge
+ * Method:    newBitmapTable
+ * Signature: (III)J
+ */
+JNIEXPORT jlong JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_newBitmapTable
+  (JNIEnv *, jobject, jint, jint, jint);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_GraphicsBridge
+ * Method:    freeBitmapTable
+ * Signature: (J)V
+ */
+JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_freeBitmapTable
+  (JNIEnv *, jobject, jlong);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_GraphicsBridge
+ * Method:    getTableBitmap
+ * Signature: (JI)J
+ */
+JNIEXPORT jlong JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_getTableBitmap
+  (JNIEnv *, jobject, jlong, jint);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_GraphicsBridge
+ * Method:    loadBitmapTable
+ * Signature: (Ljava/lang/String;)J
+ */
+JNIEXPORT jlong JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_loadBitmapTable
+  (JNIEnv *, jobject, jstring);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_GraphicsBridge
+ * Method:    loadIntoBitmapTable
+ * Signature: (Ljava/lang/String;J)V
+ */
+JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_loadIntoBitmapTable
+  (JNIEnv *, jobject, jstring, jlong);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_GraphicsBridge
  * Method:    setFont
  * Signature: (J)V
  */
