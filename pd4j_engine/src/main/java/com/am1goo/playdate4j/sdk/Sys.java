@@ -2,10 +2,14 @@ package com.am1goo.playdate4j.sdk;
 
 import com.am1goo.playdate4j.sdk.SysBridge.PDDateTime;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Sys {
 
     private static final SysBridge bridge = new SysBridge();
-    
+
+    private static final List<PDMenuItem> menuItems = new ArrayList<PDMenuItem>();
     private static final PDDateTime dateTime = new PDDateTime();
 
     /* logging */
@@ -32,24 +36,57 @@ public class Sys {
     }
     
     /* system menu */
-    public static void addMenuItem(String title) {
-    	bridge.addMenuItem(title);
+    public static PDMenuItem addMenuItem(String title) {
+    	long ptr = bridge.addMenuItem(title);
+        Api.Pointer pointer = new Api.Pointer(ptr);
+        if (pointer.invalid())
+            return null;
+
+        PDMenuItem menuItem = new PDMenuItem(pointer);
+        menuItems.add(menuItem);
+        return menuItem;
     }
     
-    public static void addCheckmarkMenuItem(String title, boolean value) {
-    	bridge.addCheckmarkMenuItem(title, value);
+    public static PDMenuItem addCheckmarkMenuItem(String title, boolean value) {
+        long ptr = bridge.addCheckmarkMenuItem(title, value);
+        Api.Pointer pointer = new Api.Pointer(ptr);
+        if (pointer.invalid())
+            return null;
+
+        PDMenuItem menuItem = new PDMenuItem(pointer);
+        menuItems.add(menuItem);
+        return menuItem;
     }
     
-    public static void addOptionsMenuItem(String title, String[] options) {
-    	bridge.addOptionsMenuItem(title, options, options.length);
+    public static PDMenuItem addOptionsMenuItem(String title, String[] options) {
+    	long ptr = bridge.addOptionsMenuItem(title, options, options.length);
+        Api.Pointer pointer = new Api.Pointer(ptr);
+        if (pointer.invalid())
+            return null;
+
+        PDMenuItem menuItem = new PDMenuItem(pointer);
+        menuItems.add(menuItem);
+        return menuItem;
     }
     
     public static void removeMenuItem(PDMenuItem menuItem) {
-    	bridge.removeMenuItem(menuItem.getPointer().getValue());
+        if (menuItem == null)
+            return;
+
+        if (menuItem.ptr.invalid())
+            return;
+
+    	bridge.removeMenuItem(menuItem.ptr.getValue());
+        menuItem.ptr.invalidate();
+        menuItems.remove(menuItem);
     }
     
     public static void removeAllMenuItems() {
     	bridge.removeAllMenuItems();
+        for (PDMenuItem menuItem : menuItems) {
+            menuItem.ptr.invalidate();
+        }
+        menuItems.clear();
     }
     
     public static String getMenuItemTitle(PDMenuItem menuItem) {
@@ -186,6 +223,10 @@ public class Sys {
          
          public Api.Pointer getPointer() {
          	return ptr;
+         }
+
+         public void free() {
+             Sys.removeMenuItem(this);
          }
     }
 }

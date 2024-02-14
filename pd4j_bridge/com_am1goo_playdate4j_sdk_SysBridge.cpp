@@ -24,33 +24,37 @@ JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_error
 	env->ReleaseStringUTFChars(error_str, error);
 }
 
-JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_addMenuItem
+JNIEXPORT jlong JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_addMenuItem
   (JNIEnv* env, jobject thisObject, jstring title_str) {
 	PlaydateAPI* api = pd4j_get_api(env);
 	if (api == NULL)
-		return;
+		return 0;
 	
 	const char* title = env->GetStringUTFChars(title_str, 0);
-	api->system->addMenuItem(title, NULL, NULL);
+	PDMenuItem* item = api->system->addMenuItem(title, NULL, NULL);
 	env->ReleaseStringUTFChars(title_str, title);
+	uintptr_t item_ptr = reinterpret_cast<uintptr_t>(item);
+	return item_ptr;
 }
 
-JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_addCheckmarkMenuItem
+JNIEXPORT jlong JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_addCheckmarkMenuItem
   (JNIEnv* env, jobject thisObject, jstring title_str, jboolean value) {
 	PlaydateAPI* api = pd4j_get_api(env);
 	if (api == NULL)
-		return;
+		return 0;
 	
 	const char* title = env->GetStringUTFChars(title_str, 0);
-	api->system->addCheckmarkMenuItem(title, value, NULL, NULL);
+	PDMenuItem* item = api->system->addCheckmarkMenuItem(title, value, NULL, NULL);
 	env->ReleaseStringUTFChars(title_str, title);
+	uintptr_t item_ptr = reinterpret_cast<uintptr_t>(item);
+	return item_ptr;
 }
 
-JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_addOptionsMenuItem
+JNIEXPORT jlong JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_addOptionsMenuItem
   (JNIEnv* env, jobject thisObject, jstring title_str, jobjectArray options_array, jint optionsCount) {
 	PlaydateAPI* api = pd4j_get_api(env);
 	if (api == NULL)
-		return;
+		return 0;
 	
 	const char* title = env->GetStringUTFChars(title_str, 0);
 	int options_length = env->GetArrayLength(options_array);
@@ -62,7 +66,7 @@ JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_addOptionsMenuIt
 		options[i] = text;
     }
 	
-	api->system->addOptionsMenuItem(title, options, optionsCount, NULL, NULL);
+	PDMenuItem* item = api->system->addOptionsMenuItem(title, options, optionsCount, NULL, NULL);
 	
 	env->ReleaseStringUTFChars(title_str, title);
 	for (int i = 0; i < options_length; i++) {
@@ -70,6 +74,8 @@ JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_addOptionsMenuIt
 		const char* text = options[i];
 		env->ReleaseStringUTFChars(text_str, text);
 	}
+	uintptr_t item_ptr = reinterpret_cast<uintptr_t>(item);
+	return item_ptr;
 }
 
 JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_removeMenuItem

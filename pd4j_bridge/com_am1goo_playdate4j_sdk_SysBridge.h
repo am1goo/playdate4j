@@ -26,25 +26,25 @@ JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_error
 /*
  * Class:     com_am1goo_playdate4j_sdk_SysBridge
  * Method:    addMenuItem
- * Signature: (Ljava/lang/String;)V
+ * Signature: (Ljava/lang/String;)J
  */
-JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_addMenuItem
+JNIEXPORT jlong JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_addMenuItem
   (JNIEnv *, jobject, jstring);
 
 /*
  * Class:     com_am1goo_playdate4j_sdk_SysBridge
  * Method:    addCheckmarkMenuItem
- * Signature: (Ljava/lang/String;Z)V
+ * Signature: (Ljava/lang/String;Z)J
  */
-JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_addCheckmarkMenuItem
+JNIEXPORT jlong JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_addCheckmarkMenuItem
   (JNIEnv *, jobject, jstring, jboolean);
 
 /*
  * Class:     com_am1goo_playdate4j_sdk_SysBridge
  * Method:    addOptionsMenuItem
- * Signature: (Ljava/lang/String;[Ljava/lang/String;I)V
+ * Signature: (Ljava/lang/String;[Ljava/lang/String;I)J
  */
-JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_addOptionsMenuItem
+JNIEXPORT jlong JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_addOptionsMenuItem
   (JNIEnv *, jobject, jstring, jobjectArray, jint);
 
 /*

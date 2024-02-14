@@ -11,9 +11,9 @@ public class SysBridge {
     public native void error(String error);
     
     /* system menu */
-    public native void addMenuItem(String title);
-    public native void addCheckmarkMenuItem(String title, boolean value);
-    public native void addOptionsMenuItem(String title, String[] options, int optionsCount);
+    public native long addMenuItem(String title);
+    public native long addCheckmarkMenuItem(String title, boolean value);
+    public native long addOptionsMenuItem(String title, String[] options, int optionsCount);
     public native void removeMenuItem(long menuItemPtr);
     public native void removeAllMenuItems();
     public native String getMenuItemTitle(long menuItemPtr);
