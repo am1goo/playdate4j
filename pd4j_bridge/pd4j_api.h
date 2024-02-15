@@ -9,3 +9,5 @@
 
 EXTERNC PlaydateAPI* pd4j_get_api(JNIEnv* env);
 EXTERNC void pd4j_set_api(JNIEnv* env, PlaydateAPI* api);
+
+#undef EXTERNC

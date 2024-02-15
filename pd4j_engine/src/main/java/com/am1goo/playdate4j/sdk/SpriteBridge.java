@@ -73,6 +73,16 @@ public class SpriteBridge {
 	public native void getCollideRect(long spritePtr, PDRect collideRect);
 	public native void clearCollideRect(long spritePtr);
 	
+	public native int checkCollisions(long spritePtr, float goalX, float goalY, SpriteCollisionInfo[] result, int length, SpriteActualInfo actual);
+	public native int moveWithCollisions(long spritePtr, float goalX, float goalY, SpriteCollisionInfo[] result, int length, SpriteActualInfo actual);
+	
+	public native int querySpritesAtPoint(float x, float y, long[] result, int length);
+	public native int querySpritesInRect(float x, float y, float width, float height, long[] result, int length);
+	public native int querySpritesAlongLine(float x1, float y1, float x2, float y2, long[] result, int length);
+	public native int overlappingSprites(long spritePtr, long[] result, int length);
+	public native int allOverlappingSprites(long[] result, int length);
+	public native int querySpriteInfoAlongLine(float x1, float y1, float x2, float y2, SpriteQueryInfo[] result, int length);
+	
 	public static class PDXY {
 		private float x;
 		private float y;
@@ -118,6 +128,47 @@ public class SpriteBridge {
 			this.y = y;
 			this.width = width;
 			this.height = height;
+		}
+	}
+	
+	public static class SpriteQueryInfo {
+		private long spritePtr;
+		private float ti1;
+		private float ti2;
+		private CollisionPoint entryPoint;
+		private CollisionPoint exitPoint;
+		
+		public SpriteQueryInfo() {
+			entryPoint = new CollisionPoint();
+			exitPoint = new CollisionPoint();
+		}
+		
+		public long spritePtr() {
+			return spritePtr;
+		}
+		
+		public float ti1() {
+			return ti1;
+		}
+		
+		public float ti2() {
+			return ti2;
+		}
+		
+		public CollisionPoint entryPoint() {
+			return entryPoint;
+		}
+		
+		public CollisionPoint exitPoint() {
+			return exitPoint;
+		}
+		
+		public void set(long spritePtr, float ti1, float ti2, float xEntryPoint, float yEntryPoint, float xExitPoint, float yExitPoint) {
+			this.spritePtr = spritePtr;
+			this.ti1 = ti1;
+			this.ti2 = ti2;
+			this.entryPoint.set(xEntryPoint, yEntryPoint);
+			this.exitPoint.set(xExitPoint, yExitPoint);
 		}
 	}
 	
@@ -182,12 +233,15 @@ public class SpriteBridge {
 			return otherRect; 
 		}
 		
-		public void set(long spritePtr, long otherPtr, int responseType, short overlaps, float ti) {
+		public void set(long spritePtr, long otherPtr, int responseType, short overlaps, float ti, float xMove, float yMove, int xNormal, int yNormal, float xTouch, float yTouch) {
 			this.spritePtr = spritePtr;
 			this.otherPtr = otherPtr;
 			this.responseType = responseType;
 			this.overlaps = overlaps;
 			this.ti = ti;
+			this.move.set(xMove, yMove);
+			this.normal.set(xNormal, yNormal);
+			this.touch.set(xTouch, yTouch);
 		}
 	}
 	
@@ -195,6 +249,14 @@ public class SpriteBridge {
 		
 		private float x;
 		private float y;
+		
+		public CollisionPoint() {
+			this(0, 0);
+		}
+		
+		public CollisionPoint(float x, float y) {
+			set(x, y);
+		}
 		
 		public float x() {
 			return x;
@@ -208,12 +270,24 @@ public class SpriteBridge {
 			this.x = x;
 			this.y = y;
 		}
+		
+		public static CollisionPoint copyOf(CollisionPoint p) {
+			return new CollisionPoint(p.x, p.y);
+		}
 	}
 	
 	public static class CollisionVector {
 		
 		private int x;
 		private int y;
+		
+		public CollisionVector() {
+			this(0, 0);
+		}
+		
+		public CollisionVector(int x, int y) {
+			set(x, y);
+		}
 		
 		public int x() {
 			return x;
@@ -227,13 +301,16 @@ public class SpriteBridge {
 			this.x = x;
 			this.y = y;
 		}
+		
+		public static CollisionVector copyOf(CollisionVector p) {
+			return new CollisionVector(p.x, p.y);
+		}
 	}
 	
 	public static class SpriteActualInfo {
 		
 		private float actualX;
 		private float actualY;
-		private int len;
 		
 		public float actualX() {
 			return actualX;
@@ -243,14 +320,9 @@ public class SpriteBridge {
 			return actualY;
 		}
 		
-		public int len() {
-			return len;
-		}
-		
-		public void set(float actualX, float actualY, int len) {
+		public void set(float actualX, float actualY) {
 			this.actualX = actualX;
 			this.actualY = actualY;
-			this.len = len;
 		}
 	}
 }

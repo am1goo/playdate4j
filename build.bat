@@ -14,6 +14,9 @@ SET GCC_INCLUDE=-I "%JAVA_HOME%\include" -I "%JAVA_HOME%\include\win32" -I "%PLA
 g++ -c -fPIC -D TARGET_EXTENSION %GCC_INCLUDE% pd4j_bridge\pd4j_api.cpp  -o buildcache\compiled\pd4j_api.o
 if %ERRORLEVEL% NEQ 0 EXIT /B 1
 
+g++ -c -fPIC -D TARGET_EXTENSION %GCC_INCLUDE% pd4j_bridge\pd4j_math.cpp  -o buildcache\compiled\pd4j_math.o
+if %ERRORLEVEL% NEQ 0 EXIT /B 1
+
 g++ -c -fPIC -D TARGET_EXTENSION %GCC_INCLUDE% pd4j_bridge\com_am1goo_playdate4j_sdk_ApiBridge.cpp -o buildcache\compiled\com_am1goo_playdate4j_sdk_ApiBridge.o
 if %ERRORLEVEL% NEQ 0 EXIT /B 1
 
@@ -98,7 +101,9 @@ if %ERRORLEVEL% NEQ 0 EXIT /B 1
 g++ -c -fPIC -D TARGET_EXTENSION %GCC_INCLUDE% pd4j_bridge\com_am1goo_playdate4j_sdk_VideoBridge.cpp -o buildcache\compiled\com_am1goo_playdate4j_sdk_VideoBridge.o
 if %ERRORLEVEL% NEQ 0 EXIT /B 1
 
-g++ -shared -o pd4j_engine\lib\pd4j_bridge.dll buildcache\compiled\pd4j_api.o^
+g++ -shared -o pd4j_engine\lib\pd4j_bridge.dll^
+ buildcache\compiled\pd4j_api.o^
+ buildcache\compiled\pd4j_math.o^
  buildcache\compiled\com_am1goo_playdate4j_sdk_ApiBridge.o^
  buildcache\compiled\com_am1goo_playdate4j_sdk_FilesystemBridge.o^
  buildcache\compiled\com_am1goo_playdate4j_sdk_DisplayBridge.o^

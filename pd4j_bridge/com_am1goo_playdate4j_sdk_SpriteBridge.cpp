@@ -1,5 +1,6 @@
 #include "com_am1goo_playdate4j_sdk_SpriteBridge.h"
 #include "pd4j_api.h"
+#include "pd4j_math.h"
 #include <pd_api.h>
 
 JNIEXPORT jlong JNICALL Java_com_am1goo_playdate4j_sdk_SpriteBridge_newSprite
@@ -531,4 +532,217 @@ JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SpriteBridge_clearCollideR
 	
 	LCDSprite* sprite = reinterpret_cast<LCDSprite*>(sprite_ptr);
 	api->sprite->clearCollideRect(sprite);
+}
+
+JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_SpriteBridge_checkCollisions
+  (JNIEnv* env, jobject thisObject, jlong sprite_ptr, jfloat goalX, jfloat goalY, jobjectArray result_array, jint result_length, jobject actual) {
+	PlaydateAPI* api = pd4j_get_api(env);
+	if (api == NULL)
+		return 0;
+	
+	LCDSprite* sprite = reinterpret_cast<LCDSprite*>(sprite_ptr);
+	int len;
+	float actualX;
+	float actualY;
+	SpriteCollisionInfo* query = api->sprite->checkCollisions(sprite, goalX, goalY, &actualX, &actualY, &len);
+	for (int i = 0; i < len; ++i)
+	{
+		if (i >= result_length)
+			break;
+		
+		SpriteCollisionInfo q = query[i];
+		LCDSprite* sprite = q.sprite;
+		uintptr_t sprite_ptr = reinterpret_cast<uintptr_t>(sprite);
+		LCDSprite* other = q.other;
+		uintptr_t other_ptr = reinterpret_cast<uintptr_t>(other);
+		int responseType_value = static_cast<int>(q.responseType);
+		
+		jobject obj = env->GetObjectArrayElement(result_array, i);
+		jclass class_obj = env->GetObjectClass(obj);
+		jmethodID class_obj_method_set = env->GetMethodID(class_obj, "set", "(JJISFFFIIFF)V");
+		env->CallVoidMethod(obj, class_obj_method_set, sprite_ptr, other_ptr, responseType_value, q.overlaps, q.ti, q.move.x, q.move.y, q.normal.x, q.normal.y, q.touch.x, q.touch.y);
+	}
+	
+	jclass class_actual = env->GetObjectClass(actual);
+	jmethodID class_actual_method_set = env->GetMethodID(class_actual, "set", "(FF)V");
+	env->CallVoidMethod(actual, class_actual_method_set, actualX, actualY);
+	
+	delete[] query;
+	return min(len, result_length);
+}
+
+JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_SpriteBridge_moveWithCollisions
+  (JNIEnv* env, jobject thisObject, jlong sprite_ptr, jfloat goalX, jfloat goalY, jobjectArray result_array, jint result_length, jobject actual) {
+	PlaydateAPI* api = pd4j_get_api(env);
+	if (api == NULL)
+		return 0;
+	
+	LCDSprite* sprite = reinterpret_cast<LCDSprite*>(sprite_ptr);
+	int len;
+	float actualX;
+	float actualY;
+	SpriteCollisionInfo* query = api->sprite->moveWithCollisions(sprite, goalX, goalY, &actualX, &actualY, &len);
+	for (int i = 0; i < len; ++i)
+	{
+		if (i >= result_length)
+			break;
+		
+		SpriteCollisionInfo q = query[i];
+		LCDSprite* sprite = q.sprite;
+		uintptr_t sprite_ptr = reinterpret_cast<uintptr_t>(sprite);
+		LCDSprite* other = q.other;
+		uintptr_t other_ptr = reinterpret_cast<uintptr_t>(other);
+		int responseType_value = static_cast<int>(q.responseType);
+		
+		jobject obj = env->GetObjectArrayElement(result_array, i);
+		jclass class_obj = env->GetObjectClass(obj);
+		jmethodID class_obj_method_set = env->GetMethodID(class_obj, "set", "(JJISFFFIIFF)V");
+		env->CallVoidMethod(obj, class_obj_method_set, sprite_ptr, other_ptr, responseType_value, q.overlaps, q.ti, q.move.x, q.move.y, q.normal.x, q.normal.y, q.touch.x, q.touch.y);
+	}
+	
+	jclass class_actual = env->GetObjectClass(actual);
+	jmethodID class_actual_method_set = env->GetMethodID(class_actual, "set", "(FF)V");
+	env->CallVoidMethod(actual, class_actual_method_set, actualX, actualY);
+	
+	delete[] query;
+	return min(len, result_length);
+}
+
+JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_SpriteBridge_querySpritesAtPoint
+  (JNIEnv* env, jobject thisObject, jfloat x, jfloat y, jlongArray result_array, jint result_length) {
+	PlaydateAPI* api = pd4j_get_api(env);
+	if (api == NULL)
+		return 0;
+	
+	int len;
+	LCDSprite** query = api->sprite->querySpritesAtPoint(x, y, &len);
+	for (int i = 0; i < len; ++i)
+	{
+		if (i >= result_length)
+			break;
+		
+		LCDSprite* found = query[i];
+		uintptr_t found_ptr = reinterpret_cast<uintptr_t>(found);
+		jlong found_as_long = found_ptr;
+		env->SetLongArrayRegion(result_array, i, 1, &found_as_long);
+	}
+	delete[] query;
+	return min(len, result_length);
+}
+
+JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_SpriteBridge_querySpritesInRect
+  (JNIEnv* env, jobject thisObject, jfloat x, jfloat y, jfloat width, jfloat height, jlongArray result_array, jint result_length) {
+	PlaydateAPI* api = pd4j_get_api(env);
+	if (api == NULL)
+		return 0;
+	
+	int len;
+	LCDSprite** query = api->sprite->querySpritesInRect(x, y, width, height, &len);
+	for (int i = 0; i < len; ++i)
+	{
+		if (i >= result_length)
+			break;
+		
+		LCDSprite* found = query[i];
+		uintptr_t found_ptr = reinterpret_cast<uintptr_t>(found);
+		jlong found_as_long = found_ptr;
+		env->SetLongArrayRegion(result_array, i, 1, &found_as_long);
+	}
+	delete[] query;
+	return min(len, result_length);
+}
+
+JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_SpriteBridge_querySpritesAlongLine
+  (JNIEnv* env, jobject thisObject, jfloat x1, jfloat y1, jfloat x2, jfloat y2, jlongArray result_array, jint result_length) {
+	PlaydateAPI* api = pd4j_get_api(env);
+	if (api == NULL)
+		return 0;
+	
+	int len;
+	LCDSprite** query = api->sprite->querySpritesAlongLine(x1, y1, x2, y2, &len);
+	for (int i = 0; i < len; ++i)
+	{
+		if (i >= result_length)
+			break;
+		
+		LCDSprite* found = query[i];
+		uintptr_t found_ptr = reinterpret_cast<uintptr_t>(found);
+		jlong found_as_long = found_ptr;
+		env->SetLongArrayRegion(result_array, i, 1, &found_as_long);
+	}
+	delete[] query;
+	return min(len, result_length);
+}
+
+JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_SpriteBridge_overlappingSprites
+  (JNIEnv* env, jobject thisObject, jlong sprite_ptr, jlongArray result_array, jint result_length) {
+	PlaydateAPI* api = pd4j_get_api(env);
+	if (api == NULL)
+		return 0;
+	
+	LCDSprite* sprite = reinterpret_cast<LCDSprite*>(sprite_ptr);
+	int len;
+	LCDSprite** query = api->sprite->overlappingSprites(sprite, &len);
+	for (int i = 0; i < len; ++i)
+	{
+		if (i >= result_length)
+			break;
+		
+		LCDSprite* found = query[i];
+		uintptr_t found_ptr = reinterpret_cast<uintptr_t>(found);
+		jlong found_as_long = found_ptr;
+		env->SetLongArrayRegion(result_array, i, 1, &found_as_long);
+	}
+	delete[] query;
+	return min(len, result_length);
+}
+
+JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_SpriteBridge_allOverlappingSprites
+  (JNIEnv* env, jobject thisObject, jlongArray result_array, jint result_length) {
+	PlaydateAPI* api = pd4j_get_api(env);
+	if (api == NULL)
+		return 0;
+	
+	int len;
+	LCDSprite** query = api->sprite->allOverlappingSprites(&len);
+	for (int i = 0; i < len; ++i)
+	{
+		if (i >= result_length)
+			break;
+		
+		LCDSprite* found = query[i];
+		uintptr_t found_ptr = reinterpret_cast<uintptr_t>(found);
+		jlong found_as_long = found_ptr;
+		env->SetLongArrayRegion(result_array, i, 1, &found_as_long);
+	}
+	delete[] query;
+	return min(len, result_length);
+}
+
+JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_SpriteBridge_querySpriteInfoAlongLine
+  (JNIEnv* env, jobject thisObject, jfloat x1, jfloat y1, jfloat x2, jfloat y2, jobjectArray result_array, jint result_length) {
+	PlaydateAPI* api = pd4j_get_api(env);
+	if (api == NULL)
+		return 0;
+	
+	int len;
+	SpriteQueryInfo* query = api->sprite->querySpriteInfoAlongLine(x1, y1, x2, y2, &len);
+	for (int i = 0; i < len; ++i)
+	{
+		if (i >= result_length)
+			break;
+		
+		SpriteQueryInfo q = query[i];
+		
+		LCDSprite* sprite = q.sprite;
+		uintptr_t sprite_ptr = reinterpret_cast<uintptr_t>(sprite);
+		
+		jobject obj = env->GetObjectArrayElement(result_array, i);
+		
+		jclass class_obj = env->GetObjectClass(obj);
+		jmethodID class_obj_method_set = env->GetMethodID(class_obj, "set", "(JFFFFFF)V");
+		env->CallVoidMethod(obj, class_obj_method_set, sprite_ptr, q.ti1, q.ti2, q.entryPoint.x, q.entryPoint.y, q.exitPoint.x, q.exitPoint.y);
+	}
+	delete[] query;
+	return min(len, result_length);
 }

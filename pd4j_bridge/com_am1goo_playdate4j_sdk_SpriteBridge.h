@@ -391,6 +391,70 @@ JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SpriteBridge_getCollideRec
 JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SpriteBridge_clearCollideRect
   (JNIEnv *, jobject, jlong);
 
+/*
+ * Class:     com_am1goo_playdate4j_sdk_SpriteBridge
+ * Method:    checkCollisions
+ * Signature: (JFF[Lcom/am1goo/playdate4j/sdk/SpriteBridge/SpriteCollisionInfo;ILcom/am1goo/playdate4j/sdk/SpriteBridge/SpriteActualInfo;)I
+ */
+JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_SpriteBridge_checkCollisions
+  (JNIEnv *, jobject, jlong, jfloat, jfloat, jobjectArray, jint, jobject);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_SpriteBridge
+ * Method:    moveWithCollisions
+ * Signature: (JFF[Lcom/am1goo/playdate4j/sdk/SpriteBridge/SpriteCollisionInfo;ILcom/am1goo/playdate4j/sdk/SpriteBridge/SpriteActualInfo;)I
+ */
+JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_SpriteBridge_moveWithCollisions
+  (JNIEnv *, jobject, jlong, jfloat, jfloat, jobjectArray, jint, jobject);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_SpriteBridge
+ * Method:    querySpritesAtPoint
+ * Signature: (FF[JI)I
+ */
+JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_SpriteBridge_querySpritesAtPoint
+  (JNIEnv *, jobject, jfloat, jfloat, jlongArray, jint);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_SpriteBridge
+ * Method:    querySpritesInRect
+ * Signature: (FFFF[JI)I
+ */
+JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_SpriteBridge_querySpritesInRect
+  (JNIEnv *, jobject, jfloat, jfloat, jfloat, jfloat, jlongArray, jint);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_SpriteBridge
+ * Method:    querySpritesAlongLine
+ * Signature: (FFFF[JI)I
+ */
+JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_SpriteBridge_querySpritesAlongLine
+  (JNIEnv *, jobject, jfloat, jfloat, jfloat, jfloat, jlongArray, jint);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_SpriteBridge
+ * Method:    overlappingSprites
+ * Signature: (J[JI)I
+ */
+JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_SpriteBridge_overlappingSprites
+  (JNIEnv *, jobject, jlong, jlongArray, jint);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_SpriteBridge
+ * Method:    allOverlappingSprites
+ * Signature: ([JI)I
+ */
+JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_SpriteBridge_allOverlappingSprites
+  (JNIEnv *, jobject, jlongArray, jint);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_SpriteBridge
+ * Method:    querySpriteInfoAlongLine
+ * Signature: (FFFF[Lcom/am1goo/playdate4j/sdk/SpriteBridge/SpriteQueryInfo;I)I
+ */
+JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_SpriteBridge_querySpriteInfoAlongLine
+  (JNIEnv *, jobject, jfloat, jfloat, jfloat, jfloat, jobjectArray, jint);
+
 #ifdef __cplusplus
 }
 #endif
