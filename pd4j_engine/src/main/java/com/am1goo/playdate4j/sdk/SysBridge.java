@@ -18,8 +18,8 @@ public class SysBridge {
     public native void removeAllMenuItems();
     public native String getMenuItemTitle(long menuItemPtr);
     public native void setMenuItemTitle(long menuItemPtr, String title);
-    public native int getMenuItemValue(long menuItemPtr);
-    public native void setMenuItemValue(long menuItemPtr, int value);
+    public native boolean getMenuItemValue(long menuItemPtr);
+    public native void setMenuItemValue(long menuItemPtr, boolean checked);
     
     /* miscellaneous */
     public native void drawFps(int x, int y);

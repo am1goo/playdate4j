@@ -89,22 +89,6 @@ public class Sys {
         menuItems.clear();
     }
     
-    public static String getMenuItemTitle(PDMenuItem menuItem) {
-    	return bridge.getMenuItemTitle(menuItem.getPointer().getValue());
-    }
-    
-    public static void setMenuItemTitle(PDMenuItem menuItem, String title) {
-    	bridge.setMenuItemTitle(menuItem.getPointer().getValue(), title);
-    }
-
-    public static int getMenuItemValue(PDMenuItem menuItem) {
-    	return bridge.getMenuItemValue(menuItem.getPointer().getValue());
-    }
-    
-    public static void setMenuItemValue(PDMenuItem menuItem, int value) {
-    	bridge.setMenuItemValue(menuItem.getPointer().getValue(), value);
-    }
-    
     /* date and time */
     public static long getCurrentTimeMilliseconds() {
         return bridge.getCurrentTimeMilliseconds();
@@ -214,19 +198,35 @@ public class Sys {
     }
 
     public static class PDMenuItem {
-    	
-    	private final Api.Pointer ptr;
-    	
-    	 public PDMenuItem(Api.Pointer ptr) {
-             this.ptr = ptr;
-         }
-         
-         public Api.Pointer getPointer() {
-         	return ptr;
-         }
 
-         public void free() {
-             Sys.removeMenuItem(this);
-         }
+        private final Api.Pointer ptr;
+
+        public PDMenuItem(Api.Pointer ptr) {
+            this.ptr = ptr;
+        }
+
+        public Api.Pointer getPointer() {
+            return ptr;
+        }
+
+        public void free() {
+            Sys.removeMenuItem(this);
+        }
+
+        public String getMenuItemTitle() {
+            return bridge.getMenuItemTitle(ptr.getValue());
+        }
+
+        public void setMenuItemTitle(String title) {
+            bridge.setMenuItemTitle(ptr.getValue(), title);
+        }
+
+        public boolean getMenuItemValue() {
+            return bridge.getMenuItemValue(ptr.getValue());
+        }
+
+        public void setMenuItemValue(boolean checked) {
+            bridge.setMenuItemValue(ptr.getValue(), checked);
+        }
     }
 }

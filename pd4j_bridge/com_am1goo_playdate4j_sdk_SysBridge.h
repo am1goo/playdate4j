@@ -82,18 +82,18 @@ JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_setMenuItemTitle
 /*
  * Class:     com_am1goo_playdate4j_sdk_SysBridge
  * Method:    getMenuItemValue
- * Signature: (J)I
+ * Signature: (J)Z
  */
-JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_getMenuItemValue
+JNIEXPORT jboolean JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_getMenuItemValue
   (JNIEnv *, jobject, jlong);
 
 /*
  * Class:     com_am1goo_playdate4j_sdk_SysBridge
  * Method:    setMenuItemValue
- * Signature: (JI)V
+ * Signature: (JZ)V
  */
 JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_setMenuItemValue
-  (JNIEnv *, jobject, jlong, jint);
+  (JNIEnv *, jobject, jlong, jboolean);
 
 /*
  * Class:     com_am1goo_playdate4j_sdk_SysBridge

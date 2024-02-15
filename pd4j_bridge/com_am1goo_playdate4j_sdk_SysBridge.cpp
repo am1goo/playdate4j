@@ -120,18 +120,18 @@ JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_setMenuItemTitle
 	env->ReleaseStringUTFChars(title, title_str);
 }
 
-JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_getMenuItemValue
+JNIEXPORT jboolean JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_getMenuItemValue
   (JNIEnv* env, jobject thisObject, jlong menuItem_ptr) {
 	PlaydateAPI* api = pd4j_get_api(env);
 	if (api == NULL)
-		return 0;
+		return false;
 	
 	PDMenuItem* menuItem = reinterpret_cast<PDMenuItem*>(menuItem_ptr);
 	return api->system->getMenuItemValue(menuItem);
 }
 
 JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_setMenuItemValue
-  (JNIEnv* env, jobject thisObject, jlong menuItem_ptr, jint value) {
+  (JNIEnv* env, jobject thisObject, jlong menuItem_ptr, jboolean value) {
 	PlaydateAPI* api = pd4j_get_api(env);
 	if (api == NULL)
 		return;
