@@ -11,9 +11,9 @@ public class SysBridge {
     public native void error(String error);
     
     /* system menu */
-    public native long addMenuItem(String title);
-    public native long addCheckmarkMenuItem(String title, boolean value);
-    public native long addOptionsMenuItem(String title, String[] options, int optionsCount);
+    public native long addMenuItem(String title, PDMenuItemRunnable callback);
+    public native long addCheckmarkMenuItem(String title, boolean value, PDMenuItemRunnable callback);
+    public native long addOptionsMenuItem(String title, String[] options, int optionsCount, PDMenuItemRunnable callback);
     public native void removeMenuItem(long menuItemPtr);
     public native void removeAllMenuItems();
     public native String getMenuItemTitle(long menuItemPtr);
@@ -91,5 +91,24 @@ public class SysBridge {
     		this.minute = minute;
     		this.second = second;
     	}
+    }
+
+    public static class PDMenuItemRunnable {
+
+        private final Runnable runnable;
+
+        public PDMenuItemRunnable()
+        {
+            this(null);
+        }
+
+        public PDMenuItemRunnable(Runnable runnable) {
+            this.runnable = runnable;
+        }
+
+        public void run() {
+            if (runnable != null)
+                runnable.run();
+        }
     }
 }

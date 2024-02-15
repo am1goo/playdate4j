@@ -2,6 +2,60 @@
 #include "pd4j_api.h"
 #include <pd_api.h>
 
+class PDMenuItemCallback
+{
+	public:
+		JavaVM* vm;
+		jobject callback;
+	
+		void invoke() {
+			JNIEnv* env;
+			int stat = vm->GetEnv((void**)&env, JNI_VERSION_1_6);
+
+			bool attached = false;
+			if (stat == JNI_EDETACHED) {
+				stat = vm->AttachCurrentThread((void**)&env, NULL);
+				attached = true;
+			}
+			
+			if (stat != JNI_OK)
+				return;
+			
+			PlaydateAPI* api = pd4j_get_api(env);
+			if (api == NULL)
+				return;
+
+			jint ver = env->GetVersion();
+			jclass class_callback = env->GetObjectClass(callback);
+			jmethodID class_callback_method_run = env->GetMethodID(class_callback, "run", "()V");
+			env->CallVoidMethod(callback, class_callback_method_run);
+		}
+		
+		void free()
+		{	
+			JNIEnv* env;
+			int stat = vm->GetEnv((void**)&env, JNI_VERSION_1_6);
+			
+			bool attached = false;
+			if (stat == JNI_EDETACHED) {
+				stat = vm->AttachCurrentThread((void**)&env, NULL);
+				attached = true;
+			}
+			
+			if (stat != JNI_OK)
+				return;
+			
+			if (callback != NULL)
+			{
+				env->DeleteGlobalRef(callback);
+				callback = NULL;
+			}
+			
+			env = NULL;
+			vm = NULL;
+		}
+};
+
 JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_logToConsole
   (JNIEnv* env, jobject thisObject, jstring log_str) {
 	PlaydateAPI* api = pd4j_get_api(env);
@@ -24,37 +78,64 @@ JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_error
 	env->ReleaseStringUTFChars(error_str, error);
 }
 
+static void addMenuItemCallback(void* userdata);
+static void addMenuItemCallback(void* userdata) {
+	PDMenuItemCallback* c = (PDMenuItemCallback*)userdata;
+	c->invoke();
+}
+
 JNIEXPORT jlong JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_addMenuItem
-  (JNIEnv* env, jobject thisObject, jstring title_str) {
+  (JNIEnv* env, jobject thisObject, jstring title_str, jobject callback) {
 	PlaydateAPI* api = pd4j_get_api(env);
 	if (api == NULL)
 		return 0;
+
+	JavaVM* vm;
+	env->GetJavaVM(&vm);
 	
+	PDMenuItemCallback* c = new PDMenuItemCallback();
+	c->vm = vm;
+	c->callback = env->NewGlobalRef(callback);
+
 	const char* title = env->GetStringUTFChars(title_str, 0);
-	PDMenuItem* item = api->system->addMenuItem(title, NULL, NULL);
+	PDMenuItem* item = api->system->addMenuItem(title, addMenuItemCallback, c);
 	env->ReleaseStringUTFChars(title_str, title);
 	uintptr_t item_ptr = reinterpret_cast<uintptr_t>(item);
 	return item_ptr;
 }
 
 JNIEXPORT jlong JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_addCheckmarkMenuItem
-  (JNIEnv* env, jobject thisObject, jstring title_str, jboolean value) {
+  (JNIEnv* env, jobject thisObject, jstring title_str, jboolean value, jobject callback) {
 	PlaydateAPI* api = pd4j_get_api(env);
 	if (api == NULL)
 		return 0;
 	
+	JavaVM* vm;
+	env->GetJavaVM(&vm);
+	
+	PDMenuItemCallback* c = new PDMenuItemCallback();
+	c->vm = vm;
+	c->callback = env->NewGlobalRef(callback);
+	
 	const char* title = env->GetStringUTFChars(title_str, 0);
-	PDMenuItem* item = api->system->addCheckmarkMenuItem(title, value, NULL, NULL);
+	PDMenuItem* item = api->system->addCheckmarkMenuItem(title, value, addMenuItemCallback, c);
 	env->ReleaseStringUTFChars(title_str, title);
 	uintptr_t item_ptr = reinterpret_cast<uintptr_t>(item);
 	return item_ptr;
 }
 
 JNIEXPORT jlong JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_addOptionsMenuItem
-  (JNIEnv* env, jobject thisObject, jstring title_str, jobjectArray options_array, jint optionsCount) {
+  (JNIEnv* env, jobject thisObject, jstring title_str, jobjectArray options_array, jint optionsCount, jobject callback) {
 	PlaydateAPI* api = pd4j_get_api(env);
 	if (api == NULL)
 		return 0;
+	
+	JavaVM* vm;
+	env->GetJavaVM(&vm);
+	
+	PDMenuItemCallback* c = new PDMenuItemCallback();
+	c->vm = vm;
+	c->callback = env->NewGlobalRef(callback);
 	
 	const char* title = env->GetStringUTFChars(title_str, 0);
 	int options_length = env->GetArrayLength(options_array);
@@ -66,7 +147,7 @@ JNIEXPORT jlong JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_addOptionsMenuI
 		options[i] = text;
     }
 	
-	PDMenuItem* item = api->system->addOptionsMenuItem(title, options, optionsCount, NULL, NULL);
+	PDMenuItem* item = api->system->addOptionsMenuItem(title, options, optionsCount, addMenuItemCallback, c);
 	
 	env->ReleaseStringUTFChars(title_str, title);
 	for (int i = 0; i < options_length; i++) {
@@ -86,6 +167,10 @@ JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_removeMenuItem
 	
 	PDMenuItem* menuItem = reinterpret_cast<PDMenuItem*>(menuItem_ptr);
 	api->system->removeMenuItem(menuItem);
+	
+	PDMenuItemCallback* menuItemCallback = (PDMenuItemCallback*)api->system->getMenuItemUserdata(menuItem);
+	menuItemCallback->free();
+	delete menuItemCallback;
 }
 
 JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_removeAllMenuItems

@@ -36,8 +36,8 @@ public class Sys {
     }
     
     /* system menu */
-    public static PDMenuItem addMenuItem(String title) {
-    	long ptr = bridge.addMenuItem(title);
+    public static PDMenuItem addMenuItem(String title, Runnable callback) {
+    	long ptr = bridge.addMenuItem(title, new SysBridge.PDMenuItemRunnable(callback));
         Api.Pointer pointer = new Api.Pointer(ptr);
         if (pointer.invalid())
             return null;
@@ -47,8 +47,8 @@ public class Sys {
         return menuItem;
     }
     
-    public static PDMenuItem addCheckmarkMenuItem(String title, boolean value) {
-        long ptr = bridge.addCheckmarkMenuItem(title, value);
+    public static PDMenuItem addCheckmarkMenuItem(String title, boolean value, Runnable callback) {
+        long ptr = bridge.addCheckmarkMenuItem(title, value, new SysBridge.PDMenuItemRunnable(callback));
         Api.Pointer pointer = new Api.Pointer(ptr);
         if (pointer.invalid())
             return null;
@@ -58,8 +58,8 @@ public class Sys {
         return menuItem;
     }
     
-    public static PDMenuItem addOptionsMenuItem(String title, String[] options) {
-    	long ptr = bridge.addOptionsMenuItem(title, options, options.length);
+    public static PDMenuItem addOptionsMenuItem(String title, String[] options, Runnable callback) {
+    	long ptr = bridge.addOptionsMenuItem(title, options, options.length, new SysBridge.PDMenuItemRunnable(callback));
         Api.Pointer pointer = new Api.Pointer(ptr);
         if (pointer.invalid())
             return null;

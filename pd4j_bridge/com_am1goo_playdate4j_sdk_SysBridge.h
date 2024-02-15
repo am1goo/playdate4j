@@ -26,26 +26,26 @@ JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_error
 /*
  * Class:     com_am1goo_playdate4j_sdk_SysBridge
  * Method:    addMenuItem
- * Signature: (Ljava/lang/String;)J
+ * Signature: (Ljava/lang/String;Lcom/am1goo/playdate4j/sdk/SysBridge/PDMenuItemRunnable;)J
  */
 JNIEXPORT jlong JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_addMenuItem
-  (JNIEnv *, jobject, jstring);
+  (JNIEnv *, jobject, jstring, jobject);
 
 /*
  * Class:     com_am1goo_playdate4j_sdk_SysBridge
  * Method:    addCheckmarkMenuItem
- * Signature: (Ljava/lang/String;Z)J
+ * Signature: (Ljava/lang/String;ZLcom/am1goo/playdate4j/sdk/SysBridge/PDMenuItemRunnable;)J
  */
 JNIEXPORT jlong JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_addCheckmarkMenuItem
-  (JNIEnv *, jobject, jstring, jboolean);
+  (JNIEnv *, jobject, jstring, jboolean, jobject);
 
 /*
  * Class:     com_am1goo_playdate4j_sdk_SysBridge
  * Method:    addOptionsMenuItem
- * Signature: (Ljava/lang/String;[Ljava/lang/String;I)J
+ * Signature: (Ljava/lang/String;[Ljava/lang/String;ILcom/am1goo/playdate4j/sdk/SysBridge/PDMenuItemRunnable;)J
  */
 JNIEXPORT jlong JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_addOptionsMenuItem
-  (JNIEnv *, jobject, jstring, jobjectArray, jint);
+  (JNIEnv *, jobject, jstring, jobjectArray, jint, jobject);
 
 /*
  * Class:     com_am1goo_playdate4j_sdk_SysBridge
