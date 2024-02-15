@@ -3,14 +3,14 @@ Java framework to create games on `Playdate` console. \
 *ATTENTION: it is an experimental version, I don't sure that you should to use it in production purposes right now.*
 
 ## What inside?
-- partial support of `Playdate API`
+- almost full support of `Playdate API`
 - pretty good works in `Playdate Simulator`
 
 ## C API support
 =100%= `Logging API` \
 =070%= `System Menu API` \
 =100%= `Time and Date API` \
-=099%= `Miscellaneous API` \
+=100%= `Miscellaneous API` \
 =100%= `Audio API` \
 =100%= `Display API` \
 =100%= `Graphics API` \
@@ -18,9 +18,9 @@ Java framework to create games on `Playdate` console. \
 =100%= `Input API` \
 =100%= `Device Auto Lock API` \
 =100%= `System Sounds API` \
-=000%= `JSON API` \
+=000%= `JSON API` (don't want to use this API, [com.google.code.gson](https://github.com/google/gson) would be better) \
 =100%= `Sprites API` \
-=000%= `Sprite Collisions API`
+=100%= `Sprite Collisions API`
 
 ## Let me explain how it is like:
 ```java
@@ -80,7 +80,7 @@ public class ExampleGameCycle implements GameCycle {
 ```
 
 ## Roadmap
-- [ ] full `C API` coverage
+- [X] full `C API` coverage
 - [ ] well-automated app creation process
 - [ ] using `Java-to-C` code conversion instead of JavaVM on device
 
