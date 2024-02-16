@@ -20,8 +20,8 @@ Java framework to create games on `Playdate` console. \
 =100%= `System Sounds API` \
 =100%= `Sprites API` \
 =100%= `Sprite Collisions API` \
-but! \
-=000%= `JSON API` (skipped API, [com.google.code.gson](https://github.com/google/gson) would be better) \
+BUT \
+=000%= `JSON API` (skipped API, package [com.google.code.gson](https://github.com/google/gson) would be better)
 
 ## Let me explain how it is like:
 ```java
