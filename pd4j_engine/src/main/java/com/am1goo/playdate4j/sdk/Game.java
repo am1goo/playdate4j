@@ -58,6 +58,8 @@ public class Game {
     }
 
     public static void shutdown() {
+        event(Event.Terminate.getValue());
+
         Sys.log("shutdown: started");
         try {
             cycle.stop();

@@ -34,6 +34,7 @@ jmethodID class_game_method_create;
 jmethodID class_game_method_init;
 jmethodID class_game_method_shutdown;
 jmethodID class_game_method_loop;
+jmethodID class_game_method_event;
 jmethodID class_game_method_get_frame_count;
 jmethodID class_game_method_is_cycling;
 
@@ -101,6 +102,7 @@ int pd4j_init(PlaydateAPI* api, Options* options)
     class_game_method_init = env->GetStaticMethodID(class_game, "init", "()V");
     class_game_method_shutdown = env->GetStaticMethodID(class_game, "shutdown", "()V");
     class_game_method_loop = env->GetStaticMethodID(class_game, "loop", "()V");
+    class_game_method_event = env->GetStaticMethodID(class_game, "event", "(I)V");
     class_game_method_get_frame_count = env->GetStaticMethodID(class_game, "getFrameCount", "()I");
     class_game_method_is_cycling = env->GetStaticMethodID(class_game, "isCycling", "()Z");
 
@@ -140,6 +142,15 @@ int pd4j_update(int* redraw)
 
     env->CallVoidMethod(class_game, class_game_method_loop);
     *redraw = 1;
+    return PD4J_OK;
+}
+
+int pd4j_event(PDSystemEvent event_value)
+{
+    if (!initialized)
+        return PD4J_NOT_INITIALIZED;
+
+    env->CallVoidMethod(class_game, class_game_method_event, event_value);
     return PD4J_OK;
 }
 

@@ -18,6 +18,7 @@ struct Options
 
 EXTERNC int pd4j_init(PlaydateAPI* api, Options* options);
 EXTERNC int pd4j_update(int* redraw);
+EXTERNC int pd4j_event(PDSystemEvent event_type);
 EXTERNC int pd4j_shutdown();
 
 #undef EXTERNC

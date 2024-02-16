@@ -1,14 +1,16 @@
 package com.am1goo.playdate4j.sdk;
     
 public enum Event {
-	Lock(0),
-	Unlock(1),
-	Pause(2),
-	Resume(3),
-	Terminate(4),
-	//KeyPressed(5),
-	//KeyReleased(6),
-	LowerPower(7);
+	//Init(0),
+	//InitLua(1),
+	Lock(2),
+	Unlock(3),
+	Pause(4),
+	Resume(5),
+	Terminate(6),
+	//KeyPressed(7),
+	//KeyReleased(8),
+	LowerPower(9);
     	
 	final int value;
     	

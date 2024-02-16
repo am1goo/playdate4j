@@ -13,6 +13,7 @@ int main()
 		int redraw;
 		pd4j_update(&redraw);
 	}
+	pd4j_event(kEventLowPower);
 	pd4j_shutdown();
 	return 0;
 }
