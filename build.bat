@@ -68,6 +68,9 @@ if %ERRORLEVEL% NEQ 0 EXIT /B 1
 g++ -c -fPIC -D TARGET_EXTENSION %GCC_INCLUDE% pd4j_bridge\com_am1goo_playdate4j_sdk_SoundBridge_PDSynthBridge.cpp -o buildcache\compiled\com_am1goo_playdate4j_sdk_SoundBridge_PDSynthBridge.o
 if %ERRORLEVEL% NEQ 0 EXIT /B 1
 
+g++ -c -fPIC -D TARGET_EXTENSION %GCC_INCLUDE% pd4j_bridge\com_am1goo_playdate4j_sdk_SoundBridge_PDSynthSignalBridge.cpp -o buildcache\compiled\com_am1goo_playdate4j_sdk_SoundBridge_PDSynthSignalBridge.o
+if %ERRORLEVEL% NEQ 0 EXIT /B 1
+
 g++ -c -fPIC -D TARGET_EXTENSION %GCC_INCLUDE% pd4j_bridge\com_am1goo_playdate4j_sdk_SoundBridge_PDSynthEnvelopeBridge.cpp -o buildcache\compiled\com_am1goo_playdate4j_sdk_SoundBridge_PDSynthEnvelopeBridge.o
 if %ERRORLEVEL% NEQ 0 EXIT /B 1
 
@@ -121,6 +124,7 @@ g++ -shared -o pd4j_engine\lib\pd4j_bridge.dll^
  buildcache\compiled\com_am1goo_playdate4j_sdk_SoundBridge_OnePoleFilterBridge.o^
  buildcache\compiled\com_am1goo_playdate4j_sdk_SoundBridge_OverdriveBridge.o^
  buildcache\compiled\com_am1goo_playdate4j_sdk_SoundBridge_PDSynthBridge.o^
+ buildcache\compiled\com_am1goo_playdate4j_sdk_SoundBridge_PDSynthSignalBridge.o^
  buildcache\compiled\com_am1goo_playdate4j_sdk_SoundBridge_PDSynthEnvelopeBridge.o^
  buildcache\compiled\com_am1goo_playdate4j_sdk_SoundBridge_PDSynthInstrumentBridge.o^
  buildcache\compiled\com_am1goo_playdate4j_sdk_SoundBridge_PDSynthLFOBridge.o^

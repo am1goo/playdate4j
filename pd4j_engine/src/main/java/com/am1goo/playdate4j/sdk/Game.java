@@ -9,6 +9,8 @@ public class Game {
     private static GameCycle cycle;
     private static int frameCount;
     private static long frameTimeMillis;
+    
+    private static final float MILLIS = 1f / 1000f;
 
     public static void engine(String className) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
     	GameEngine engine = newEngine(className);
@@ -104,6 +106,27 @@ public class Game {
         frameCount++;
         frameTimeMillis = millis;
     }
+    
+    public static void event(int value) {
+    	Event event = Event.valueOf(value);
+    	if (event == null) {
+    		Sys.logError("unsupported event type " + value);
+    		return;
+    	}
+    	
+    	try {
+    		engine.event(event);
+    	}
+    	catch (Throwable ex) {
+    		Sys.logError(ex);
+    	}
+    	try {
+    		cycle.event(event);
+    	}
+    	catch (Throwable ex) {
+    		Sys.logError(ex);
+    	}
+    }
 
     public static boolean isCycling() {
     	return cycle != null;
@@ -114,7 +137,7 @@ public class Game {
     }
 
     public static float getDeltaTime() {
-        return frameTimeMillis * (1f / 1000f);
+        return frameTimeMillis * MILLIS;
     }
     
     @SuppressWarnings("unchecked")

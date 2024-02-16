@@ -6,4 +6,5 @@ public interface GameCycle {
     void stop();
     void loop();
     void ui();
+	void event(Event event);
 }

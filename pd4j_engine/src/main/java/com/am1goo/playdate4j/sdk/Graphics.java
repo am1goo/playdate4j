@@ -343,6 +343,9 @@ public class Graphics {
     }
     
     public static void drawText(String text, PDStringEncoding encoding, int x, int y) {
+    	if (text == null)
+    		return;
+    	
         bridge.drawText(text, text.length(), encoding.getValue(), x, y);
     }
     

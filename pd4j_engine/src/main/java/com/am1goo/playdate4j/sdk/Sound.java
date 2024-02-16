@@ -16,6 +16,7 @@ public class Sound {
 	private static final List<FilePlayer> filePlayers = new ArrayList<FilePlayer>();
 	private static final List<SamplePlayer> samplePlayers = new ArrayList<SamplePlayer>();
 	private static final List<PDSynth> synths = new ArrayList<PDSynth>();
+	private static final List<PDSynthSignal> signals = new ArrayList<PDSynthSignal>();
 	private static final List<PDSynthInstrument> instruments = new ArrayList<PDSynthInstrument>();
 	private static final List<PDSynthLFO> lfos = new ArrayList<PDSynthLFO>();
 	private static final List<PDSynthEnvelope> envelopes = new ArrayList<PDSynthEnvelope>();
@@ -245,6 +246,30 @@ public class Sound {
 				return synth;
 			}
 		}
+		return null;
+	}
+	
+	public static PDSynthSignal newSignal() {
+		long ptr = bridge.signal().newSignal();
+		Api.Pointer pointer = new Api.Pointer(ptr);
+		if (pointer.invalid())
+			return null;
+		
+		PDSynthSignal signal = new PDSynthSignal(pointer);
+		signals.add(signal);
+		return signal;
+	}
+	
+	public static PDSynthSignal freeSignal(PDSynthSignal signal) {
+		if (signal == null)
+			return null;
+		
+		if (signal.ptr.invalid())
+			return null;
+		
+		bridge.signal().freeSignal(signal.ptr.getValue());
+		signal.ptr.invalidate();
+		signals.remove(signal);
 		return null;
 	}
 	
@@ -543,7 +568,7 @@ public class Sound {
 		return null;
 	}
 	
-	public static ControlSignal newSignal() {
+	public static ControlSignal newControlSignal() {
 		long ptr = bridge.controlSignal().newSignal();
 		Api.Pointer pointer = new Api.Pointer(ptr);
 		if (pointer.invalid())
@@ -554,7 +579,7 @@ public class Sound {
 		return signal;
 	}
 	
-	public static ControlSignal freeSignal(ControlSignal signal) {
+	public static ControlSignal freeControlSignal(ControlSignal signal) {
 		if (signal == null)
 			return null;
 		
@@ -1157,6 +1182,35 @@ public class Sound {
 			PDSynthSignalValue mod = new PDSynthSignalValue(modPointer);
 			modulators.add(mod);
 			return mod;
+		}
+	}
+	
+	public static class PDSynthSignal {
+		
+		private final Api.Pointer ptr;
+		
+		public PDSynthSignal(Api.Pointer ptr) {
+			this.ptr = ptr;
+		}
+		
+		public Api.Pointer getPointer() {
+			return ptr;
+		}
+		
+		public void free() {
+			Sound.freeSignal(this);
+		}
+		
+		public float getValue() {
+			return bridge.signal().getValue(ptr.getValue());
+		}
+		
+		public void setValueOffset(float offset) {
+			bridge.signal().setValueOffset(ptr.getValue(), offset);
+		}
+		
+		public void setValueScale(float scale) {
+			bridge.signal().setValueScale(ptr.getValue(), scale);
 		}
 	}
 	
@@ -1896,7 +1950,7 @@ public class Sound {
 		}
 		
 		public void free() {
-			Sound.freeSignal(this);
+			Sound.freeControlSignal(this);
 		}
 		
 		public void clearEvents() {

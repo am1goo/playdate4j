@@ -6,4 +6,5 @@ public interface GameEngine {
 	void stop();
 	void beforeLoop();
 	void afterLoop();
+	void event(Event event);
 }

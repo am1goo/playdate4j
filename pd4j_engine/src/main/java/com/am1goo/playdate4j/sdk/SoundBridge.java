@@ -8,6 +8,7 @@ public class SoundBridge {
 	private final FilePlayerBridge filePlayer = new FilePlayerBridge();
 	private final SamplePlayerBridge samplePlayer = new SamplePlayerBridge();
 	private final PDSynthBridge synth = new PDSynthBridge();
+	private final PDSynthSignalBridge signal = new PDSynthSignalBridge();
 	private final PDSynthInstrumentBridge instrument = new PDSynthInstrumentBridge();
 	private final PDSynthLFOBridge lfo = new PDSynthLFOBridge();
 	private final PDSynthEnvelopeBridge envelope = new PDSynthEnvelopeBridge();
@@ -44,6 +45,10 @@ public class SoundBridge {
 	
 	public PDSynthBridge synth() {
 		return synth;
+	}
+	
+	public PDSynthSignalBridge signal() {
+		return signal;
 	}
 	
 	public PDSynthInstrumentBridge instrument() {
@@ -223,6 +228,15 @@ public class SoundBridge {
 		public native boolean setParameter(long synthPtr, int num, float value);
 		public native boolean setParameterModulator(long synthPtr, int num, long modPtr);
 		public native long getParameterModulator(long synthPtr, int num);
+	}
+	
+	/* PDSynthSignal */
+	public class PDSynthSignalBridge {
+		public native long newSignal();
+		public native void freeSignal(long signalPtr);
+		public native float getValue(long signalPtr);
+		public native void setValueOffset(long signalPtr, float offset);
+		public native void setValueScale(long signalPtr, float scale);
 	}
 	
 	/* PDSynthInstrument */
