@@ -1,6 +1,7 @@
 package com.am1goo.playdate4j.engine;
 
 import com.am1goo.playdate4j.engine.objects.JObjectsManager;
+import com.am1goo.playdate4j.sdk.Event;
 import com.am1goo.playdate4j.sdk.GameEngine;
 
 public class JGameEngine implements GameEngine {
@@ -22,5 +23,9 @@ public class JGameEngine implements GameEngine {
 
 	@Override
 	public void afterLoop() {
+	}
+
+	@Override
+	public void event(Event event) {
 	}
 }
