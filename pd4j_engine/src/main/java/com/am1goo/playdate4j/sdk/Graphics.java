@@ -14,6 +14,8 @@ public class Graphics {
     private static LCDFont currentFont = null;
 	private static LCDBitmap displayBuffer = null;
 
+    public static final String systemFontsFolder = "/System/Fonts";
+
     private static int lcdColumns = -1;
     private static int lcdRows = -1;
     private static int lcdRowSize = -1;
