@@ -3,11 +3,13 @@ package com.am1goo.playdate4j.engine.ui;
 import java.util.Objects;
 
 import com.am1goo.playdate4j.engine.ui.controls.Control;
+import com.am1goo.playdate4j.engine.ui.controls.Rect;
 import com.am1goo.playdate4j.sdk.Graphics;
 import com.am1goo.playdate4j.sdk.Graphics.LCDBitmap;
 import com.am1goo.playdate4j.sdk.Graphics.LCDBitmapFlip;
 import com.am1goo.playdate4j.sdk.Input;
 import com.am1goo.playdate4j.sdk.Input.PDButtons;
+import com.am1goo.playdate4j.sdk.Sys;
 
 public class UI {
 
@@ -55,12 +57,28 @@ public class UI {
 	    	}
 	    	else if (Input.isButtonUp(button)) {
 	    		clicked = true;
-	    		bitmap = isCurrent ? hover : normal;
 	    	}
     	}
-    	
-   		Graphics.drawBitmap(bitmap, x, y, flip);
-  		Graphics.drawText(text, defaultEncoding, x, y);
+
+        Graphics.LCDFont font = Graphics.getFont();
+        int textWidth = font.getTextWidth(text, defaultEncoding, 0);
+        int textHeight = font.getFontHeight();
+
+        int tx;
+        int ty;
+        if (bitmap != null) {
+            Graphics.drawBitmap(bitmap, x, y, flip);
+            Rect r = new Rect(x, y, bitmap.width(), bitmap.height());
+
+            tx = x + (r.width - textWidth) / 2;
+            ty = y + (r.height - textHeight) / 2;
+        }
+        else {
+            tx = x;
+            ty = y;
+        }
+        Graphics.drawText(text, defaultEncoding, tx, ty);
+
     	return clicked;
     }
 }

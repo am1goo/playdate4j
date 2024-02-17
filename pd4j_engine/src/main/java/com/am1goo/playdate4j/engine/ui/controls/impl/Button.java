@@ -14,21 +14,25 @@ public class Button implements Control {
 	private String text;
 	private PDButtons button;
 	
-	private LCDBitmap normal;
-	private LCDBitmap hover;
-	private LCDBitmap selected;
+	private final LCDBitmap normal;
+	private final LCDBitmap hover;
+	private final LCDBitmap pressed;
 	
 	private LCDBitmapFlip flip;
 	
-	private Runnable onClick;
+	private final Runnable onClick;
+
+	public Button(int x, int y, String text, PDButtons button, LCDBitmap normal, LCDBitmapFlip flip, Runnable onClick) {
+		this(x, y, text, button, normal, normal, normal, flip, onClick);
+	}
 	
-	public Button(int x, int y, String text, PDButtons button, LCDBitmap normal ,LCDBitmap hover, LCDBitmap selected, LCDBitmapFlip flip, Runnable onClick) {
+	public Button(int x, int y, String text, PDButtons button, LCDBitmap normal, LCDBitmap hover, LCDBitmap pressed, LCDBitmapFlip flip, Runnable onClick) {
 		setPosition(x, y);
 		setText(text);
 		setButton(button);
 		this.normal = normal;
 		this.hover = hover;
-		this.selected = selected;
+		this.pressed = pressed;
 		setFlip(flip);
 		this.onClick = onClick;
 	}
@@ -51,7 +55,7 @@ public class Button implements Control {
 	}
 	
 	public void draw() {
-		if (UI.drawButton(x, y, text, button, normal, hover, selected, flip, UI.isCurrent(this))) {
+		if (UI.drawButton(x, y, text, button, normal, hover, pressed, flip, UI.isCurrent(this))) {
 			if (onClick != null)
 				onClick.run();
 		}
