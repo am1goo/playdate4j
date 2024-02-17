@@ -1,7 +1,5 @@
 package com.am1goo.playdate4j.sdk;
 
-import com.am1goo.playdate4j.sdk.Graphics.PDStringEncoding;
-
 public class GraphicsBridge {
 
     static {

@@ -11,6 +11,7 @@ public class Graphics {
 	private static final List<LCDBitmap> bitmaps = new ArrayList<>();
 	private static final List<LCDBitmapTable> bitmapTables = new ArrayList<>();
 	private static final List<LCDFont> fonts = new ArrayList<>();
+    private static LCDFont currentFont = null;
 	private static LCDBitmap displayBuffer = null;
 
     private static int lcdColumns = -1;
@@ -327,11 +328,16 @@ public class Graphics {
     }
     
     /* fonts & text */
+    public static LCDFont getFont() {
+        return currentFont;
+    }
+
     public static void setFont(LCDFont font) {
         if (font == null)
             return;
 
         bridge.setFont(font.ptr.getValue());
+        currentFont = font;
     }
 
     public static void setTextTracking(int tracking) {
@@ -341,16 +347,23 @@ public class Graphics {
     public static int getTextTracking() {
         return bridge.getTextTracking();
     }
-    
+
+    public static void setTextLeading(int leading) {
+        bridge.setTextLeading(leading);
+    }
+
+    public static void drawText(LCDFont font, String text, PDStringEncoding encoding, int x, int y) {
+        LCDFont prevFont = getFont();
+        setFont(font);
+        drawText(text, encoding, x, y);
+        setFont(prevFont);
+    }
+
     public static void drawText(String text, PDStringEncoding encoding, int x, int y) {
     	if (text == null)
     		return;
     	
         bridge.drawText(text, text.length(), encoding.getValue(), x, y);
-    }
-    
-    public static short getFontHeight(LCDFont font) {
-    	return bridge.getFontHeight(font.getPointer().getValue());
     }
     
     public static LCDFont loadFont(String path) {
@@ -466,6 +479,14 @@ public class Graphics {
     	bitmaps.add(bitmap);
     	return bitmap;
     }
+
+    public void markUpdatedRows(int start, int end) {
+        bridge.markUpdatedRows(start, end);
+    }
+
+    public void setDrawOffset(int dx, int dy) {
+        bridge.setDrawOffset(dx, dy);
+    }
     
     public enum LCDSolidColor {
         Black(0),
@@ -580,7 +601,11 @@ public class Graphics {
         	pages.add(page);
         	return page;
         }
-        
+
+        public short getFontHeight() {
+            return bridge.getFontHeight(ptr.getValue());
+        }
+
         public int getTextWidth(String text, PDStringEncoding encoding, int tracking) {
         	return bridge.getTextWidth(ptr.getValue(), text, text.length(), encoding.getValue(), tracking);
         }

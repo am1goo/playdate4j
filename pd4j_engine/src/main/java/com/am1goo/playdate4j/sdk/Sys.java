@@ -2,6 +2,7 @@ package com.am1goo.playdate4j.sdk;
 
 import com.am1goo.playdate4j.sdk.SysBridge.PDDateTime;
 
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +12,9 @@ public class Sys {
 
     private static final List<PDMenuItem> menuItems = new ArrayList<PDMenuItem>();
     private static final PDDateTime dateTime = new PDDateTime();
+
+    private static final PrintStream logWriter = new PrintStream(new GameOutputStream(false));
+    private static final PrintStream errorWriter = new PrintStream(new GameOutputStream(true));
 
     /* logging */
     public static void log(Object object) {
@@ -27,7 +31,8 @@ public class Sys {
     }
     
     public static void logError(Throwable throwable) {
-        logError(throwable.toString());
+        throwable.printStackTrace(errorWriter);
+        errorWriter.flush();
     }
 
     public static void logError(String error) {
