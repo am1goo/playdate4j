@@ -280,6 +280,25 @@ JNIEXPORT jlong JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_getBitmapM
 	return rotated_ptr;
 }
 
+JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_getBitmapData
+  (JNIEnv* env, jobject thisObject, jlong bitmap_ptr, jobject result) {
+	PlaydateAPI* api = pd4j_get_api(env);
+	if (api == NULL)
+		return;
+	
+	LCDBitmap* bitmap = reinterpret_cast<LCDBitmap*>(bitmap_ptr);
+	int width;
+	int height;
+	int rowbytes;
+	uint8_t* mask;
+	uint8_t* data;
+	api->graphics->getBitmapData(bitmap, &width, &height, &rowbytes, &mask, &data);
+	
+	jclass class_result = env->GetObjectClass(result);
+	jmethodID class_result_method_set = env->GetMethodID(class_result, "set", "(III)V");
+	env->CallVoidMethod(result, class_result_method_set, width, height, rowbytes);
+}
+
 JNIEXPORT jlong JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_newBitmapTable
   (JNIEnv* env, jobject thisObject, jint count, jint width, jint height) {
 	PlaydateAPI* api = pd4j_get_api(env);

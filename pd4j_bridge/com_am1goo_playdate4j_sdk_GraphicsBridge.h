@@ -217,6 +217,14 @@ JNIEXPORT jlong JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_getBitmapM
 
 /*
  * Class:     com_am1goo_playdate4j_sdk_GraphicsBridge
+ * Method:    getBitmapData
+ * Signature: (JLcom/am1goo/playdate4j/sdk/GraphicsBridge/BitmapData;)V
+ */
+JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_getBitmapData
+  (JNIEnv *, jobject, jlong, jobject);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_GraphicsBridge
  * Method:    newBitmapTable
  * Signature: (III)J
  */

@@ -39,6 +39,7 @@ public class GraphicsBridge {
     public native long rotatedBitmap(long bitmapPtr, float rotation, float xScale, float yScale);
     public native boolean setBitmapMask(long bitmapPtr, long maskPtr);
     public native long getBitmapMask(long bitmapPtr);
+    public native void getBitmapData(long bitmapPtr, BitmapData data);
     
     /* bitmap tables */
     public native long newBitmapTable(int count, int width, int height);
@@ -78,4 +79,29 @@ public class GraphicsBridge {
     public native long copyFrameBufferBitmap();
     public native void markUpdatedRows(int start, int end);
     public native void setDrawOffset(int dx, int dy);
+
+    public static class BitmapData {
+
+        private int width;
+        private int height;
+        private int rowbytes;
+
+        public void set(int width, int height, int rowbytes) {
+            this.width = width;
+            this.height = height;
+            this.rowbytes = rowbytes;
+        }
+
+        public int width() {
+            return width;
+        }
+
+        public int height() {
+            return height;
+        }
+
+        public int bytesCount() {
+            return rowbytes;
+        }
+    }
 }

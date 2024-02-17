@@ -356,9 +356,14 @@ public class Graphics {
 
     public static void drawText(LCDFont font, String text, PDStringEncoding encoding, int x, int y) {
         LCDFont prevFont = getFont();
-        setFont(font);
-        drawText(text, encoding, x, y);
-        setFont(prevFont);
+        if (prevFont == font) {
+            drawText(text, encoding, x, y);
+        }
+        else {
+            setFont(font);
+            drawText(text, encoding, x, y);
+            setFont(prevFont);
+        }
     }
 
     public static void drawText(String text, PDStringEncoding encoding, int x, int y) {
@@ -549,7 +554,7 @@ public class Graphics {
 		FlippedY(2),
 		FlippedXY(3);
 		
-		int value;
+		final int value;
 		
 		LCDBitmapFlip(int value) {
 			this.value = value;
@@ -604,12 +609,16 @@ public class Graphics {
         	return page;
         }
 
-        public short getFontHeight() {
+        public int getFontHeight() {
             return bridge.getFontHeight(ptr.getValue());
         }
 
         public int getTextWidth(String text, PDStringEncoding encoding, int tracking) {
         	return bridge.getTextWidth(ptr.getValue(), text, text.length(), encoding.getValue(), tracking);
+        }
+
+        public void drawText(String text, PDStringEncoding encoding, int x, int y) {
+            Graphics.drawText(this, text, encoding, x, y);
         }
         
         private LCDFontPage findPage(long ptr) {
@@ -680,10 +689,12 @@ public class Graphics {
 
         private final Api.Pointer ptr;
         private String path;
+        private final GraphicsBridge.BitmapData data = new GraphicsBridge.BitmapData();
 
         public LCDBitmap(Api.Pointer ptr, String path) {
             this.ptr = ptr;
             this.path = path;
+            bridge.getBitmapData(ptr.getValue(), data);
         }
 
         public Api.Pointer getPointer() {
@@ -694,12 +705,36 @@ public class Graphics {
             return path;
         }
 
+        public int width() {
+            return data.width();
+        }
+
+        public int height() {
+            return data.height();
+        }
+
+        public int bytesCount() {
+            return data.bytesCount();
+        }
+
         public void free() {
             Graphics.freeBitmap(this);
         }
 
         public void clearBitmap(LCDSolidColor color) {
             Graphics.clearBitmap(this, color);
+        }
+
+        public void draw(int x, int y, LCDBitmapFlip flip) {
+            Graphics.drawBitmap(this, x, y, flip);
+        }
+
+        public void drawScaled(int x, int y, float xScale, float yScale) {
+            Graphics.drawScaledBitmap(this, x, y, xScale, yScale);
+        }
+
+        public void drawRotated(int x, int y, float degrees, float xCenter, float yCenter, float xScale, float yScale) {
+            Graphics.drawRotatedBitmap(this, x, y, degrees, xCenter, yCenter, xScale, yScale);
         }
     }
     
