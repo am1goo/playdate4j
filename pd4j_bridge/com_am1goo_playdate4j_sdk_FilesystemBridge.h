@@ -49,6 +49,14 @@ JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_FilesystemBridge_stat
 
 /*
  * Class:     com_am1goo_playdate4j_sdk_FilesystemBridge
+ * Method:    listfiles
+ * Signature: (Ljava/lang/String;ZLcom/am1goo/playdate4j/sdk/FilesystemBridge/FileList;)I
+ */
+JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_FilesystemBridge_listfiles
+  (JNIEnv *, jobject, jstring, jboolean, jobject);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_FilesystemBridge
  * Method:    open
  * Signature: (Ljava/lang/String;I)J
  */

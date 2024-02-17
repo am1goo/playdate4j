@@ -85,6 +85,38 @@ JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_FilesystemBridge_stat
 	return ret;
 }
 
+JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_FilesystemBridge_listfiles
+  (JNIEnv* env, jobject thisObject, jstring path_str, jboolean showhidden, jobject result_list) {
+	PlaydateAPI* api = pd4j_get_api(env);
+	if (api == NULL)
+		return FS_ERR;
+	
+	void** args = new void*[2];
+	args[0] = env;
+	args[1] = api;
+	args[2] = result_list;
+	const char* path = env->GetStringUTFChars(path_str, 0);
+	int ret = api->file->listfiles(path, [](const char* filename, void* userdata) {
+		void** args = (void**)userdata;
+		JNIEnv* env = (JNIEnv*)args[0];
+		PlaydateAPI* api = (PlaydateAPI*)args[1];
+		jobject result_list = (jobject)args[2];
+
+		jstring filename_str = env->NewStringUTF(filename);
+		jclass class_result_list = env->GetObjectClass(result_list);
+		jmethodID class_result_list_method_add = env->GetMethodID(class_result_list, "add", "(Ljava/lang/String;)Z");
+		env->CallVoidMethod(result_list, class_result_list_method_add, filename_str);	
+	}, args, showhidden);
+	env->ReleaseStringUTFChars(path_str, path);
+	delete[] args;
+	
+	if (ret != 0) {
+		const char* err = api->file->geterr();
+		api->system->error(err);
+	}
+	return ret;
+}
+
 JNIEXPORT jlong JNICALL Java_com_am1goo_playdate4j_sdk_FilesystemBridge_open
   (JNIEnv* env, jobject thisObject, jstring path_str, jint mode_value) {
 	PlaydateAPI* api = pd4j_get_api(env);

@@ -1,5 +1,8 @@
 package com.am1goo.playdate4j.sdk;
 
+import java.util.Collection;
+import java.util.List;
+
 public class FilesystemBridge {
 
     static {
@@ -13,6 +16,7 @@ public class FilesystemBridge {
 	public native int mkdir(String path);
 	public native int rename(String from, String to);
 	public native int stat(String path, FileStat stat);
+	public native int listfiles(String path, boolean showHidden, FileList result);
 	
 	/* file handles */
 	public native long open(String path, int mode);
@@ -74,6 +78,19 @@ public class FilesystemBridge {
 			this.hour = hour;
 			this.minute = minute;
 			this.second = second;
+		}
+	}
+
+	public static class FileList {
+
+		private final Collection<String> list;
+
+		public FileList(Collection<String> list) {
+			this.list = list;
+		}
+
+		public boolean add(String str) {
+			return list.add(str);
 		}
 	}
 }

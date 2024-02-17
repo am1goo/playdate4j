@@ -2,6 +2,9 @@ package com.am1goo.playdate4j.sdk;
 
 import com.am1goo.playdate4j.sdk.Api.Pointer;
 
+import java.util.Collection;
+import java.util.List;
+
 public class Filesystem {
 
 	private static final FilesystemBridge bridge = new FilesystemBridge();
@@ -33,6 +36,11 @@ public class Filesystem {
 			return null;
 		
 		return stat;
+	}
+
+	public static boolean listfiles(String path, boolean showHidden, List<String> result) {
+		int ret = bridge.listfiles(path, showHidden, new FilesystemBridge.FileList(result));
+		return ret == 0;
 	}
 	
 	public static boolean stat(String path, FilesystemBridge.FileStat stat) {
