@@ -356,16 +356,32 @@ JNIEXPORT jlong JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_loadFont
  * Method:    drawEllipse
  * Signature: (IIIIIFFI)V
  */
-JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_drawEllipse
+JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_drawEllipse__IIIIIFFI
   (JNIEnv *, jobject, jint, jint, jint, jint, jint, jfloat, jfloat, jint);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_GraphicsBridge
+ * Method:    drawEllipse
+ * Signature: (IIIIIFF[I)V
+ */
+JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_drawEllipse__IIIIIFF_3I
+  (JNIEnv *, jobject, jint, jint, jint, jint, jint, jfloat, jfloat, jintArray);
 
 /*
  * Class:     com_am1goo_playdate4j_sdk_GraphicsBridge
  * Method:    fillEllipse
  * Signature: (IIIIFFI)V
  */
-JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_fillEllipse
+JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_fillEllipse__IIIIFFI
   (JNIEnv *, jobject, jint, jint, jint, jint, jfloat, jfloat, jint);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_GraphicsBridge
+ * Method:    fillEllipse
+ * Signature: (IIIIFF[I)V
+ */
+JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_fillEllipse__IIIIFF_3I
+  (JNIEnv *, jobject, jint, jint, jint, jint, jfloat, jfloat, jintArray);
 
 /*
  * Class:     com_am1goo_playdate4j_sdk_GraphicsBridge

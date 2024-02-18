@@ -495,7 +495,7 @@ JNIEXPORT jlong JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_loadFont
 	return font_ptr;
 }
 
-JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_drawEllipse
+JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_drawEllipse__IIIIIFFI
   (JNIEnv* env, jobject thisObject, jint x, jint y, jint width, jint height, jint lineWidth, jfloat startAngle, jfloat endAngle, jint color_value) {
 	PlaydateAPI* api = pd4j_get_api(env);
 	if (api == NULL)
@@ -505,7 +505,26 @@ JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_drawEllipse
 	api->graphics->drawEllipse(x, y, width, height, lineWidth, startAngle, endAngle, color);
 }
 
-JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_fillEllipse
+JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_drawEllipse__IIIIIFF_3I
+  (JNIEnv* env, jobject thisObject, jint x, jint y, jint width, jint height, jint lineWidth, jfloat startAngle, jfloat endAngle, jintArray pattern_array) {
+	PlaydateAPI* api = pd4j_get_api(env);
+	if (api == NULL)
+		return;
+	
+	uint8_t pattern[16];
+	int pattern_array_length = env->GetArrayLength(pattern_array);
+
+	jint buf[pattern_array_length];
+	env->GetIntArrayRegion(pattern_array, 0, pattern_array_length, buf);
+	for (int i = 0; i < pattern_array_length; ++i)
+	{
+		pattern[i] = static_cast<uint8_t>(buf[i]);
+	}
+	
+	api->graphics->drawEllipse(x, y, width, height, lineWidth, startAngle, endAngle, (uintptr_t)pattern);
+}
+
+JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_fillEllipse__IIIIFFI
   (JNIEnv* env, jobject thisObject, jint x, jint y, jint width, jint height, jfloat startAngle, jfloat endAngle, jint color_value) {
 	PlaydateAPI* api = pd4j_get_api(env);
 	if (api == NULL)
@@ -513,6 +532,24 @@ JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_fillEllipse
 	
 	LCDColor color = static_cast<LCDColor>(color_value);
 	api->graphics->fillEllipse(x, y, width, height, startAngle, endAngle, color);
+}
+
+JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_fillEllipse__IIIIFF_3I
+  (JNIEnv* env, jobject thisObject, jint x, jint y, jint width, jint height, jfloat startAngle, jfloat endAngle, jintArray pattern_array) {
+	PlaydateAPI* api = pd4j_get_api(env);
+	if (api == NULL)
+		return;
+	
+	uint8_t pattern[16];
+	int pattern_array_length = env->GetArrayLength(pattern_array);
+
+	jint buf[pattern_array_length];
+	env->GetIntArrayRegion(pattern_array, 0, pattern_array_length, buf);
+	for (int i = 0; i < pattern_array_length; ++i)
+	{
+		pattern[i] = static_cast<uint8_t>(buf[i]);
+		api->graphics->fillEllipse(x, y, width, height, startAngle, endAngle, (uintptr_t)pattern);
+	}
 }
 
 JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_drawLine

@@ -63,7 +63,9 @@ public class GraphicsBridge {
 
     /* geometry */
     public native void drawEllipse(int x, int y, int width, int height, int lineWidth, float startAngle, float endAngle, int color);
+    public native void drawEllipse(int x, int y, int width, int height, int lineWidth, float startAngle, float endAngle, int[] pattern);
     public native void fillEllipse(int x, int y, int width, int height, float startAngle, float endAngle, int color);
+    public native void fillEllipse(int x, int y, int width, int height, float startAngle, float endAngle, int[] pattern);
     public native void drawLine(int x1, int y1, int x2, int y2, int width, int color);
     public native void drawRect(int x, int y, int width, int height, int color);
     public native void fillRect(int x, int y, int width, int height, int color);

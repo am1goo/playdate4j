@@ -431,9 +431,49 @@ public class Graphics {
     public static void drawEllipse(int x, int y, int width, int height, int lineWidth, float startAngle, float endAngle, LCDSolidColor color) {
     	bridge.drawEllipse(x, y, width, height, lineWidth, startAngle, endAngle, color.getValue());
     }
+
+    public static void drawEllipse(int x, int y, int width, int height, int lineWidth, float startAngle, float endAngle, LCDColorPattern pattern) {
+        bridge.drawEllipse(x, y, width, height, lineWidth, startAngle, endAngle, pattern.getColors());
+    }
     
     public static void fillEllipse(int x, int y, int width, int height, float startAngle, float endAngle, LCDSolidColor color) {
     	bridge.fillEllipse(x, y, width, height, startAngle, endAngle, color.getValue());
+    }
+
+    public static void fillEllipse(int x, int y, int width, int height, float startAngle, float endAngle, LCDColorPattern pattern) {
+        bridge.fillEllipse(x, y, width, height, startAngle, endAngle, pattern.getColors());
+    }
+
+    public static void drawCircleAtCenter(int x, int y, int radius, int lineWidth, LCDSolidColor color) {
+        drawCircle(x - radius, y - radius, radius, lineWidth, color);
+    }
+
+    public static void drawCircleAtCenter(int x, int y, int radius, int lineWidth, LCDColorPattern pattern) {
+        drawCircle(x - radius, y - radius, radius, lineWidth, pattern);
+    }
+
+    public static void drawCircle(int x, int y, int radius, int lineWidth, LCDSolidColor color) {
+        drawEllipse(x, y, radius * 2, radius * 2, lineWidth, 0, 360, color);
+    }
+
+    public static void drawCircle(int x, int y, int radius, int lineWidth, LCDColorPattern pattern) {
+        drawEllipse(x, y, radius * 2, radius * 2, lineWidth, 0, 360, pattern);
+    }
+
+    public static void fillCircleAtCenter(int x, int y, int radius, LCDSolidColor color) {
+        fillCircle(x - radius, y - radius, radius, color);
+    }
+
+    public static void fillCircleAtCenter(int x, int y, int radius, LCDColorPattern pattern) {
+        fillCircle(x - radius, y - radius, radius, pattern);
+    }
+
+    public static void fillCircle(int x, int y, int radius, LCDSolidColor color) {
+        fillEllipse(x, y, radius * 2, radius * 2, 0, 360, color);
+    }
+
+    public static void fillCircle(int x, int y, int radius, LCDColorPattern pattern) {
+        fillEllipse(x, y, radius * 2, radius * 2, 0, 360, pattern);
     }
     
     public static void drawLine(int x1, int y1, int x2, int y2, int width, LCDSolidColor color) {
@@ -531,6 +571,19 @@ public class Graphics {
 
         public int getValue() {
             return value;
+        }
+    }
+
+    public static class LCDColorPattern {
+
+        private final int[] colors;
+
+        public LCDColorPattern(int[] colors) {
+            this.colors = colors;
+        }
+
+        public int[] getColors() {
+            return colors;
         }
     }
     
