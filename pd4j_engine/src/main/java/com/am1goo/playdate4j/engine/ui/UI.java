@@ -74,8 +74,8 @@ public class UI {
             Graphics.drawBitmap(bitmap, x, y, flip);
             Rect r = new Rect(x, y, bitmap.width(), bitmap.height());
 
-            tx = x + (r.width - textWidth) / 2;
-            ty = y + (r.height - textHeight) / 2;
+            tx = x + (r.width() - textWidth) / 2;
+            ty = y + (r.height() - textHeight) / 2;
         }
         else {
             tx = x;

@@ -30,6 +30,10 @@ public class Vector2f {
         return new Vector2f(1f, 0f);
     }
 
+    public Vector2f() {
+        this(0, 0);
+    }
+
     public Vector2f(float x, float y) {
         set(x, y);
     }

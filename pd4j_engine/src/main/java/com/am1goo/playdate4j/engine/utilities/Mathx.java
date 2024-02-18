@@ -26,6 +26,12 @@ public class Mathx {
         return Math.round(value);
     }
 
+    public static int roundToInt(float value, int mod) {
+        int rounded = roundToInt(value);
+        int m = rounded % mod;
+        return rounded - m;
+    }
+
     public static int clamp01(int value) {
         return clamp(value, 0, 1);
     }
@@ -57,5 +63,13 @@ public class Mathx {
     public static float pingPong(float t, float length) {
         t = repeat(t, length * 2f);
         return length - Math.abs(t - length);
+    }
+
+    public static float lerp(float from, float to, float t) {
+        return lerp(from, to, t, Easings.linear, Easings.Formula.In);
+    }
+
+    public static float lerp(float from, float to, float t, Easing easing, Easings.Formula formula) {
+        return from + (to - from) * Easings.formula(t, easing, formula);
     }
 }
