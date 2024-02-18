@@ -2,6 +2,30 @@ package com.am1goo.playdate4j.engine.utilities;
 
 public class Mathx {
 
+    public static float floor(float value) {
+        return (float) Math.floor(value);
+    }
+
+    public static int floorToInt(float value) {
+        return Math.round(floor(value));
+    }
+
+    public static float ceil(float value) {
+        return (float) Math.ceil(value);
+    }
+
+    public static int ceilToInt(float value) {
+        return Math.round(value);
+    }
+
+    public static float round(float value) {
+        return Math.round(value);
+    }
+
+    public static int roundToInt(float value) {
+        return Math.round(value);
+    }
+
     public static int clamp01(int value) {
         return clamp(value, 0, 1);
     }
@@ -18,11 +42,20 @@ public class Mathx {
         return Math.max(min, Math.min(value, max));
     }
 
-    public static boolean inside(float value, float min, float max) {
+   public static boolean inside(float value, float min, float max) {
         return min <= value && value <= max;
     }
 
     public static boolean outside(float value, float min, float max) {
         return !inside(value, min, max);
+    }
+
+    public static float repeat(float t, float length) {
+        return clamp(t - floor(t / length) * length, 0f, length);
+    }
+
+    public static float pingPong(float t, float length) {
+        t = repeat(t, length * 2f);
+        return length - Math.abs(t - length);
     }
 }

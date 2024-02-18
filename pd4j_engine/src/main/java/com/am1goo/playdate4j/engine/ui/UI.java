@@ -16,6 +16,10 @@ public class UI {
     private static Graphics.PDStringEncoding defaultEncoding = Graphics.PDStringEncoding.ASCIIEncoding;
 
     private static Control current = null;
+
+    public static Graphics.PDStringEncoding defaultEncoding() {
+        return defaultEncoding;
+    }
     
     public static void setCurrent(Control current) {
     	UI.current = current;

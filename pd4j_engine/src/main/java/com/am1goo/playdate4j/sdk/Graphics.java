@@ -39,7 +39,7 @@ public class Graphics {
         return lcdRowSize;
     }
 
-    public static void setDrawMode(LCDDrawMode mode) {
+    public static void setDrawMode(LCDBitmapDrawMode mode) {
         bridge.setDrawMode(mode.getValue());
     }
 
@@ -163,6 +163,28 @@ public class Graphics {
         LCDBitmap bitmap = new LCDBitmap(pointer, path);
         bitmaps.add(bitmap);
         return bitmap;
+    }
+
+    public static int loadBitmaps(String path, List<LCDBitmap> result) {
+        if (!path.endsWith("/"))
+            path = path + "/";
+
+        List<String> filenames = new ArrayList<String>();
+        Filesystem.listfiles(path, false, filenames);
+        int count = 0;
+        for (String filename : filenames) {
+            if (!filename.endsWith(".pdi"))
+                continue;
+
+            String filepath = path + filename;
+            LCDBitmap bitmap = loadBitmap(filepath);
+            if (bitmap == null)
+                continue;
+
+            result.add(bitmap);
+            count++;
+        }
+        return count;
     }
     
     public static boolean loadIntoBitmap(String path, LCDBitmap bitmap) {
@@ -527,7 +549,7 @@ public class Graphics {
         }
     }
 
-    public enum LCDDrawMode {
+    public enum LCDBitmapDrawMode {
         Copy(0),
         WhiteTransparent(1),
         BlackTransparent(2),
@@ -539,7 +561,7 @@ public class Graphics {
 
         final int value;
 
-        LCDDrawMode(int value) {
+        LCDBitmapDrawMode(int value) {
             this.value = value;
         }
 

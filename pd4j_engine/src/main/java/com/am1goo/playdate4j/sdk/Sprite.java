@@ -9,7 +9,7 @@ import com.am1goo.playdate4j.sdk.Api.Pointer;
 import com.am1goo.playdate4j.sdk.Api.UInt8;
 import com.am1goo.playdate4j.sdk.Graphics.LCDBitmap;
 import com.am1goo.playdate4j.sdk.Graphics.LCDBitmapFlip;
-import com.am1goo.playdate4j.sdk.Graphics.LCDDrawMode;
+import com.am1goo.playdate4j.sdk.Graphics.LCDBitmapDrawMode;
 import com.am1goo.playdate4j.sdk.Graphics.LCDRect;
 import com.am1goo.playdate4j.sdk.SpriteBridge.CollisionPoint;
 import com.am1goo.playdate4j.sdk.SpriteBridge.CollisionVector;
@@ -395,7 +395,7 @@ public class Sprite {
 			return UInt8.getJava(nativeValue);
 		}
 		
-		public void setDrawMode(LCDDrawMode mode) {
+		public void setDrawMode(LCDBitmapDrawMode mode) {
 			bridge.setDrawMode(ptr.getValue(), mode.getValue());
 		}
 		

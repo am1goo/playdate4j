@@ -9,7 +9,9 @@ public class Game {
     private static GameCycle cycle;
     private static int frameCount;
     private static long frameTimeMillis;
-    
+    private static long totalTimeMillis;
+
+    private static final long INITIAL_DATE_MILLIS = System.currentTimeMillis();
     private static final float MILLIS = 1f / 1000f;
 
     public static void engine(String className) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
@@ -79,8 +81,8 @@ public class Game {
     }
 
     public static void loop() {
-        long millis = System.currentTimeMillis();
-        frameTimeMillis = millis - frameTimeMillis;
+        totalTimeMillis = System.currentTimeMillis();
+        frameTimeMillis = totalTimeMillis - frameTimeMillis;
         try {
             engine.beforeLoop();
         }
@@ -106,7 +108,7 @@ public class Game {
             Sys.logError(ex);
         }
         frameCount++;
-        frameTimeMillis = millis;
+        frameTimeMillis = totalTimeMillis;
     }
     
     public static void event(int value) {
@@ -140,6 +142,10 @@ public class Game {
 
     public static float getDeltaTime() {
         return frameTimeMillis * MILLIS;
+    }
+
+    public static float getTime() {
+        return (totalTimeMillis - INITIAL_DATE_MILLIS) * MILLIS;
     }
     
     @SuppressWarnings("unchecked")

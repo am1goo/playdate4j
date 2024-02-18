@@ -22,8 +22,20 @@ public class Button implements Control {
 	
 	private final Runnable onClick;
 
-	public Button(int x, int y, String text, PDButtons button, LCDBitmap normal, LCDBitmapFlip flip, Runnable onClick) {
-		this(x, y, text, button, normal, normal, normal, flip, onClick);
+	public Button(int x, int y, String text, LCDBitmap normal, Runnable onClick) {
+		this(x, y, text, PDButtons.A, normal, normal, normal, onClick);
+	}
+
+	public Button(int x, int y, String text, PDButtons button, LCDBitmap normal, Runnable onClick) {
+		this(x, y, text, button, normal, normal, normal, onClick);
+	}
+
+	public Button(int x, int y, String text, LCDBitmap normal, LCDBitmap hover, LCDBitmap pressed, Runnable onClick) {
+		this(x, y, text, PDButtons.A, normal, hover, pressed, onClick);
+	}
+
+	public Button(int x, int y, String text, PDButtons button, LCDBitmap normal, LCDBitmap hover, LCDBitmap pressed, Runnable onClick) {
+		this(x, y, text, button, normal, hover, pressed, LCDBitmapFlip.Unflipped, onClick);
 	}
 	
 	public Button(int x, int y, String text, PDButtons button, LCDBitmap normal, LCDBitmap hover, LCDBitmap pressed, LCDBitmapFlip flip, Runnable onClick) {
