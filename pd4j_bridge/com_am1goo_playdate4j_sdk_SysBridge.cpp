@@ -140,7 +140,7 @@ JNIEXPORT jlong JNICALL Java_com_am1goo_playdate4j_sdk_SysBridge_addOptionsMenuI
 	const char* title = env->GetStringUTFChars(title_str, 0);
 	int options_length = env->GetArrayLength(options_array);
 	
-	const char** options = new const char*[options_length];
+	const char* options[options_length];
 	for (int i = 0; i< options_length; i++) {
         jstring text_str = (jstring) (env->GetObjectArrayElement(options_array, i));
         const char* text = env->GetStringUTFChars(text_str, 0);

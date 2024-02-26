@@ -91,7 +91,7 @@ JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_FilesystemBridge_listfiles
 	if (api == NULL)
 		return FS_ERR;
 	
-	void** args = new void*[2];
+	void* args[2];
 	args[0] = env;
 	args[1] = api;
 	args[2] = result_list;
@@ -108,7 +108,6 @@ JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_FilesystemBridge_listfiles
 		env->CallVoidMethod(result_list, class_result_list_method_add, filename_str);	
 	}, args, showhidden);
 	env->ReleaseStringUTFChars(path_str, path);
-	delete[] args;
 	
 	if (ret != 0) {
 		const char* err = api->file->geterr();
