@@ -28,6 +28,11 @@ public class Filesystem {
 		int ret = bridge.rename(from, to);
 		return ret == 0;
 	}
+
+	public static boolean listfiles(String path, boolean showHidden, List<String> result) {
+		int ret = bridge.listfiles(path, showHidden, new FilesystemBridge.FileList(result));
+		return ret == 0;
+	}
 	
 	public static FilesystemBridge.FileStat stat(String path) {
 		FilesystemBridge.FileStat stat = new FilesystemBridge.FileStat();
@@ -36,11 +41,6 @@ public class Filesystem {
 			return null;
 		
 		return stat;
-	}
-
-	public static boolean listfiles(String path, boolean showHidden, List<String> result) {
-		int ret = bridge.listfiles(path, showHidden, new FilesystemBridge.FileList(result));
-		return ret == 0;
 	}
 	
 	public static boolean stat(String path, FilesystemBridge.FileStat stat) {
