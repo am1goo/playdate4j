@@ -178,18 +178,24 @@ public class Sys {
     }
     
     public enum PDLanguage {
-    	English(0),
-    	Japanese(1),
-    	Unknown(2);
+    	English(0, "en"),
+    	Japanese(1, "jp"),
+    	Unknown(2, "");
     	
     	final int value;
+    	final String code;
     	
-    	PDLanguage(int value) {
+    	PDLanguage(int value, String code) {
     		this.value = value;
+    		this.code = code;
     	}
     	
     	public int getValue() {
     		return value;
+    	}
+    	
+    	public String getCode() {
+    		return code;
     	}
     	
     	public static PDLanguage valueOf(int value) {
