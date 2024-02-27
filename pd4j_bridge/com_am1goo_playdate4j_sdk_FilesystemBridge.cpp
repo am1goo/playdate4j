@@ -80,7 +80,7 @@ JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_FilesystemBridge_stat
 	}
 	
 	jclass class_file_state = env->GetObjectClass(file_stat);
-	jmethodID class_file_state_method_set = env->GetMethodID(class_file_state, "set", "(ZJIIIIII)V");
+	jmethodID class_file_state_method_set = env->GetMethodID(class_file_state, "set", "(ZIIIIIII)V");
 	env->CallVoidMethod(file_stat, class_file_state_method_set, stat.isdir, stat.size, stat.m_year, stat.m_month, stat.m_day, stat.m_hour, stat.m_minute, stat.m_second);
 	return ret;
 }

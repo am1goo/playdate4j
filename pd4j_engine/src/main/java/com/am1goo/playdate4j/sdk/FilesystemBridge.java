@@ -29,7 +29,7 @@ public class FilesystemBridge {
 	
 	public static class FileStat {
 		private boolean isdir;
-		private long size;
+		private int size;
 		private int year;
 		private int month;
 		private int day;
@@ -41,7 +41,7 @@ public class FilesystemBridge {
 			return isdir;
 		}
 		
-		public long size() {
+		public int size() {
 			return size;
 		}
 		
@@ -69,7 +69,7 @@ public class FilesystemBridge {
 			return second;
 		}
 		
-		public void set(boolean isdir, long size, int year, int month, int day, int hour, int minute, int second) {
+		public void set(boolean isdir, int size, int year, int month, int day, int hour, int minute, int second) {
 			this.isdir = isdir;
 			this.size = size;
 			this.year = year;
@@ -78,6 +78,20 @@ public class FilesystemBridge {
 			this.hour = hour;
 			this.minute = minute;
 			this.second = second;
+		}
+
+		@Override
+		public String toString() {
+			return "FileStat{" +
+					"isdir=" + isdir +
+					", size=" + size +
+					", year=" + year +
+					", month=" + month +
+					", day=" + day +
+					", hour=" + hour +
+					", minute=" + minute +
+					", second=" + second +
+					'}';
 		}
 	}
 
