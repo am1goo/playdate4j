@@ -5,6 +5,7 @@ Java framework to create games on `Playdate` console. \
 ## What inside?
 - full support of `Playdate API`
 - pretty good works in `Playdate Simulator`
+- easy-to-use `Localization API` for system languages and any others
 
 ## C API support
 =100%= `Logging API` \
@@ -23,7 +24,7 @@ Java framework to create games on `Playdate` console. \
 BUT \
 =000%= `JSON API` (skipped API, package [com.google.code.gson](https://github.com/google/gson) would be better)
 
-## Let me explain how it is like:
+## Let me explain what it looks like:
 ```java
 public class ExampleGameCycle implements GameCycle {
 
