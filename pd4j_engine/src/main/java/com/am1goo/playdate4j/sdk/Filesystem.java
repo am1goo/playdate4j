@@ -102,8 +102,8 @@ public class Filesystem {
 			return bridge.read(ptr.getValue(), buf, len);
 		}
 		
-		public boolean seek(int pos, int whence) {
-			int ret = bridge.seek(ptr.getValue(), pos, whence);
+		public boolean seek(int pos, FileWhence whence) {
+			int ret = bridge.seek(ptr.getValue(), pos, whence.getValue());
 			return ret == 0;
 		}
 		
@@ -118,6 +118,22 @@ public class Filesystem {
 		
 		public int write(byte[] buf, int len) {
 			return bridge.write(ptr.getValue(), buf, len);
+		}
+	}
+	
+	public enum FileWhence {
+		Begin(0),
+		Current(1),
+		End(2);
+		
+		final int value;
+		
+		FileWhence(int value) {
+			this.value = value;
+		}
+		
+		public int getValue() {
+			return value;
 		}
 	}
 	
