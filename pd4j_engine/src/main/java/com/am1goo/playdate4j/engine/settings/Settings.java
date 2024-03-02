@@ -18,7 +18,17 @@ public class Settings {
 	
 	private static SettingsFile settingsFile = null;
 	private static String settingsPath = null;
-	
+
+	private static boolean autosave = true;
+
+	public boolean isAutosave() {
+		return autosave;
+	}
+
+	public void setAutosave(boolean autosave) {
+		this.autosave = autosave;
+	}
+
 	public boolean hasString(String key) {
 		if (settingsFile == null)
 			return false;
@@ -38,6 +48,8 @@ public class Settings {
 			return;
 		
 		settingsFile.setString(key, value);
+		if (autosave)
+			save();
 	}
 	
 	public boolean hasInteger(String key) {
@@ -59,6 +71,8 @@ public class Settings {
 			return;
 		
 		settingsFile.setInteger(key, value);
+		if (autosave)
+			save();
 	}
 	
 	public boolean hasFloat(String key) {
@@ -80,6 +94,8 @@ public class Settings {
 			return;
 		
 		settingsFile.setFloat(key, value);
+		if (autosave)
+			save();
 	}
 
 	public boolean hasBoolean(String key) {
@@ -102,6 +118,8 @@ public class Settings {
 			return;
 		
 		settingsFile.setInteger(key, value ? 1 : 0);
+		if (autosave)
+			save();
 	}
 	
 	public static void load() {
@@ -114,18 +132,27 @@ public class Settings {
 			settingsFile = null;
 			settingsPath = null;
 		}
-		
+
 		SettingsFile settingsFile = null;
 		try {
-			settingsFile = (SettingsFile) clazz.newInstance();
-		}
-		catch (Exception ex) {
+			settingsFile = clazz.newInstance();
+		} catch (Exception ex) {
 			Sys.logError(ex);
 			return;
 		}
-		
+
 		Settings.settingsFile = settingsFile;
-		loadFromFile(settingsFile, path);
+		LoadResult result = loadFromFile(settingsFile, path);
+
+		switch (result) {
+			case FileNotFound:
+				if (autosave)
+					saveToFile(settingsFile, path);
+				break;
+			case ReadBytesMismatch:
+				saveToFile(settingsFile, path);
+				break;
+		}
 	}
 	
 	public static void save() {
@@ -138,34 +165,42 @@ public class Settings {
 		saveToFile(settingsFile, settingsPath);
 	}
 	
-	private static void loadFromFile(SettingsFile settingsFile, String path) {
+	private static LoadResult loadFromFile(SettingsFile settingsFile, String path) {
 		FileStat fileStat = Filesystem.stat(path);
 		if (fileStat == null)
-			return;
-		
+			return LoadResult.FileNotFound;
+
 		byte[] bytes = new byte[fileStat.size()];
-		SDFile file = Filesystem.open(path, FileOptions.ReadData);
-		if (file == null)
-			return;
-			
+		FileOptions options = FileOptions.ReadData;
+		SDFile file = Filesystem.open(path, options);
+		if (file == null) {
+			Sys.logError("file cannot be opened at path " + path + " with options " + options.name());
+			return LoadResult.FileNotFound;
+		}
+
 		int read = file.read(bytes);
 		file.close();
 
 		if (read != bytes.length)
-			return;
+			return LoadResult.ReadBytesMismatch;
 		
 		try (ByteArrayInputStream inputStream = new ByteArrayInputStream(bytes)) {
 			settingsFile.load(inputStream);
+			return LoadResult.Ok;
 		}
 		catch (IOException ex) {
 			Sys.logError(ex);
+			return LoadResult.InternalError;
 		}
 	}
 	
 	private static void saveToFile(SettingsFile settingsFile, String path) {
-		SDFile file = Filesystem.open(path, FileOptions.Write);
-		if (file == null)
+		FileOptions options = FileOptions.Write;
+		SDFile file = Filesystem.open(path,options);
+		if (file == null) {
+			Sys.logError("file cannot be opened at path " + path + " with options " + options.name());
 			return;
+		}
 		
 		file.seek(0, FileWhence.Begin);
 		try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
@@ -178,6 +213,23 @@ public class Settings {
 		finally {
 			file.flush();
 			file.close();	
+		}
+	}
+
+	public enum LoadResult {
+		Ok(0),
+		InternalError(1),
+		FileNotFound(2),
+		ReadBytesMismatch(3);
+
+		final int value;
+
+		LoadResult(int value) {
+			this.value = value;
+		}
+
+		public int getValue() {
+			return value;
 		}
 	}
 }
