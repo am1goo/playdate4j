@@ -11,7 +11,7 @@ import com.am1goo.playdate4j.sdk.Sys;
 
 public class JSettingsFile extends BaseSettingsFile {
 
-	private static final byte[] HEADER = new byte[] { 68, 78, 88, 63 };
+	private static final byte[] HEADER = new byte[] { 69, 65, 88, 63 };
 	private static final short VERSION = 1;
 
 	private short version;
@@ -61,7 +61,7 @@ public class JSettingsFile extends BaseSettingsFile {
 	@Override
 	public void load(InputStream inputStream) {
 		try (JDataInputStream stream = new JDataInputStream(inputStream)) {
-			byte[] header = stream.readBytes();
+			byte[] header = stream.readBytes(HEADER.length);
 			if (!Arrays.equals(header, HEADER)) {
 	            Sys.logError("cannot read " + getClass() + " data, because file has wrong header");
 	            return;
@@ -80,7 +80,7 @@ public class JSettingsFile extends BaseSettingsFile {
 	public void save(OutputStream outputStream) {
 		version = VERSION;
 		try (JDataOutputStream stream = new JDataOutputStream(outputStream)) {
-			stream.writeBytes(HEADER);
+			stream.write(HEADER, 0, HEADER.length);
 			stream.writeShort(version);
 			stream.writeMap(strings(), STRING_OUTPUT_FUNC, STRING_OUTPUT_FUNC);
 			stream.writeMap(integers(), STRING_OUTPUT_FUNC, INTEGER_OUTPUT_FUNC);

@@ -18,7 +18,7 @@ public class JDataOutputStream extends DataOutputStream {
     }
         
     public <K, V> void writeMap(Map<K, V> map, Func<K> onKey, Func<V> onValue) throws IOException {
-    	write(map.size());
+    	writeInt(map.size());
     	for (K key : map.keySet()) {
     		V value = map.get(key);
     		onKey.write(this, key);
