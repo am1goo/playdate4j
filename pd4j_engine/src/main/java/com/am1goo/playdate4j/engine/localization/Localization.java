@@ -56,7 +56,7 @@ public class Localization {
 			sb.append("strings").append('.').append(code).append(".txt");
 
 			String path = sb.toString();
-			SDFile file = Filesystem.open(path, FileOptions.ReadData);
+			SDFile file = Filesystem.open(path, FileOptions.Read);
 			if (file == null) {
 				Sys.logError("locale '" + code + "' file " + path + " not found");
 				continue;

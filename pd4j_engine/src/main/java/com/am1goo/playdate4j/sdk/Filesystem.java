@@ -138,11 +138,11 @@ public class Filesystem {
 	}
 	
 	public enum FileOptions {
-		Read(0),
-		ReadData(1),
-		Write(2),
-		Append(3);
-		
+		Read(1 << 0),
+		ReadData(1 << 1),
+		Write(1 << 2),
+		Append(2 << 2);
+
 		final int value;
 		
 		FileOptions(int value) {
