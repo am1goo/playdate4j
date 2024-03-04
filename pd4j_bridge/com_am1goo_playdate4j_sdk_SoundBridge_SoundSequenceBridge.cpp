@@ -31,7 +31,7 @@ JNIEXPORT jboolean JNICALL Java_com_am1goo_playdate4j_sdk_SoundBridge_00024Sound
 	
 	SoundSequence* seq = reinterpret_cast<SoundSequence*>(seq_ptr);
 	const char* path = env->GetStringUTFChars(path_str, 0);
-	int ret = api->sound->sequence->loadMidiFile(seq, path);
+	int ret = api->sound->sequence->loadMIDIFile(seq, path);
 	env->ReleaseStringUTFChars(path_str, path);
 	return ret;
 }

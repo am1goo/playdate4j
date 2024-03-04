@@ -199,5 +199,5 @@ JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SoundBridge_00024FilePlaye
 		return;
 	
 	FilePlayer* player = reinterpret_cast<FilePlayer*>(player_ptr);
-	api->sound->fileplayer->fadeVolume(player, lvol, rvol, len, NULL);
+	api->sound->fileplayer->fadeVolume(player, lvol, rvol, len, NULL, NULL);
 }
