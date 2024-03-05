@@ -11,6 +11,7 @@ typedef struct Options Options;
 
 struct Options
 {
+	int runningInSimulator;
 	const char* pathToJar;
 	const char* pathToLibs;
 	const char* gameCycleClass;

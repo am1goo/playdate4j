@@ -5,6 +5,7 @@ import java.lang.reflect.InvocationTargetException;
 
 public class Game {
 
+    private static boolean runningInSimulator;
 	private static GameEngine engine;
     private static GameCycle cycle;
     private static int frameCount;
@@ -42,8 +43,9 @@ public class Game {
     	Game.cycle = cycle;
     }
 
-    public static void init() {
-        Sys.log("init: started");
+    public static void init(boolean runningInSimulator) {
+        Game.runningInSimulator = runningInSimulator;
+        Sys.log("init: started, runningInSimulator=" + runningInSimulator);
         try {
             engine.start();
         }
@@ -130,6 +132,10 @@ public class Game {
     	catch (Throwable ex) {
     		Sys.logError(ex);
     	}
+    }
+
+    public static boolean isSimulator () {
+        return runningInSimulator;
     }
 
     public static boolean isCycling() {

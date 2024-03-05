@@ -56,7 +56,7 @@ JavaVM* create_vm(const char* path_to_jar, const char* path_to_libs)
     strcpy(java_library_path, java_library_path_prefix);
     strcat(java_library_path, path_to_libs);
 
-    JavaVMOption* options = new JavaVMOption[2];
+    JavaVMOption options[2];
     options[0].optionString = java_class_path;
     options[1].optionString = java_library_path;
     vm_args.version = JNI_VERSION_1_6;
@@ -65,8 +65,6 @@ JavaVM* create_vm(const char* path_to_jar, const char* path_to_libs)
     vm_args.ignoreUnrecognized = JNI_TRUE;
 
     int ret = JNI_CreateJavaVM(&jvm, (void**)&env, &vm_args);
-    delete[] options;
-
     if (ret < 0)
     {
         printf("Unable to Launch JVM\n");
@@ -99,7 +97,7 @@ int pd4j_init(PlaydateAPI* api, Options* options)
     class_game = env->FindClass("com/am1goo/playdate4j/sdk/Game");
     class_game_method_engine = env->GetStaticMethodID(class_game, "engine", "(Ljava/lang/String;)V");
     class_game_method_create = env->GetStaticMethodID(class_game, "create", "(Ljava/lang/String;)V");
-    class_game_method_init = env->GetStaticMethodID(class_game, "init", "()V");
+    class_game_method_init = env->GetStaticMethodID(class_game, "init", "(Z)V");
     class_game_method_shutdown = env->GetStaticMethodID(class_game, "shutdown", "()V");
     class_game_method_loop = env->GetStaticMethodID(class_game, "loop", "()V");
     class_game_method_event = env->GetStaticMethodID(class_game, "event", "(I)V");
@@ -114,7 +112,8 @@ int pd4j_init(PlaydateAPI* api, Options* options)
     jstring cycle_class_name = env->NewStringUTF(cycle_class_name_str);
     env->CallVoidMethod(class_game, class_game_method_create, cycle_class_name);
 
-    env->CallVoidMethod(class_game, class_game_method_init);
+    bool is_running_in_simulator = options->runningInSimulator;
+    env->CallVoidMethod(class_game, class_game_method_init, is_running_in_simulator);
     return PD4J_OK;
 }
 

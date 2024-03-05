@@ -4,8 +4,9 @@
 int main()
 {
 	Options options;
-	options.pathToJar = "D:\\Projects\\pd4j\\pd4j_engine\\out\\artifacts\\pd4j_engine_jar\\pd4j_engine.jar";
-	options.pathToLibs = "D:\\Projects\\pd4j\\pd4j_engine\\lib";
+	options.runningInSimulator = true;
+	options.pathToJar = "C:\\prototypes\\playdate4j\\out\\artifacts\\playdate4j_jar\\playdate4j.jar";
+	options.pathToLibs = "C:\\prototypes\\playdate4j\\pd4j_engine\\lib";
 	options.gameCycleClass = "com.am1goo.playdate4j.example.ExampleGameCycle";
 	pd4j_init(NULL, &options);
 	for (int i = 0; i < 10; ++i)
