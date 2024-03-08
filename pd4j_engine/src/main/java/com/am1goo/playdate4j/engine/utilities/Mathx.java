@@ -48,8 +48,24 @@ public class Mathx {
         return Math.max(min, Math.min(value, max));
     }
 
-   public static boolean inside(float value, float min, float max) {
+    public static boolean between(int value, int min, int max) {
+        return min < value && value < max;
+    }
+
+    public static boolean between(float value, float min, float max) {
+        return min < value && value < max;
+    }
+
+    public static boolean inside(int value, int min, int max) {
         return min <= value && value <= max;
+    }
+
+    public static boolean inside(float value, float min, float max) {
+        return min <= value && value <= max;
+    }
+
+    public static boolean outside(int value, int min, int max) {
+        return !inside(value, min, max);
     }
 
     public static boolean outside(float value, float min, float max) {
