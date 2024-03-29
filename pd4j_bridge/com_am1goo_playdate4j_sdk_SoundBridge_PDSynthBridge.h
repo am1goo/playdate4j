@@ -25,6 +25,14 @@ JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SoundBridge_00024PDSynthBr
 
 /*
  * Class:     com_am1goo_playdate4j_sdk_SoundBridge_PDSynthBridge
+ * Method:    copy
+ * Signature: (J)J
+ */
+JNIEXPORT jlong JNICALL Java_com_am1goo_playdate4j_sdk_SoundBridge_00024PDSynthBridge_copy
+  (JNIEnv *, jobject, jlong);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_SoundBridge_PDSynthBridge
  * Method:    setWaveform
  * Signature: (JI)V
  */

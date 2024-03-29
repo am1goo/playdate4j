@@ -203,6 +203,7 @@ public class SoundBridge {
 		/* general */
 		public native long newSynth();
 		public native void freeSynth(long synthPtr);
+		public native long copy(long synthPtr);
 		public native void setWaveform(long synthPtr, int wave);
 		public native void setSample(long synthPtr, long samplePtr, long sustainStart, long sustainEnd);
 		public native boolean setWavetable(long synthPtr, long samplePtr, int log2size, int columns, int rows);

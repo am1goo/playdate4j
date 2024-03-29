@@ -239,6 +239,23 @@ public class Sound {
 		synths.remove(synth);
 		return null;
 	}
+
+	public static PDSynth copy(PDSynth synth) {
+		if (synth == null)
+			return null;
+
+		if (synth.ptr.invalid())
+			return null;
+
+		var ptr = bridge.synth().copy(synth.ptr.getValue());
+		Api.Pointer pointer = new Api.Pointer(ptr);
+		if (pointer.invalid())
+			return null;
+
+		PDSynth copied = new PDSynth(pointer);
+		synths.add(copied);
+		return copied;
+	}
 	
 	private static PDSynth findSynth(long ptr) {
 		for (PDSynth synth : synths) {

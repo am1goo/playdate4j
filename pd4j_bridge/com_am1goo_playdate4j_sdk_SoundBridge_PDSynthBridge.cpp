@@ -23,6 +23,17 @@ JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SoundBridge_00024PDSynthBr
 	api->sound->synth->freeSynth(synth);
 }
 
+JNIEXPORT jlong JNICALL Java_com_am1goo_playdate4j_sdk_SoundBridge_00024PDSynthBridge_copy
+  (JNIEnv* env, jobject thisObject, jlong synth_ptr) {
+	PlaydateAPI* api = pd4j_get_api(env);
+	if (api == NULL)
+		return 0;
+	  
+	PDSynth* synth = reinterpret_cast<PDSynth*>(synth_ptr);
+	PDSynth* copied = api->sound->synth->copy(synth);
+	return reinterpret_cast<uintptr_t>(copied);
+}
+
 JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SoundBridge_00024PDSynthBridge_setWaveform
   (JNIEnv* env, jobject thisObject, jlong synth_ptr, jint wave_value) {
 	PlaydateAPI* api = pd4j_get_api(env);
