@@ -6,7 +6,6 @@ import com.am1goo.playdate4j.engine.objects.impl.JSpriteFactory;
 import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 
 public class JObjectsManager {
 	
@@ -22,16 +21,18 @@ public class JObjectsManager {
 	}
 	
 	public static void stop() {
-		Iterator<IObject> itr = objects.iterator();
-		while (itr.hasNext()) {
-			IObject obj = itr.next();
-			destroy(obj);
+		synchronized (objects) {
+			for (IObject obj : objects) {
+				destroy(obj);
+			}
 		}
 	}
 	
 	public static void beforeLoop() {
-		for (IObject obj : objects) {
-			obj.update();
+		synchronized (objects) {
+			for (IObject obj : objects) {
+				obj.update();
+			}
 		}
 	}
 	
@@ -47,27 +48,27 @@ public class JObjectsManager {
 		factories.put(factory.getObjectClass(), factory);
 		return true;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public static <T extends IObject> T create(Class<T> clazz) {
 		T obj = null;
 		if (factories.containsKey(clazz)) {
-			obj = (T)factories.get(clazz).create();
-		}
-		else {
+			obj = (T) factories.get(clazz).create();
+		} else {
 			try {
 				Constructor<T> cctr = clazz.getDeclaredConstructor();
-				obj = (T)cctr.newInstance();
-			}
-			catch (Exception ex) {
+				obj = (T) cctr.newInstance();
+			} catch (Exception ex) {
 				Sys.logError(ex);
 			}
 		}
-		
+
 		if (obj == null)
 			return null;
-		
-		objects.add(obj);
+
+		synchronized (objects) {
+			objects.add(obj);
+		}
 		obj.onCreate();
 		return obj;
 	}
@@ -75,12 +76,11 @@ public class JObjectsManager {
 	public static <T extends IObject> boolean destroy(T obj) {
 		if (obj == null)
 			return false;
-		
-		if (!objects.contains(obj))
-			return false;
-		
+
+		synchronized (objects) {
+			objects.remove(obj);
+		}
 		obj.onDestroy();
-		objects.remove(obj);
 		return true;
 	}
 }
