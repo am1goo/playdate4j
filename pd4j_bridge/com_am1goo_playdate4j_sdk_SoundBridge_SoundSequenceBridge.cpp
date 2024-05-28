@@ -96,7 +96,7 @@ JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SoundBridge_00024SoundSequ
 	api->sound->sequence->setLoops(seq, startStep, endStep, loops);
 }
 
-JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_SoundBridge_00024SoundSequenceBridge_getTempo
+JNIEXPORT jfloat JNICALL Java_com_am1goo_playdate4j_sdk_SoundBridge_00024SoundSequenceBridge_getTempo
   (JNIEnv* env, jobject thisObject, jlong seq_ptr) {
 	PlaydateAPI* api = pd4j_get_api(env);
 	if (api == NULL)

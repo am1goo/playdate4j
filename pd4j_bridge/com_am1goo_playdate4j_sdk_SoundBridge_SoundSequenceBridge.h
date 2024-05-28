@@ -82,9 +82,9 @@ JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_SoundBridge_00024SoundSequ
 /*
  * Class:     com_am1goo_playdate4j_sdk_SoundBridge_SoundSequenceBridge
  * Method:    getTempo
- * Signature: (J)I
+ * Signature: (J)F
  */
-JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_SoundBridge_00024SoundSequenceBridge_getTempo
+JNIEXPORT jfloat JNICALL Java_com_am1goo_playdate4j_sdk_SoundBridge_00024SoundSequenceBridge_getTempo
   (JNIEnv *, jobject, jlong);
 
 /*

@@ -1889,7 +1889,7 @@ public class Sound {
 			bridge.soundSequence().setLoops(ptr.getValue(), startStep, endStep, loops);
 		}
 		
-		public int getTempo() {
+		public float getTempo() {
 			return bridge.soundSequence().getTempo(ptr.getValue());
 		}
 		

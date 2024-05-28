@@ -39,8 +39,9 @@ public class Graphics {
         return lcdRowSize;
     }
 
-    public static void setDrawMode(LCDBitmapDrawMode mode) {
-        bridge.setDrawMode(mode.getValue());
+    public static LCDBitmapDrawMode setDrawMode(LCDBitmapDrawMode mode) {
+        int modeValue = bridge.setDrawMode(mode.getValue());
+        return LCDBitmapDrawMode.valueOf(modeValue);
     }
 
     public static void pushContext(LCDBitmap bitmap) {
@@ -82,6 +83,10 @@ public class Graphics {
 
     public static void setLineCapStyle(LCDLineCapStyle endCapStyle) {
         bridge.setLineCapStyle(endCapStyle.getValue());
+    }
+
+    public static void setPixel(int x, int y, LCDSolidColor color) {
+        bridge.setPixel(x, y, color.value);
     }
 
     /* bitmaps */
@@ -572,6 +577,14 @@ public class Graphics {
         public int getValue() {
             return value;
         }
+
+        public static LCDSolidColor valueOf(int value) {
+            for (LCDSolidColor color : values()) {
+                if (color.value == value)
+                    return color;
+            }
+            return null;
+        }
     }
 
     public static class LCDColorPattern {
@@ -620,6 +633,14 @@ public class Graphics {
 
         public int getValue() {
             return value;
+        }
+
+        public static LCDBitmapDrawMode valueOf(int value) {
+            for (LCDBitmapDrawMode mode : values()) {
+                if (mode.value == value)
+                    return mode;
+            }
+            return null;
         }
     }
     
@@ -811,19 +832,31 @@ public class Graphics {
         public void drawRotated(int x, int y, float degrees, float xCenter, float yCenter, float xScale, float yScale) {
             Graphics.drawRotatedBitmap(this, x, y, degrees, xCenter, yCenter, xScale, yScale);
         }
+
+        public LCDSolidColor getBitmapPixel(int x, int y) {
+            int colorValue = bridge.getBitmapPixel(ptr.getValue(), x, y);
+            return LCDSolidColor.valueOf(colorValue);
+        }
     }
     
     public static class LCDBitmapTable {
     	
     	private final Api.Pointer ptr;
+
+        private final GraphicsBridge.BitmapTableInfo info = new GraphicsBridge.BitmapTableInfo();
     	
     	public LCDBitmapTable(Api.Pointer ptr) {
             this.ptr = ptr;
+            bridge.getBitmapTableInfo(ptr.getValue(), info);
         }
 
         public Api.Pointer getPointer() {
             return ptr;
         }
+
+        public int count() { return info.count(); }
+
+        public int cellswide() { return info.cellswide(); }
 
         public void free() {
         	Graphics.freeBitmapTable(this);

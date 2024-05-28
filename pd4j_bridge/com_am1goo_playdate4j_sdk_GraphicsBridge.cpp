@@ -56,14 +56,14 @@ JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_setStencilI
 	api->graphics->setStencilImage(bitmap, tile);
 }
 
-JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_setDrawMode
+JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_setDrawMode
   (JNIEnv* env, jobject thisObject, jint mode_value) {
 	PlaydateAPI* api = pd4j_get_api(env);
 	if (api == NULL)
-		return;
+		return 0;
 
 	LCDBitmapDrawMode mode = static_cast<LCDBitmapDrawMode>(mode_value);
-	api->graphics->setDrawMode(mode);
+	return api->graphics->setDrawMode(mode);
 }
 
 JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_setClipRect
@@ -101,6 +101,16 @@ JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_setLineCapS
 
 	LCDLineCapStyle style = static_cast<LCDLineCapStyle>(style_value);
 	api->graphics->setLineCapStyle(style);
+}
+
+JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_setPixel
+(JNIEnv* env, jobject thisObject, jint x, jint y, jint color_value) {
+	PlaydateAPI* api = pd4j_get_api(env);
+	if (api == NULL)
+		return;
+	
+	LCDSolidColor color = static_cast<LCDSolidColor>(color_value);
+	api->graphics->setPixel(x, y, color);
 }
 
 JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_clearBitmap
@@ -299,6 +309,16 @@ JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_getBitmapDa
 	env->CallVoidMethod(result, class_result_method_set, width, height, rowbytes);
 }
 
+JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_getBitmapPixel
+(JNIEnv* env, jobject thisObject, jlong bitmap_ptr, jint x, jint y) {
+	PlaydateAPI* api = pd4j_get_api(env);
+	if (api == NULL)
+		return 0;
+	
+	LCDBitmap* bitmap = reinterpret_cast<LCDBitmap*>(bitmap_ptr);
+	return api->graphics->getBitmapPixel(bitmap, x, y);
+}
+
 JNIEXPORT jlong JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_newBitmapTable
   (JNIEnv* env, jobject thisObject, jint count, jint width, jint height) {
 	PlaydateAPI* api = pd4j_get_api(env);
@@ -318,6 +338,22 @@ JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_freeBitmapT
 	
 	LCDBitmapTable* table = reinterpret_cast<LCDBitmapTable*>(table_ptr);
 	api->graphics->freeBitmapTable(table);
+}
+
+JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_getBitmapTableInfo
+(JNIEnv* env, jobject thisObject, jlong table_ptr, jobject result) {
+	PlaydateAPI* api = pd4j_get_api(env);
+	if (api == NULL)
+		return;
+	
+	LCDBitmapTable* table = reinterpret_cast<LCDBitmapTable*>(table_ptr);
+	int count;
+	int cellswide;
+	api->graphics->getBitmapTableInfo(table, &count, &cellswide);
+	
+	jclass class_result = env->GetObjectClass(result);
+	jmethodID class_result_method_set = env->GetMethodID(class_result, "set", "(II)V");
+	env->CallVoidMethod(result, class_result_method_set, count, cellswide);
 }
 
 JNIEXPORT jlong JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_getTableBitmap

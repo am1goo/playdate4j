@@ -15,11 +15,12 @@ public class GraphicsBridge {
     public native void popContext();
     public native void setStencil(long bitmapPtr);
     public native void setStencilImage(long bitmapPtr, int tile);
-    public native void setDrawMode(int mode);
+    public native int setDrawMode(int mode);
     public native void setClipRect(int x, int y, int width, int height);
     public native void setScreenClipRect(int x, int y, int width, int height);
     public native void clearClipRect();
     public native void setLineCapStyle(int endCapStyle);
+    public native void setPixel(int x, int y, int color);
 
     /* bitmaps */
     public native void clearBitmap(long bitmapPtr, int color);
@@ -40,10 +41,13 @@ public class GraphicsBridge {
     public native boolean setBitmapMask(long bitmapPtr, long maskPtr);
     public native long getBitmapMask(long bitmapPtr);
     public native void getBitmapData(long bitmapPtr, BitmapData data);
-    
+    public native int getBitmapPixel(long bitmapPtr, int x, int y);
+
     /* bitmap tables */
     public native long newBitmapTable(int count, int width, int height);
     public native void freeBitmapTable(long tablePtr);
+    public native void getBitmapTableInfo(long tablePtr, BitmapTableInfo info);
+
     public native long getTableBitmap(long tablePtr, int idx);
     public native long loadBitmapTable(String path);
     public native void loadIntoBitmapTable(String path, long tablePtr);
@@ -104,6 +108,25 @@ public class GraphicsBridge {
 
         public int bytesCount() {
             return rowbytes;
+        }
+    }
+
+    public static class BitmapTableInfo {
+
+        private int count;
+        private int cellswide;
+
+        public void set(int count, int cellswide) {
+            this.count = count;
+            this.cellswide = cellswide;
+        }
+
+        public int count() {
+            return count;
+        }
+
+        public int cellswide() {
+            return cellswide;
         }
     }
 }

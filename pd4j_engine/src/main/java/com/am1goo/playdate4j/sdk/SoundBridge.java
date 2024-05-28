@@ -387,7 +387,7 @@ public class SoundBridge {
 		public native long getTime(long seqPtr);
 		public native void setTime(long seqPtr, long time);
 		public native void setLoops(long seqPtr, int startStep, int endStep, int loops);
-		public native int getTempo(long seqPtr);
+		public native float getTempo(long seqPtr);
 		public native void setTempo(long seqPtr, float stepsPerSecond);
 		public native int getLength(long seqPtr);
 		public native int getTrackCount(long seqPtr);

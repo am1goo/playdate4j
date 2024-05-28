@@ -66,9 +66,9 @@ JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_setStencilI
 /*
  * Class:     com_am1goo_playdate4j_sdk_GraphicsBridge
  * Method:    setDrawMode
- * Signature: (I)V
+ * Signature: (I)I
  */
-JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_setDrawMode
+JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_setDrawMode
   (JNIEnv *, jobject, jint);
 
 /*
@@ -102,6 +102,14 @@ JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_clearClipRe
  */
 JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_setLineCapStyle
   (JNIEnv *, jobject, jint);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_GraphicsBridge
+ * Method:    setPixel
+ * Signature: (III)V
+ */
+JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_setPixel
+  (JNIEnv *, jobject, jint, jint, jint);
 
 /*
  * Class:     com_am1goo_playdate4j_sdk_GraphicsBridge
@@ -225,6 +233,14 @@ JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_getBitmapDa
 
 /*
  * Class:     com_am1goo_playdate4j_sdk_GraphicsBridge
+ * Method:    getBitmapPixel
+ * Signature: (JII)I
+ */
+JNIEXPORT jint JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_getBitmapPixel
+  (JNIEnv *, jobject, jlong, jint, jint);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_GraphicsBridge
  * Method:    newBitmapTable
  * Signature: (III)J
  */
@@ -238,6 +254,14 @@ JNIEXPORT jlong JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_newBitmapT
  */
 JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_freeBitmapTable
   (JNIEnv *, jobject, jlong);
+
+/*
+ * Class:     com_am1goo_playdate4j_sdk_GraphicsBridge
+ * Method:    getBitmapTableInfo
+ * Signature: (JLcom/am1goo/playdate4j/sdk/GraphicsBridge/BitmapTableInfo;)V
+ */
+JNIEXPORT void JNICALL Java_com_am1goo_playdate4j_sdk_GraphicsBridge_getBitmapTableInfo
+  (JNIEnv *, jobject, jlong, jobject);
 
 /*
  * Class:     com_am1goo_playdate4j_sdk_GraphicsBridge
