@@ -87,7 +87,7 @@ public class ExampleGameCycle implements GameCycle {
 - [ ] using `Java-to-C` code conversion instead of JavaVM on device
 
 ## Requirements
-- `Playdate SDK` 2.3.x version or higher from [official site](https://play.date/dev/)
+- `Playdate SDK` 2.5.x version or higher from [official site](https://play.date/dev/)
 - `g++` compiler, like [mingw64](https://github.com/niXman/mingw-builds-binaries/releases)
 - `Java Development Kit` 1.6 version or higher
 
